@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function HomeScreen() {
-  const { user, logout } = useAuth();
+  const { user,token, logout } = useAuth();
 
   const handleLogout = async () => {
     await logout();
@@ -19,6 +19,14 @@ export default function HomeScreen() {
       <Text style={styles.email}>
         {user?.email}
       </Text>
+      <View style={{ padding: 20, width: '100%' }}>
+        <Text style={styles.email}>
+        UID: {user?.uid}
+      </Text>
+      <Text style={[styles.email, { flexWrap: 'wrap' }]}>
+        토큰: {token}
+      </Text>
+      </View>
       
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>로그아웃</Text>

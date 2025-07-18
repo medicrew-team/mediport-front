@@ -1,106 +1,136 @@
 import React, { useState } from 'react';
-import { Alert, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import CountryPicker from './CountryPicker'; // 새로운 커스텀 컴포넌트
+import {
+  Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
+import CountryPicker from './CountryPicker';
 
 interface SignupFormProps {
-  onSignup: (email: string, password: string, name: string, phone: string, country: string) => void;
+  onSignup: (name: string, email: string, country: string, fullPhone: string, password: string) => void;
   onSwitchToLogin: () => void;
 }
 
 export default function SignupForm({ onSignup, onSwitchToLogin }: SignupFormProps) {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [country, setCountry] = useState('대한민국');
+  const [countryCode, setCountryCode] = useState('82');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [country, setCountry] = useState('대한민국');
 
   const countries = ['대한민국', '중국', '미국', '베트남', '필리핀', '태국', '기타'];
 
   const handleSignup = () => {
-    if (!email || !password || !confirmPassword || !name || !phone || !country) {
-      Alert.alert('오류', '모든 항목을 입력해주세요.');
-      return;
-    }
-    
+    const fullPhone = '+' + countryCode + phone;
+
     if (password !== confirmPassword) {
       Alert.alert('오류', '비밀번호가 일치하지 않습니다.');
       return;
     }
-    
-    onSignup(email, password, name, phone, country);
+
+    onSignup(name, email, country, fullPhone, password);
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>회원가입</Text>
-      
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="이름"
-          placeholderTextColor="#999"
-          value={name}
-          onChangeText={setName}
-        />
-        
-        <TextInput
-          style={styles.input}
-          placeholder="이메일"
-          placeholderTextColor="#999"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        
-        <TextInput
-          style={styles.input}
-          placeholder="전화번호"
-          placeholderTextColor="#999"
-          value={phone}
-          onChangeText={setPhone}
-          keyboardType="phone-pad"
-        />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <Text style={styles.title}>회원가입</Text>
 
-        {/* 국가 선택 */}
-        <View style={styles.fieldContainer}>
-          <CountryPicker
-            selectedCountry={country}
-            onCountrySelect={setCountry}
-            countries={countries}
-          />
+          <View style={styles.form}>
+            <TextInput
+              style={styles.input}
+              placeholder="이름"
+              placeholderTextColor="#999"
+              value={name}
+              onChangeText={setName}
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="이메일"
+              placeholderTextColor="#999"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+
+            {/* 국가 선택 */}
+            <View>
+              <CountryPicker
+                selectedCountry={country}
+                onCountrySelect={setCountry}
+                countries={countries}
+              />
+            </View>
+
+            {/* 전화번호 입력 (국가번호 + 전화번호) */}
+            <View style={styles.phoneContainer}>
+
+              <Text style={styles.plusSign}>+</Text>
+              <TextInput
+                style={styles.countryCodeInput}
+                placeholder="82"
+                placeholderTextColor="#999"
+                value={countryCode.replace('+', '')}
+                onChangeText={(text) => setCountryCode('+' + text)}
+                keyboardType="phone-pad"
+                maxLength={3}
+              />
+
+              <TextInput
+                style={styles.phoneInput}
+                placeholder="전화번호(숫자만 입력)"
+                placeholderTextColor="#999"
+                value={phone}
+                onChangeText={setPhone}
+                keyboardType="phone-pad"
+              />
+            </View>
+
+            <TextInput
+              style={styles.input}
+              placeholder="비밀번호"
+              placeholderTextColor="#999"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="비밀번호 확인"
+              placeholderTextColor="#999"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry
+            />
+
+            <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
+              <Text style={styles.signupButtonText}>회원가입</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.switchButton} onPress={onSwitchToLogin}>
+              <Text style={styles.switchButtonText}>
+                이미 계정이 있으신가요? 로그인
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        
-        <TextInput
-          style={styles.input}
-          placeholder="비밀번호"
-          placeholderTextColor="#999"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        
-        <TextInput
-          style={styles.input}
-          placeholder="비밀번호 확인"
-          placeholderTextColor="#999"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
-        
-        <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-          <Text style={styles.signupButtonText}>회원가입</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.switchButton} onPress={onSwitchToLogin}>
-          <Text style={styles.switchButtonText}>
-            이미 계정이 있으신가요? 로그인
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -128,8 +158,48 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#fff',
   },
-  fieldContainer: {
-    marginBottom: 8,
+  phoneContainer: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  countryCodeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    paddingHorizontal: 12,
+    width: 80,
+  },
+  plusSign: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    position: 'absolute',
+    left: 12,
+    top: 16,
+    color: '#333',
+    zIndex: 1,
+  },
+  countryCodeInput: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 16,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    width: 80,
+    textAlign: 'center',
+    flex: 0,
+  },
+  phoneInput: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 16,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    flex: 1,
   },
   pickerContainer: {
     borderWidth: 1,

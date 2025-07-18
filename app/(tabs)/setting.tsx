@@ -14,19 +14,6 @@ export default function SettingScreen() {
       <View style={styles.header}>
         <Text style={styles.title}>설정</Text>
       </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>계정 정보</Text>
-        <View style={styles.infoItem}>
-          <Text style={styles.infoLabel}>이름</Text>
-          <Text style={styles.infoValue}>{user?.name}</Text>
-        </View>
-        <View style={styles.infoItem}>
-          <Text style={styles.infoLabel}>이메일</Text>
-          <Text style={styles.infoValue}>{user?.email}</Text>
-        </View>
-      </View>
-
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>앱 설정</Text>
         <TouchableOpacity style={styles.settingItem}>
@@ -72,21 +59,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
     marginBottom: 15,
-  },
-  infoItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  infoLabel: {
-    fontSize: 16,
-    color: '#666',
-  },
-  infoValue: {
-    fontSize: 16,
-    color: '#333',
   },
   settingItem: {
     flexDirection: 'row',

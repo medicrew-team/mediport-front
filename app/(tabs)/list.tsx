@@ -13,7 +13,7 @@ export default function ListScreen() {
   const [searchText, setSearchText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('전체');
 
-  const categories = ['전체', '해열진통제', '심혈관약', '소화기약', '항히스타민제'];
+  const categories = ['전체', '소화제', '감기약', '진통제', '상처치료제', '지사제'];
 
   const filteredMedicines = dummyMedicines.filter(medicine => {
     const matchesSearch = medicine.name.toLowerCase().includes(searchText.toLowerCase());
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingHorizontal: 20,
     paddingBottom: 15,
+    flexGrow: 0,
   },
   categoryButton: {
     paddingHorizontal: 16,

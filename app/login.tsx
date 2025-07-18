@@ -17,9 +17,9 @@ export default function LoginPage() {
     }
   };
 
-  const handleSignup = async (email: string, password: string, name: string) => {
+  const handleSignup = async (name: string, email: string, country: string, fullPhone: string, password: string) => {
     try {
-      await signup(email, password, name);
+      await signup(name, email, country, fullPhone, password);
       // 성공 시 AuthContext에서 자동으로 라우팅 처리
     } catch (error) {
       Alert.alert('회원가입 실패', '다시 시도해주세요.');
@@ -40,6 +40,7 @@ export default function LoginPage() {
         />
       )}
     </View>
+    
   );
 }
 
