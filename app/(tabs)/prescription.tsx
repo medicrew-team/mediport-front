@@ -18,12 +18,12 @@ export default function PrescriptionScreen() {
     <ScrollView style={styles.container}>
       <View style={styles.buttonContainer}>
         <TouchableOpacity 
-          style={[styles.navButton, styles.activeButton]} 
-          onPress={navigateToPrescription}
+          style={[styles.navButton, styles.inactiveButton]} 
+          onPress={navigateToAlternative}
         >
-          <Text style={[styles.buttonText, styles.activeButtonText]}>처방전 스캔</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>대체 약품 조회</Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity 
           style={[styles.navButton, styles.inactiveButton]} 
           onPress={navigateToProhibited}
@@ -32,10 +32,10 @@ export default function PrescriptionScreen() {
         </TouchableOpacity>
         
         <TouchableOpacity 
-          style={[styles.navButton, styles.inactiveButton]} 
-          onPress={navigateToAlternative}
+          style={[styles.navButton, styles.activeButton]} 
+          onPress={navigateToPrescription}
         >
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>대체 약품 조회</Text>
+          <Text style={[styles.buttonText, styles.activeButtonText]}>처방전 스캔</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.section}>

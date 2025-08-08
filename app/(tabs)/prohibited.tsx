@@ -19,9 +19,9 @@ export default function ProhibitedScreen() {
       <View style={styles.buttonContainer}>
         <TouchableOpacity 
           style={[styles.navButton, styles.inactiveButton]} 
-          onPress={navigateToPrescription}
+          onPress={navigateToAlternative}
         >
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>처방전 스캔</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>대체 약품 조회</Text>
         </TouchableOpacity>
         
         <TouchableOpacity 
@@ -33,9 +33,9 @@ export default function ProhibitedScreen() {
         
         <TouchableOpacity 
           style={[styles.navButton, styles.inactiveButton]} 
-          onPress={navigateToAlternative}
+          onPress={navigateToPrescription}
         >
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>대체 약품 조회</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>처방전 스캔</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.section}>

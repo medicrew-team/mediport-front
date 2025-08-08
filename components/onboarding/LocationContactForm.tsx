@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
-import CountryPicker from '../auth/CountryPicker'; // 기존 CountryPicker 재사용
+import CountryPicker from './CountryPicker';
 
 export default function LocationContactForm() {
   const { data, updateData, nextStep, previousStep } = useOnboarding();

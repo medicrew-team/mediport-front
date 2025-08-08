@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
 
@@ -31,7 +31,7 @@ export default function LanguageSelection() {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>언어를 선택해주세요</Text>
-        <Text style={styles.subtitle}>Select your language</Text>
+        <Text style={styles.subtitle}>앱에서 표시되는 텍스트의 언어를 선택하세요</Text>
         
         <View style={styles.languageList}>
           {languages.map((language) => (

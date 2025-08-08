@@ -18,12 +18,11 @@ export default function AlternativeScreen() {
       <ScrollView style={styles.container}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity 
-            style={[styles.navButton, styles.inactiveButton]} 
-            onPress={navigateToPrescription}
+            style={[styles.navButton, styles.activeButton]} 
+            onPress={navigateToAlternative}
           >
-            <Text style={[styles.buttonText, styles.inactiveButtonText]}>처방전 스캔</Text>
+            <Text style={[styles.buttonText, styles.activeButtonText]}>대체 약품 조회</Text>
           </TouchableOpacity>
-          
           <TouchableOpacity 
             style={[styles.navButton, styles.inactiveButton]} 
             onPress={navigateToProhibited}
@@ -32,10 +31,10 @@ export default function AlternativeScreen() {
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={[styles.navButton, styles.activeButton]} 
-            onPress={navigateToAlternative}
+            style={[styles.navButton, styles.inactiveButton]} 
+            onPress={navigateToPrescription}
           >
-            <Text style={[styles.buttonText, styles.activeButtonText]}>대체 약품 조회</Text>
+            <Text style={[styles.buttonText, styles.inactiveButtonText]}>처방전 스캔</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.section}>

@@ -138,7 +138,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="prescription"
+        name="alternative"
         options={{
           title: '약검색',
           tabBarIcon: ({ color, focused }) => (
