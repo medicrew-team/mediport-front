@@ -9,12 +9,22 @@ import {
 } from 'firebase/auth';
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
-import { auth } from '../config/firebase'; // Firebase config 파일 import
+import { auth } from '../config/firebase';
+import { OnboardingData } from '../types/onboarding';
 
 interface User {
   uid: string;
   email: string;
   name?: string;
+  nickname?: string;
+  // 추가 사용자 정보들
+  gender?: string;
+  birthDate?: string;
+  nationality?: string;
+  phone?: string;
+  residence?: string;
+  medicalConditions?: string;
+  medications?: string;
 }
 
 interface AuthContextType {
@@ -22,7 +32,7 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (name: string, email: string, country: string, fullPhone: string, password: string) => Promise<void>;
+  signupWithOnboardingData: (onboardingData: OnboardingData) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -30,11 +40,56 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AUTH_TOKEN_KEY = 'auth_token';
 const USER_DATA_KEY = 'user_data';
+const ONBOARDING_COMPLETED_KEY = 'onboarding_completed';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Auth 데이터 정리 함수
+  const clearAuthData = async () => {
+    try {
+      await AsyncStorage.removeItem(AUTH_TOKEN_KEY);
+      await AsyncStorage.removeItem(USER_DATA_KEY);
+      await AsyncStorage.removeItem(ONBOARDING_COMPLETED_KEY);
+      console.log('Auth data cleared. User and token states reset.');
+      setToken(null);
+      setUser(null);
+    } catch (error) {
+      console.error('Auth 데이터 정리 실패:', error);
+    }
+  };
+
+  // 인증 에러 처리 함수 (더 이상 리디렉션은 하지 않음)
+  const handleAuthError = async () => {
+    await clearAuthData();
+    // router.replace('/onboarding'); // app/index.tsx에서 라우팅 처리
+  };
+
+  // 앱 시작 시 저장된 토큰 확인 (토큰 갱신 포함)
+  const checkAuthStatus = async () => {
+    try {
+      const storedToken = await AsyncStorage.getItem(AUTH_TOKEN_KEY);
+      const storedUser = await AsyncStorage.getItem(USER_DATA_KEY);
+      
+      if (storedToken && storedUser && auth.currentUser) {
+        const freshToken = await auth.currentUser.getIdToken(true);
+        await AsyncStorage.setItem(AUTH_TOKEN_KEY, freshToken);
+        
+        setToken(freshToken);
+        setUser(JSON.parse(storedUser));
+      } else {
+        // 토큰이나 사용자 정보가 없으면 상태 초기화
+        await clearAuthData();
+      }
+    } catch (error) {
+      console.error('Auth 상태 확인 실패:', error);
+      await clearAuthData(); // 오류 발생 시에도 데이터 정리
+    } finally {
+      setIsLoading(false); // 초기 로딩 완료
+    }
+  };
 
   // Firebase Auth 상태 변화 감지
   useEffect(() => {
@@ -42,98 +97,82 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (firebaseUser) {
         try {
           const idToken = await firebaseUser.getIdToken();
-          const userData: User = {
-            uid: firebaseUser.uid,
-            email: firebaseUser.email || '',
-            name: firebaseUser.displayName || undefined
-          };
+          const storedUserData = await AsyncStorage.getItem(USER_DATA_KEY);
+          
+          let userData: User;
+          if (storedUserData) {
+            userData = JSON.parse(storedUserData);
+          } else {
+            userData = {
+              uid: firebaseUser.uid,
+              email: firebaseUser.email || '',
+              name: firebaseUser.displayName || undefined
+            };
+          }
 
-          // 토큰과 사용자 정보를 AsyncStorage에 저장
           await AsyncStorage.setItem(AUTH_TOKEN_KEY, idToken);
           await AsyncStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
-
+          
           setToken(idToken);
           setUser(userData);
+          console.log('AuthContext: Firebase user state changed. User:', firebaseUser.email);
 
-          // 인증된 사용자라면 메인 페이지로 이동
-          router.replace('/(tabs)');
         } catch (error) {
-          handleAuthError();
+          console.error('Auth state change error:', error);
+          await clearAuthData();
         }
       } else {
-        // 사용자가 로그아웃되었거나 인증되지 않음
+        console.log('AuthContext: No Firebase user detected. Clearing auth data.');
         await clearAuthData();
-        router.replace('/login');
       }
-      setIsLoading(false);
+      // setIsLoading(false); // checkAuthStatus에서 처리하므로 여기서는 제거
     });
 
     return unsubscribe;
   }, []);
 
-  // 앱 시작 시 저장된 토큰 확인 (토큰 갱신 포함)
+  // 앱 시작 시 저장된 토큰 확인 (초기 로딩)
   useEffect(() => {
     checkAuthStatus();
   }, []);
 
-  const checkAuthStatus = async () => {
-    try {
-      const storedToken = await AsyncStorage.getItem(AUTH_TOKEN_KEY);
-      const storedUser = await AsyncStorage.getItem(USER_DATA_KEY);
-
-      if (storedToken && storedUser && auth.currentUser) {
-        // 토큰이 만료되었을 수 있으니 새로 가져오기
-        const freshToken = await auth.currentUser.getIdToken(true);
-        await AsyncStorage.setItem(AUTH_TOKEN_KEY, freshToken);
-        
-        setToken(freshToken);
-        setUser(JSON.parse(storedUser));
-      }
-    } catch (error) {
-      // console.error('Auth 상태 확인 실패:', error);
-      handleAuthError();
-    }
-  };
-
   const login = async (email: string, password: string) => {
     try {
-      // 사용자 친화적인 입력값 검증
       if (!email || !email.trim()) {
         Alert.alert('오류', '이메일을 입력해주세요.');
         return;
       }
-
       if (!password) {
         Alert.alert('오류', '비밀번호를 입력해주세요.');
         return;
       }
-      
+
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email.trim())) {
         Alert.alert('오류', '올바른 이메일 형식을 입력해주세요.');
         return;
       }
-      
+
       const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password);
       const firebaseUser = userCredential.user;
       const idToken = await firebaseUser.getIdToken();
-      
+
       const userData: User = {
         uid: firebaseUser.uid,
         email: firebaseUser.email || '',
         name: firebaseUser.displayName || undefined
       };
 
-      // 토큰과 사용자 정보 저장
       await AsyncStorage.setItem(AUTH_TOKEN_KEY, idToken);
       await AsyncStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
-
+      await AsyncStorage.setItem(ONBOARDING_COMPLETED_KEY, 'true'); // 로그인 시 온보딩 완료로 표시
+      console.log('AuthContext: Login successful. ONBOARDING_COMPLETED_KEY set to true. User:', userData.email);
+      
       setToken(idToken);
       setUser(userData);
+      router.replace('/'); 
 
-      // onAuthStateChanged에서 자동으로 페이지 이동 처리됨
     } catch (error: any) {
-      
       let errorMessage = '로그인에 실패했습니다.';
       if (error.code) {
         switch (error.code) {
@@ -155,75 +194,77 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             errorMessage = '로그인에 실패했습니다. 다시 시도해주세요.';
         }
       }
-      
+
       Alert.alert('로그인 실패', errorMessage);
+      throw error;
     }
   };
 
-  const signup = async (name: string, email: string, country: string, fullPhone: string, password: string) => {
+  const signupWithOnboardingData = async (onboardingData: OnboardingData) => {
     try {
-      // 사용자 친화적인 입력값 검증
-      if (!name || !name.trim()) {
+      if (!onboardingData.name || !onboardingData.name.trim()) {
         Alert.alert('오류', '이름을 입력해주세요.');
         return;
       }
-
-      if (!email || !email.trim()) {
+      if (!onboardingData.email || !onboardingData.email.trim()) {
         Alert.alert('오류', '이메일을 입력해주세요.');
         return;
       }
+      if (!onboardingData.password) {
+        Alert.alert('오류', '비밀번호를 입력해주세요.');
+        return;
+      }
+      if (onboardingData.password.length < 6) {
+        Alert.alert('오류', '비밀번호는 6자리 이상이어야 합니다.');
+        return;
+      }
+
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email.trim())) {
+      if (!emailRegex.test(onboardingData.email.trim())) {
         Alert.alert('오류', '올바른 이메일 형식을 입력해주세요.');
         return;
       }
 
-      if (!country) {
-        Alert.alert('오류', '국가를 선택해주세요.');
-        return;
-      }
-
-      if (!fullPhone || fullPhone.length < 10) {
-        Alert.alert('오류', '전화번호를 입력해주세요(숫자만).');
-        return;
-      }
-
-      if (!password) {
-        Alert.alert('오류', '비밀번호를 입력해주세요.');
-        return;
-      }
-      if (password.length < 6) {
-        Alert.alert('오류', '비밀번호는 6자리 이상이어야 합니다.');
-        return;
-      }
-      
-      console.log('Firebase 회원가입 시도 중...');
-      const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
+      console.log('AuthContext: Firebase 회원가입 시도 중...');
+      const userCredential = await createUserWithEmailAndPassword(
+        auth, 
+        onboardingData.email.trim(), 
+        onboardingData.password
+      );
       const firebaseUser = userCredential.user;
-      
-      // 사용자 프로필 업데이트 (displayName 설정)
-      if (name && name.trim()) {
-        await updateProfile(firebaseUser, { displayName: name.trim() });
+
+      if (onboardingData.name && onboardingData.name.trim()) {
+        await updateProfile(firebaseUser, { 
+          displayName: onboardingData.name.trim() 
+        });
       }
-      
+
       const idToken = await firebaseUser.getIdToken();
-      
+
       const userData: User = {
         uid: firebaseUser.uid,
         email: firebaseUser.email || '',
-        name: name?.trim() || firebaseUser.displayName || undefined
+        name: onboardingData.name?.trim(),
+        nickname: onboardingData.nickname?.trim(),
+        gender: onboardingData.gender,
+        birthDate: onboardingData.birthDate,
+        nationality: onboardingData.nationality,
+        phone: onboardingData.countryCode + onboardingData.phone,
+        residence: onboardingData.residence,
+        medicalConditions: onboardingData.medicalConditions,
+        medications: onboardingData.medications,
       };
 
-      // 토큰과 사용자 정보 저장
       await AsyncStorage.setItem(AUTH_TOKEN_KEY, idToken);
       await AsyncStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
-
+      await AsyncStorage.setItem(ONBOARDING_COMPLETED_KEY, 'true');
+      console.log('AuthContext: Signup successful. ONBOARDING_COMPLETED_KEY set to true. User:', userData.email);
+      
       setToken(idToken);
       setUser(userData);
-
-      // onAuthStateChanged에서 자동으로 페이지 이동 처리됨
+      router.replace('/'); 
+      
     } catch (error: any) {
-
       let errorMessage = '회원가입에 실패했습니다.';
       if (error.code) {
         switch (error.code) {
@@ -233,50 +274,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           case 'auth/weak-password':
             errorMessage = '비밀번호가 너무 약합니다. 더 강한 비밀번호를 입력해주세요.';
             break;
-          case 'auth/operation-not-allowed':
-            errorMessage = '이메일 회원가입이 비활성화되어 있습니다. 관리자에게 문의하세요.';
-            break;
-          case 'auth/too-many-requests':
-            errorMessage = '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.';
-            break;
-          case 'auth/network-request-failed':
-            errorMessage = '네트워크 연결을 확인해주세요.';
-            break;
           default:
             errorMessage = '회원가입에 실패했습니다. 다시 시도해주세요.';
         }
       }
-      
+
       Alert.alert('회원가입 실패', errorMessage);
+      throw error;
     }
   };
 
   const logout = async () => {
-    try {
-      await signOut(auth);
-      // onAuthStateChanged에서 자동으로 clearAuthData와 페이지 이동 처리됨
-    } catch (error) {
-
-      await clearAuthData();
-      router.replace('/login');
-    }
-  };
-
-  const clearAuthData = async () => {
-    try {
-      await AsyncStorage.removeItem(AUTH_TOKEN_KEY);
-      await AsyncStorage.removeItem(USER_DATA_KEY);
-      setToken(null);
-      setUser(null);
-    } catch (error) {
-      // console.error('Auth 데이터 정리 실패:', error);
-    }
-  };
-
-  const handleAuthError = async () => {
+  try {
+    console.log('AuthContext: Starting logout process');
+    await signOut(auth);
+    
+    // Firebase signOut이 성공해도 명시적으로 데이터 정리 및 리다이렉션
     await clearAuthData();
-    router.replace('/login');
-  };
+    console.log('AuthContext: Logout successful, redirecting to onboarding');
+    router.replace('/onboarding');
+    
+  } catch (error) {
+    console.error('AuthContext: Logout failed:', error);
+    await clearAuthData();
+    
+    // 에러가 발생해도 온보딩으로 이동
+    console.log('AuthContext: Logout error occurred, redirecting to onboarding');
+    router.replace('/onboarding');
+  }
+};
 
   // 토큰이 만료되기 전에 갱신하는 유틸리티 함수
   const refreshToken = async (): Promise<string | null> => {
@@ -289,7 +315,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       return null;
     } catch (error) {
-      // console.error('토큰 갱신 실패:', error);
+      console.error('토큰 갱신 실패:', error);
       return null;
     }
   };
@@ -301,7 +327,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         token,
         isLoading,
         login,
-        signup,
+        signupWithOnboardingData,
         logout,
       }}
     >

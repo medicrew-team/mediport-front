@@ -16,8 +16,10 @@ const firebaseConfig = {
 // Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
 
-// Firebase 서비스 초기화
+// Firebase Auth 초기화 (React Native에서는 자동으로 AsyncStorage 사용)
 export const auth = getAuth(app);
+
+// Firestore 초기화
 export const db = getFirestore(app);
 
 export default app;
