@@ -121,7 +121,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#FFFCF9',
   },
   container: {
     flex: 1,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 16,
-    color: '#007AFF',
+    color: '#666',
     fontWeight: '500',
   },
   content: {
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   loginButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ff6600',
     padding: 16,
     borderRadius: 8,
     marginTop: 8,
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   forgotPasswordText: {
-    color: '#007AFF',
+    color: '#ff6600',
     fontSize: 16,
     textAlign: 'center',
   },

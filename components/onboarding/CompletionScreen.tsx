@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  Image,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -34,11 +35,13 @@ export default function CompletionScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <View style={styles.iconContainer}>
-          <Text style={styles.icon}>🎉</Text>
-        </View>
-        
         <Text style={styles.title}>가입이 완료되었어요!</Text>
+        <View style={styles.iconContainer}>
+                    <Image
+                      source={require('../../assets/images/mediport.png')}
+                      style={{ width: 200, height: 200 }}
+                    />
+        </View>
         <Text style={styles.subtitle}>
           {data.name || data.nickname}님, 저희 서비스에 오신 것을 환영합니다!
         </Text>
@@ -66,7 +69,7 @@ export default function CompletionScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#FFFCF9',
   },
   content: {
     flex: 1,
@@ -101,7 +104,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   startButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#FF6600',
     padding: 18,
     borderRadius: 12,
     alignItems: 'center',

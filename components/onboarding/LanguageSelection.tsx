@@ -77,7 +77,7 @@ export default function LanguageSelection() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#FFFCF9',
   },
   content: {
     flex: 1,
@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
     borderColor: '#e9ecef',
   },
   selectedLanguage: {
-    borderColor: '#007AFF',
-    backgroundColor: '#f0f8ff',
+    borderColor: '#FF6600',
+    backgroundColor: '#fffae6',
   },
   flag: {
     fontSize: 24,
@@ -123,11 +123,11 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   selectedLanguageName: {
-    color: '#007AFF',
+    color: '#FF6600',
     fontWeight: '600',
   },
   nextButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#FF6600',
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',

@@ -1,11 +1,12 @@
 import { router } from 'expo-router';
 import React from 'react';
 import {
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
 
@@ -23,16 +24,17 @@ export default function MemberCheck() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.iconContainer}>
-          <Text style={styles.icon}>👋</Text>
-        </View>
-        
+      <View style={styles.content}>        
         <Text style={styles.title}>안녕하세요!</Text>
         <Text style={styles.subtitle}>
-          이미 저희 서비스의{'\n'}
-          회원이신가요?
+          저희 서비스의 회원이신가요?
         </Text>
+        <View style={styles.iconContainer}>
+          <Image
+            source={require('../../assets/images/mediport.png')}
+            style={{ width: 200, height: 200 }}
+          />
+        </View>
         
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -57,7 +59,7 @@ export default function MemberCheck() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#FFFCF9',
   },
   content: {
     flex: 1,
@@ -67,9 +69,6 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     marginBottom: 32,
-  },
-  icon: {
-    fontSize: 64,
   },
   title: {
     fontSize: 32,
@@ -95,12 +94,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   yesButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ff6600',
   },
   noButton: {
     backgroundColor: '#fff',
     borderWidth: 2,
-    borderColor: '#007AFF',
+    borderColor: '#ff6600',
   },
   yesButtonText: {
     color: '#fff',
@@ -108,7 +107,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   noButtonText: {
-    color: '#007AFF',
+    color: '#ff6600',
     fontSize: 18,
     fontWeight: 'bold',
   },

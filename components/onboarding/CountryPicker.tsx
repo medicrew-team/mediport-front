@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {
-    Dimensions,
-    FlatList,
-    Modal,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  FlatList,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 interface CountryPickerProps {
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f0f0f0',
   },
   selectedCountryItem: {
-    backgroundColor: '#f0f8ff',
+    backgroundColor: '#fffae6',
   },
   countryText: {
     fontSize: 16,
@@ -167,12 +167,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   selectedCountryText: {
-    color: '#007AFF',
+    color: '#FF6600',
     fontWeight: '600',
   },
   checkmark: {
     fontSize: 16,
-    color: '#007AFF',
+    color: '#FF6600',
     fontWeight: 'bold',
   },
 });

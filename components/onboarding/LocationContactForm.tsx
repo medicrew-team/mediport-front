@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 24,
-    color: '#007AFF',
+    color: '#FF6600',
   },
   stepText: {
     fontSize: 16,
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nextButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#FF6600',
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',

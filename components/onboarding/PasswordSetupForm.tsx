@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import {
-    Alert,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
 
@@ -90,7 +90,7 @@ export default function PasswordSetupForm() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#FFFCF9',
   },
   scrollView: {
     flex: 1,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 24,
-    color: '#007AFF',
+    color: '#ff6600',
   },
   stepText: {
     fontSize: 16,
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   nextButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ff6600',
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',

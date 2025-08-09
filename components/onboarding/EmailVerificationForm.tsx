@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Alert,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
 
@@ -143,7 +143,7 @@ export default function EmailVerificationForm() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#FFFCF9',
   },
   scrollView: {
     flex: 1,
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 24,
-    color: '#007AFF',
+    color: '#FF6600',
   },
   stepText: {
     fontSize: 16,
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   sendCodeButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#FF6600',
     padding: 12,
     borderRadius: 8,
     marginTop: 12,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   verifyButton: {
-    backgroundColor: '#34C759',
+    backgroundColor: '#FF6600',
     padding: 12,
     borderRadius: 8,
     marginTop: 12,

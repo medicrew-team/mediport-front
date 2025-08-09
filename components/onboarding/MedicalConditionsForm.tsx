@@ -72,7 +72,7 @@ export default function MedicalConditionsForm() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#FFFCF9',
   },
   scrollView: {
     flex: 1,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 24,
-    color: '#007AFF',
+    color: '#FF6600',
   },
   stepText: {
     fontSize: 16,
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     minHeight: 120,
   },
   nextButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#FF6600',
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   skipButtonText: {
-    color: '#007AFF',
+    color: '#FF6600',
     fontSize: 16,
     fontWeight: 'bold',
   },

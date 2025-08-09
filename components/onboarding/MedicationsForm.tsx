@@ -37,7 +37,7 @@ export default function MedicationsForm() {
         <View style={styles.content}>
           <Text style={styles.title}>복용 중인 약물</Text>
           <Text style={styles.subtitle}>
-            현재 복용 중인 약물이 있다면 입���해주세요. (선택 사항)
+            현재 복용 중인 약물이 있다면 입력해주세요. (선택 사항)
           </Text>
           
           <View style={styles.form}>
@@ -72,7 +72,7 @@ export default function MedicationsForm() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#FFFCF9',
   },
   scrollView: {
     flex: 1,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 24,
-    color: '#007AFF',
+    color: '#FF6600',
   },
   stepText: {
     fontSize: 16,
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     minHeight: 120,
   },
   nextButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#FF6600',
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   skipButtonText: {
-    color: '#007AFF',
+    color: '#FF6600',
     fontSize: 16,
     fontWeight: 'bold',
   },
