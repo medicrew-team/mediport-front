@@ -2,14 +2,31 @@
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useRoute } from '@react-navigation/native';
 import { Tabs } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
-const Pagename = () => (
-  <View style={styles.pageNameContainer}>
-    <Text style={styles.pageNameTitle}>페이지</Text>
-  </View>
-);
+const Pagename = () => {
+  const route = useRoute();
+  // route.name를 통해 현재 화면 이름을 직접 활용하거나,
+  // route.params?.title 등이 있을 경우 사용
+  const titles: Record<string, string> = {
+    chatbot: '챗봇',
+    translate: '번역',
+    alternative: '대체약품 조회',
+    community: '커뮤니티',
+    index: '내정보',
+    prohibited: '반입금지 약품',
+    prescription: '처방전 스캔',
+  };
+  const currentTitle = titles[route.name] || '페이지';
+
+  return (
+    <View style={styles.pageNameContainer}>
+      <Text style={styles.pageNameTitle}>{currentTitle}</Text>
+    </View>
+  );
+};
 
 const HeaderTitle = () => (
   <View style={styles.headerTitleContainer}>
@@ -140,7 +157,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="alternative"
         options={{
-          title: '약검색',
+          title: '대체약품 조회',
           tabBarIcon: ({ color, focused }) => (
             <TabBarMaterialIcon color={color} focused={focused} iconName="line-scan" />
           ),
@@ -168,12 +185,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="prohibited"
         options={{
+          title: '반입금지 약품',
           href: null,
         }}
       />
       <Tabs.Screen
         name="prescription"
         options={{
+          title: '처방전 스캔',
           href: null,
         }}
       />

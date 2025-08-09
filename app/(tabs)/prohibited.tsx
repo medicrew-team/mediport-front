@@ -21,7 +21,7 @@ export default function ProhibitedScreen() {
           style={[styles.navButton, styles.inactiveButton]} 
           onPress={navigateToAlternative}
         >
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>대체 약품 조회</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>대체약품 조회</Text>
         </TouchableOpacity>
         
         <TouchableOpacity 

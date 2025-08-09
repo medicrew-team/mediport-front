@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 16,
-    color: '#666',
+    color: '#ff6600',
     fontWeight: '500',
   },
   content: {

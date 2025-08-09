@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Asset } from 'expo-asset';
 import { router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 
 const ONBOARDING_COMPLETED_KEY = 'onboarding_completed';
@@ -11,7 +12,21 @@ export default function AppEntry() {
   const redirectAttempted = useRef(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const userEmailRef = useRef<string | null>(null); // user 객체 변화 추적용
+  const [assetsReady, setAssetsReady] = useState(false);
 
+  useEffect(() => {
+  async function loadAssets() {
+    try {
+      await Asset.loadAsync(require('../assets/images/mediport.png'));
+    } catch (e) {
+      console.warn('Asset loading failed:', e);
+    } finally {
+      setAssetsReady(true);
+    }
+  }
+  loadAssets();
+}, []);
+  
   useEffect(() => {
     // user의 실제 변화만 감지 (객체 재생성 무시)
     const currentUserEmail = user?.email || null;
@@ -63,10 +78,16 @@ export default function AppEntry() {
     }
   }, [user?.email, isLoading]); // user 대신 user.email을 의존성으로 사용
 
-  if (isLoading || isRedirecting) {
+  if (isLoading || isRedirecting || !assetsReady) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="#007AFF" />
+        <Image 
+        source={require('../assets/images/mediport.png')} 
+        style={{ width: 150, height: 150, marginBottom: 20 }} 
+        resizeMode="contain"
+      />
+        <ActivityIndicator size="large" color="#ff6600" />
+        <Text>Loading...</Text>
       </View>
     );
   }

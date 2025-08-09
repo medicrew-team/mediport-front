@@ -21,7 +21,7 @@ export default function AlternativeScreen() {
             style={[styles.navButton, styles.activeButton]} 
             onPress={navigateToAlternative}
           >
-            <Text style={[styles.buttonText, styles.activeButtonText]}>대체 약품 조회</Text>
+            <Text style={[styles.buttonText, styles.activeButtonText]}>대체약품 조회</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={[styles.navButton, styles.inactiveButton]} 
