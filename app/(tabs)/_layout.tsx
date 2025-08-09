@@ -172,7 +172,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="alternative"
+        name="prescription"
         options={{
           href: null,
         }}
