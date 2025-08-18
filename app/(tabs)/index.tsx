@@ -18,10 +18,6 @@ return (
         </View>
         <Text style={styles.name}>{user?.name}</Text>
         <Text style={styles.email}>{user?.email}</Text>
-
-        <TouchableOpacity style={styles.editButton}>
-          <Text style={styles.editButtonText}>프로필 편집</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutButtonText}>로그아웃</Text>
         </TouchableOpacity>
@@ -29,15 +25,11 @@ return (
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>내 정보</Text>
         <TouchableOpacity style={styles.menuItem}>
+          <Text style={styles.menuText}>기본 정보</Text>
+          <Text style={styles.arrow}>›</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem}>
           <Text style={styles.menuText}>건강 정보</Text>
-          <Text style={styles.arrow}>›</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>복용 기록</Text>
-          <Text style={styles.arrow}>›</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>알레르기 정보</Text>
           <Text style={styles.arrow}>›</Text>
         </TouchableOpacity>
       </View>
