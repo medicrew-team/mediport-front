@@ -118,7 +118,7 @@ export default function TranslateScreen() {
       formData.append("sourceLanguage", sourceLanguage.code);
       formData.append("targetLanguage", targetLanguage.code);
 
-      const response = await fetch("http://192.168.45.233:3000/api/translate", {
+      const response = await fetch("http://172.20.10.2:3000/api/translate", {
         method: "POST",
         body: formData,
       })
@@ -164,7 +164,7 @@ const translateText = async () => {
     formData.append("sourceLanguage", sourceLanguage.code); // 예: "EN"
     formData.append("targetLanguage", targetLanguage.code); // 예: "KO"
 
-    const response = await fetch("http://192.168.45.233:3000/api/translate", {
+    const response = await fetch("http://172.20.10.2:3000/api/translate", {
       method: "POST",
       body: formData
     })
@@ -213,6 +213,11 @@ const translateText = async () => {
     try {
       setIsPlaying(true)
 
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        playsInSilentModeIOS: true,
+      })
+
       // Stop any currently playing sound
       if (soundRef.current) {
         await soundRef.current.stopAsync();
@@ -227,7 +232,7 @@ const translateText = async () => {
       formData.append("targetLanguage", targetLanguage.code);
       formData.append("inputType", "text");
 
-      const response = await fetch("http://192.168.45.233:3000/api/translate", {
+      const response = await fetch("http://172.20.10.2:3000/api/translate", {
         method: "POST",
         body: formData,
       })
@@ -354,7 +359,7 @@ const translateText = async () => {
               await translateText();  
               setTimeout(() => {
                 playTranslatedText();
-              }, 500);
+              }, 100);
             }}
             style={styles.iconButton}
           >
