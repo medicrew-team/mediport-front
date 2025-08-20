@@ -391,6 +391,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   searchInput: {
+    height: 40,
     flex: 1,
     fontSize: 16,
     color: '#333',
@@ -398,9 +399,5 @@ const styles = StyleSheet.create({
   },
   searchIcon: {
     padding: 5,
-  },
-  searchIconText: {
-    fontSize: 16,
-    color: '#666',
   },
 });
