@@ -27,7 +27,7 @@ const initialData: OnboardingData = {
   countryCode: '+82',
   residence: '',
   medicalConditions: [],
-  medications: '',
+  medications: [],
 };
 
 // MemberCheck는 라우팅으로 처리되므로, OnboardingContext의 내부 단계 순서에서는 제외

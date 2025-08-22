@@ -24,19 +24,18 @@ const DISEASES = [
 export default function MedicalConditionsForm() {
   const { data, updateData, nextStep, previousStep } = useOnboarding();
 
-  const [medicalConditions, setMedicalConditions] = useState<{ id: number }[]>(
-    Array.isArray(data.medicalConditions) ? data.medicalConditions : []
+  const [medicalConditions, setMedicalConditions] = useState<number[]>(
+    Array.isArray(data.medicalConditions)
+      ? data.medicalConditions.map((d: any) =>
+          typeof d === 'number' ? d : d.id || d.disease_id
+        )
+      : []
   );
 
   const toggleDisease = (id: number) => {
-    setMedicalConditions((prev) => {
-      const exists = prev.find((d) => d.id === id);
-      if (exists) {
-        return prev.filter((d) => d.id !== id);
-      } else {
-        return [...prev, { id }];
-      }
-    });
+    setMedicalConditions((prev) =>
+      prev.includes(id) ? prev.filter((d) => d !== id) : [...prev, id]
+    );
   };
 
   const handleNext = () => {
@@ -69,7 +68,7 @@ export default function MedicalConditionsForm() {
             <ScrollView>
               <View style={styles.form}>
                 {DISEASES.map((disease) => {
-                  const selected = medicalConditions.some((d) => d.id === disease.disease_id);
+                  const selected = medicalConditions.includes(disease.disease_id);
                   return (
                     <TouchableOpacity
                       key={disease.disease_id}
@@ -92,7 +91,7 @@ export default function MedicalConditionsForm() {
           <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
             <Text style={styles.nextButtonText}>다음</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
             <Text style={styles.skipButtonText}>건너뛰기</Text>
           </TouchableOpacity>
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '48%',    
+    width: '48%',
     marginBottom: 16,
     padding: 12,
     borderWidth: 2,
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#fff',
   },
-    checkbox: {
+  checkbox: {
     width: 24,
     height: 24,
     borderWidth: 2,
@@ -167,11 +166,11 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginRight: 12,
   },
-  checkboxSelected: { 
-    backgroundColor: '#FF6600' 
+  checkboxSelected: {
+    backgroundColor: '#FF6600'
   },
-  checkboxLabel: { 
-    fontSize: 16, color: '#333' 
+  checkboxLabel: {
+    fontSize: 16, color: '#333'
   },
   nextButton: {
     backgroundColor: '#FF6600',
