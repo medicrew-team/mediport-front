@@ -37,7 +37,7 @@ export default function MedicationsForm() {
         <View style={styles.content}>
           <Text style={styles.title}>복용 중인 약물</Text>
           <Text style={styles.subtitle}>
-            현재 복용 중인 약물이 있다면 입력해주세요. (선택 사항)
+            현재 복용 중인 약물이 있다면 입력해주세요. {'\n'}(선택 사항)
           </Text>
           
           <View style={styles.form}>
@@ -98,12 +98,14 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   title: {
+    textAlign: 'center',
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
     color: '#333',
   },
   subtitle: {
+    textAlign: 'center',
     fontSize: 16,
     marginBottom: 32,
     color: '#666',

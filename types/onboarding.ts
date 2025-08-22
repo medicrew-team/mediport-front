@@ -24,7 +24,7 @@ export interface OnboardingData {
   residence: string;
   
   // Step 7: Medical History (optional) (기존 Step 6)
-  medicalConditions: string;
+  medicalConditions: { id: number }[];
   
   // Step 8: Medications (optional) (기존 Step 7)
   medications: string;

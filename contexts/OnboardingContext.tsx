@@ -26,7 +26,7 @@ const initialData: OnboardingData = {
   phone: '',
   countryCode: '+82',
   residence: '',
-  medicalConditions: '',
+  medicalConditions: [],
   medications: '',
 };
 
