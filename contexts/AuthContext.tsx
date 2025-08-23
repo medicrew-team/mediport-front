@@ -13,7 +13,7 @@ import { auth } from '../config/firebase';
 import { OnboardingData } from '../types/onboarding';
 
 // 백엔드 API 기본 URL (환경에 맞게 수정하세요)
-const API_BASE_URL = 'http://192.168.45.183:3000/api'; // 실제 백엔드 URL로 변경
+const API_BASE_URL = 'http://192.168.45.33:3000/api'; // 실제 백엔드 URL로 변경
 
 interface User {
   user_id: string;
