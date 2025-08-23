@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   Alert,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -36,12 +36,18 @@ export default function PasswordSetupForm() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      <KeyboardAwareScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
+        enableOnAndroid={true}
+        extraScrollHeight={50}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
           <TouchableOpacity onPress={previousStep} style={styles.backButton}>
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.stepText}>3/6</Text>
         </View>
 
         <View style={styles.content}>
@@ -49,7 +55,7 @@ export default function PasswordSetupForm() {
           <Text style={styles.subtitle}>
             안전한 계정을 위해 비밀번호를 설정해주세요.
           </Text>
-          
+
           <View style={styles.form}>
             <View style={styles.inputGroup}>
               <Text style={styles.label}>비밀번호 *</Text>
@@ -82,7 +88,7 @@ export default function PasswordSetupForm() {
             <Text style={styles.nextButtonText}>다음</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }
@@ -91,9 +97,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFCF9',
-  },
-  scrollView: {
-    flex: 1,
   },
   header: {
     flexDirection: 'row',
@@ -130,7 +133,8 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   inputGroup: {
-    marginBottom: 24,
+    marginTop: 20,
+    marginBottom: 40,
   },
   label: {
     fontSize: 16,

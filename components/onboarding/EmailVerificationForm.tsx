@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   Alert,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -66,12 +66,18 @@ export default function EmailVerificationForm() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      <KeyboardAwareScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
+        enableOnAndroid={true}
+        extraScrollHeight={50}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
           <TouchableOpacity onPress={previousStep} style={styles.backButton}>
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.stepText}>2/5</Text>
         </View>
 
         <View style={styles.content}>
@@ -79,7 +85,7 @@ export default function EmailVerificationForm() {
           <Text style={styles.subtitle}>
             회원가입을 위해 이메일 주소를 인증해주세요.
           </Text>
-          
+
           <View style={styles.form}>
             <View style={styles.inputGroup}>
               <Text style={styles.label}>이메일 *</Text>
@@ -135,7 +141,7 @@ export default function EmailVerificationForm() {
             )}
           </View>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }
@@ -144,9 +150,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFCF9',
-  },
-  scrollView: {
-    flex: 1,
   },
   header: {
     flexDirection: 'row',
@@ -160,10 +163,6 @@ const styles = StyleSheet.create({
   backButtonText: {
     fontSize: 24,
     color: '#FF6600',
-  },
-  stepText: {
-    fontSize: 16,
-    color: '#666',
   },
   content: {
     padding: 24,
@@ -183,7 +182,8 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   inputGroup: {
-    marginBottom: 24,
+    marginTop: 20,
+    marginBottom: 40,
   },
   label: {
     fontSize: 16,

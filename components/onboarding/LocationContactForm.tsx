@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   Alert,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -46,12 +46,19 @@ export default function LocationContactForm() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      <KeyboardAwareScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+        enableOnAndroid={true}
+        extraScrollHeight={50}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        enableResetScrollToCoords={false}
+      >
         <View style={styles.header}>
           <TouchableOpacity onPress={previousStep} style={styles.backButton}>
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.stepText}>4/6</Text>
         </View>
 
         <View style={styles.content}>
@@ -110,7 +117,7 @@ export default function LocationContactForm() {
             <Text style={styles.nextButtonText}>다음</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }
@@ -119,9 +126,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f9fa',
-  },
-  scrollView: {
-    flex: 1,
   },
   header: {
     flexDirection: 'row',

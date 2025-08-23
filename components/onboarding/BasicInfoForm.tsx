@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   Alert,
   Modal,
@@ -13,11 +14,11 @@ import {
 import { useOnboarding } from '../../contexts/OnboardingContext';
 
 // 커스텀 스크롤 휠 컴포넌트
-const ScrollPicker = ({ 
-  data, 
-  selectedValue, 
-  onValueChange, 
-  style 
+const ScrollPicker = ({
+  data,
+  selectedValue,
+  onValueChange,
+  style
 }: {
   data: string[];
   selectedValue: string;
@@ -27,26 +28,26 @@ const ScrollPicker = ({
   const scrollViewRef = useRef<ScrollView>(null);
   const selectedIndex = data.indexOf(selectedValue);
   const [isInitialized, setIsInitialized] = useState(false);
-  
+
   useEffect(() => {
     // selectedValue가 변경될 때마다 해당 위치로 스크롤
     if (scrollViewRef.current && selectedIndex >= 0) {
       // paddingVertical(80)을 빼서 중앙에 오도록 조정
       const yPosition = selectedIndex * 40;
-      scrollViewRef.current.scrollTo({ 
+      scrollViewRef.current.scrollTo({
         y: Math.max(0, yPosition),
         animated: isInitialized
       });
-      
+
       if (!isInitialized) {
         setIsInitialized(true);
       }
     }
   }, [selectedValue, selectedIndex, isInitialized]);
-  
+
   return (
     <View style={[styles.scrollPickerContainer, style]}>
-      <ScrollView 
+      <ScrollView
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
         snapToInterval={40}
@@ -82,7 +83,7 @@ const ScrollPicker = ({
           </TouchableOpacity>
         ))}
       </ScrollView>
-      
+
       {/* 선택 영역 표시 */}
       <View style={styles.selectionIndicator} pointerEvents="none">
         <View style={styles.selectionBorder} />
@@ -102,14 +103,14 @@ const generateYears = () => {
 };
 
 const generateMonths = () => {
-  return Array.from({ length: 12 }, (_, i) => 
+  return Array.from({ length: 12 }, (_, i) =>
     (i + 1).toString().padStart(2, '0')
   );
 };
 
 const generateDays = (year: string, month: string) => {
   const daysInMonth = new Date(parseInt(year), parseInt(month), 0).getDate();
-  return Array.from({ length: daysInMonth }, (_, i) => 
+  return Array.from({ length: daysInMonth }, (_, i) =>
     (i + 1).toString().padStart(2, '0')
   );
 };
@@ -198,93 +199,99 @@ export default function BasicInfoForm() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={previousStep} style={styles.backButton}>
-            <Text style={styles.backButtonText}>←</Text>
-          </TouchableOpacity>
-          <Text style={styles.stepText}>1/5</Text>
-        </View>
+      <KeyboardAwareScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
+        enableOnAndroid={true}
+        extraScrollHeight={50}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+          <View style={styles.header}>
+            <TouchableOpacity onPress={previousStep} style={styles.backButton}>
+              <Text style={styles.backButtonText}>←</Text>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.content}>
-          <Text style={styles.title}>기본 정보를 입력해주세요</Text>
+          <View style={styles.content}>
+            <Text style={styles.title}>기본 정보를 입력해주세요</Text>
 
-          <View style={styles.form}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>이름 *</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="실명을 입력해주세요"
-                placeholderTextColor="#999"
-                value={formData.name}
-                onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
-              />
-            </View>
+            <View style={styles.form}>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>이름 *</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="실명을 입력해주세요"
+                  placeholderTextColor="#999"
+                  value={formData.name}
+                  onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
+                />
+              </View>
 
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>닉네임 *</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="사용하실 닉네임을 입력해주세요"
-                placeholderTextColor="#999"
-                value={formData.nickname}
-                onChangeText={(text) => setFormData(prev => ({ ...prev, nickname: text }))}
-              />
-            </View>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>닉네임 *</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="사용하실 닉네임을 입력해주세요"
+                  placeholderTextColor="#999"
+                  value={formData.nickname}
+                  onChangeText={(text) => setFormData(prev => ({ ...prev, nickname: text }))}
+                />
+              </View>
 
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>성별 *</Text>
-              <View style={styles.genderContainer}>
-                {[
-                  { key: 'male', label: '남성' },
-                  { key: 'female', label: '여성' },
-                  { key: 'other', label: '기타' },
-                ].map((option) => (
-                  <TouchableOpacity
-                    key={option.key}
-                    style={[
-                      styles.genderButton,
-                      formData.gender === option.key && styles.selectedGender
-                    ]}
-                    onPress={() => setFormData(prev => ({ ...prev, gender: option.key as GenderType }))}
-                  >
-                    <Text style={[
-                      styles.genderButtonText,
-                      formData.gender === option.key && styles.selectedGenderText
-                    ]}>
-                      {option.label}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>성별 *</Text>
+                <View style={styles.genderContainer}>
+                  {[
+                    { key: 'male', label: '남성' },
+                    { key: 'female', label: '여성' },
+                    { key: 'other', label: '기타' },
+                  ].map((option) => (
+                    <TouchableOpacity
+                      key={option.key}
+                      style={[
+                        styles.genderButton,
+                        formData.gender === option.key && styles.selectedGender
+                      ]}
+                      onPress={() => setFormData(prev => ({ ...prev, gender: option.key as GenderType }))}
+                    >
+                      <Text style={[
+                        styles.genderButtonText,
+                        formData.gender === option.key && styles.selectedGenderText
+                      ]}>
+                        {option.label}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>생년월일 *</Text>
+                <TouchableOpacity
+                  style={styles.dateButton}
+                  onPress={() => {
+                    if (formData.birthDate) {
+                      setDateComponents(parseDate(formData.birthDate));
+                    }
+                    setShowDateModal(true);
+                  }}
+                >
+                  <Text style={[
+                    styles.dateButtonText,
+                    !formData.birthDate && styles.placeholderText
+                  ]}>
+                    {formData.birthDate || '생년월일을 선택해주세요'}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
 
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>생년월일 *</Text>
-              <TouchableOpacity
-                style={styles.dateButton}
-                onPress={() => {
-                  if (formData.birthDate) {
-                    setDateComponents(parseDate(formData.birthDate));
-                  }
-                  setShowDateModal(true);
-                }}
-              >
-                <Text style={[
-                  styles.dateButtonText,
-                  !formData.birthDate && styles.placeholderText
-                ]}>
-                  {formData.birthDate || '생년월일을 선택해주세요'}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+              <Text style={styles.nextButtonText}>다음</Text>
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-            <Text style={styles.nextButtonText}>다음</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
 
       {/* 날짜 선택 모달 */}
       <Modal
@@ -296,14 +303,14 @@ export default function BasicInfoForm() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 onPress={() => setShowDateModal(false)}
                 style={styles.modalButton}
               >
                 <Text style={styles.modalButtonText}>취소</Text>
               </TouchableOpacity>
               <Text style={styles.modalTitle}>생년월일 선택</Text>
-              <TouchableOpacity 
+              <TouchableOpacity
                 onPress={handleDateConfirm}
                 style={styles.modalButton}
               >
@@ -320,7 +327,7 @@ export default function BasicInfoForm() {
                   onValueChange={handleYearChange}
                 />
               </View>
-              
+
               <View style={styles.datePickerColumn}>
                 <Text style={styles.columnLabel}>월</Text>
                 <ScrollPicker
@@ -329,7 +336,7 @@ export default function BasicInfoForm() {
                   onValueChange={handleMonthChange}
                 />
               </View>
-              
+
               <View style={styles.datePickerColumn}>
                 <Text style={styles.columnLabel}>일</Text>
                 <ScrollPicker
@@ -351,9 +358,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFCF9',
   },
-  scrollView: {
-    flex: 1,
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -366,10 +370,6 @@ const styles = StyleSheet.create({
   backButtonText: {
     fontSize: 24,
     color: '#ff6600',
-  },
-  stepText: {
-    fontSize: 16,
-    color: '#666',
   },
   content: {
     padding: 24,
@@ -450,7 +450,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  
+
   // 모달 스타일
   modalOverlay: {
     flex: 1,
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
   },
-  
+
   // 날짜 선택기 스타일
   datePickerContainer: {
     flexDirection: 'row',

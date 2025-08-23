@@ -164,7 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // 백엔드 로그인 API 호출 (Firebase 토큰으로 인증)
   const loginUserToBackend = async (firebaseToken: string) => {
     const response = await apiRequest('/auth/login', 'POST', {}, firebaseToken);
-    return mapBackendUserToFrontend(response.userProfile); // API 문서에 따르면 userProfile을 반환
+    return mapBackendUserToFrontend(response); // API 문서에 따르면 userProfile을 반환
   };
 
   // 백엔드 로그아웃 API 호출 (Firebase 토큰으로 인증)

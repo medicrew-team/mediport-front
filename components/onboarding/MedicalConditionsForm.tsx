@@ -55,7 +55,6 @@ export default function MedicalConditionsForm() {
           <TouchableOpacity onPress={previousStep} style={styles.backButton}>
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.stepText}>5/6</Text>
         </View>
 
         <View style={styles.content}>
