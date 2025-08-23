@@ -39,6 +39,8 @@ export default function TranslateScreen() {
   const recordingRef = useRef<Audio.Recording | null>(null)
   const soundRef = useRef<Audio.Sound | null>(null)
 
+  const BASE_URL = "http://192.168.45.33:3000";
+
   const swapLanguages = () => {
     const temp = sourceLanguage
     setSourceLanguage(targetLanguage)
@@ -118,7 +120,7 @@ export default function TranslateScreen() {
       formData.append("sourceLanguage", sourceLanguage.code);
       formData.append("targetLanguage", targetLanguage.code);
 
-      const response = await fetch("http://192.168.45.33:3000/api/translate", {
+      const response = await fetch(`${BASE_URL}/api/translate`, {
         method: "POST",
         body: formData,
       })
@@ -164,7 +166,7 @@ const translateText = async () => {
     formData.append("sourceLanguage", sourceLanguage.code); // 예: "EN"
     formData.append("targetLanguage", targetLanguage.code); // 예: "KO"
 
-    const response = await fetch("http://192.168.45.33:3000/api/translate", {
+    const response = await fetch(`${BASE_URL}/api/translate`, {
       method: "POST",
       body: formData
     })
@@ -232,7 +234,7 @@ const translateText = async () => {
       formData.append("targetLanguage", targetLanguage.code);
       formData.append("inputType", "text");
 
-      const response = await fetch("http://192.168.45.33:3000/api/translate", {
+      const response = await fetch(`${BASE_URL}/api/translate`, {
         method: "POST",
         body: formData,
       })
