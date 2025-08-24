@@ -1,38 +1,129 @@
-import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { 
+  SafeAreaView,
+  ScrollView, 
+  StyleSheet, 
+  Text, 
+  TouchableOpacity, 
+  View, 
+  Alert, 
+  Image,
+} from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
+import BasicInfoScreen from '../../components/profile/BasicInfo';
+import HealthInfoScreen from '../../components/profile/HealthInfo';
+import { User } from '../../types/profile';
 
 export default function ProfileScreen() {
-  const { user,token, logout } = useAuth();
+  const { token, logout } = useAuth();
+  const [currentView, setCurrentView] = useState('profile'); // 'profile', 'basic', 'health'
+  const [user, setUser] = useState<User | null>(null);
 
   const handleLogout = async () => {
     await logout();
   };
-return (
-    <ScrollView style={styles.container}>
+
+  const fetchUserProfile = async () => {
+    try {
+      const res = await fetch('http://192.168.45.33:3000/api/users/profile', {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const data = await res.json();
+      setUser({
+        language: data.user.language,
+        user_id: data.user.user_id,
+        username: data.user.username,
+        nickname: data.user.nickname,
+        email: data.user.email,
+        gender: data.user.gender,
+        user_img: data.user.user_img,
+        birthday: data.user.birthday,
+        phone: data.user.phone,
+        country: data.user.country,
+        residence: data.user.residence,
+        diseases: data.user.diseases,
+        history: data.user.history,
+      });
+    } catch (err) {
+      console.error(err);
+      Alert.alert('Error', '사용자 정보를 가져오는데 실패했습니다.');
+    }
+  };
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, []);
+
+  // 뒤로가기 함수
+  const handleBackToProfile = () => {
+    setCurrentView('profile');
+  };
+
+  // 현재 뷰에 따라 다른 화면 렌더링
+  if (currentView === 'basic') {
+    return (
+      <BasicInfoScreen 
+        user={user} 
+        onBack={handleBackToProfile} 
+        onUpdate={fetchUserProfile} 
+      />
+    );
+  }
+
+  if (currentView === 'health') {
+    return (
+      <HealthInfoScreen 
+        user={user} 
+        onBack={handleBackToProfile} 
+        onUpdate={fetchUserProfile} 
+      />
+    );
+  }
+
+  // 메인 프로필 화면
+  return (
+    <SafeAreaView style={styles.container}>
       <View style={styles.profileSection}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarText}>
-            {user?.name?.charAt(0).toUpperCase()}
-          </Text>
+          {user?.user_img ? (
+            <Image
+              source={{ uri: user.user_img }}
+              style={styles.avatarImage}
+            />
+          ) : (
+            // 이미지 없을 때 fallback (배경색만 있는 원)
+            <View style={styles.defaultAvatar} />
+          )}
         </View>
-        <Text style={styles.name}>{user?.name}</Text>
+        <Text style={styles.name}>{user?.nickname}</Text>
         <Text style={styles.email}>{user?.email}</Text>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutButtonText}>로그아웃</Text>
         </TouchableOpacity>
       </View>
+
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>내 정보</Text>
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => setCurrentView('basic')}
+        >
           <Text style={styles.menuText}>기본 정보</Text>
           <Text style={styles.arrow}>›</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => setCurrentView('health')}
+        >
           <Text style={styles.menuText}>건강 정보</Text>
           <Text style={styles.arrow}>›</Text>
         </TouchableOpacity>
       </View>
+
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>앱 설정</Text>
         <TouchableOpacity style={styles.settingItem}>
@@ -48,18 +139,19 @@ return (
           <Text style={styles.arrow}>›</Text>
         </TouchableOpacity>
       </View>
-        <View style={styles.section}>
-        <Text style={styles.sectionTitle}>토큰 보기</Text>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Firebase 보안 토큰</Text>
         <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingText}>UID: {user?.uid}</Text>
+          <Text style={styles.settingText}>UID: {user?.user_id}</Text>
           <Text style={styles.arrow}>›</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingToken }>토큰: {token}</Text>
+          <Text style={styles.settingToken}>토큰: {token}</Text>
           <Text style={styles.arrow}>›</Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -81,11 +173,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 15,
+    overflow: 'hidden',
   },
-  avatarText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#fff',
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  defaultAvatar: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 40,
+    backgroundColor: '#007AFF',
   },
   name: {
     fontSize: 20,
@@ -98,23 +197,11 @@ const styles = StyleSheet.create({
     color: '#666',
     marginBottom: 20,
   },
-  editButton: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-  },
-  editButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-   logoutButton: {
+  logoutButton: {
     backgroundColor: '#FF3B30',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
-    marginTop: 10,
   },
   logoutButtonText: {
     color: '#fff',
@@ -128,6 +215,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderColor: '#ccc',
     borderWidth: 1,
+    borderRadius: 8,
   },
   sectionTitle: {
     fontSize: 18,
