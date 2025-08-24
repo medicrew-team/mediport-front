@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   View,
   Modal,
-  Platform,
   ScrollView,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
@@ -170,7 +169,6 @@ export default function MedicationsForm() {
           <TouchableOpacity onPress={previousStep} style={styles.backButton}>
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.stepText}>6/6</Text>
         </View>
 
         <View style={styles.content}>
@@ -393,10 +391,6 @@ const styles = StyleSheet.create({
   placeholderText: {
     color: '#999',
   },
-  calendarIcon: {
-    fontSize: 18,
-    marginLeft: 8,
-  },
   radioContainer: {
     flexDirection: 'row',
     gap: 12,
@@ -546,7 +540,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  selectedScrollItem: {},
   scrollPickerText: {
     fontSize: 18,
     color: '#666',
