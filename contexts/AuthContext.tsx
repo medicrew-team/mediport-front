@@ -321,7 +321,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(backendUser);
 
         console.log('AuthContext: Signup successful with backend integration');
-        router.replace('/');
+        router.replace('/(tabs)');
 
       } catch (backendError) {
         console.error('백엔드 회원가입 실패:', backendError);
@@ -339,7 +339,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setToken(idToken);
       setUser(backendUser);
 
-      router.replace('/');
+      router.replace('/(tabs)');
       
     } catch (error: any) {
       let errorMessage = '회원가입에 실패했습니다.';
@@ -401,7 +401,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(backendUser);
 
         console.log('AuthContext: Login successful with backend integration');
-        router.replace('/');
+        router.replace('/(tabs)');
 
       } catch (backendError) {
         console.error('백엔드 로그인 실패:', backendError);
