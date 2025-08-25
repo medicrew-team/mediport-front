@@ -164,12 +164,10 @@ const getCategoryColor = (category: string) => {
       <Modal visible={showDetail} animationType="slide" presentationStyle="pageSheet">
         <SafeAreaView style={styles.modalContainer}>
           <View style={styles.modalHeader}>
-            <TouchableOpacity onPress={() => setShowDetail(false)} style={styles.closeButton}>
-              <AntDesign name="close" size={24} color="#333" />
-            </TouchableOpacity>
+            <View style={{ width: 30 }}></View>
             <Text style={styles.modalHeaderTitle}>게시글</Text>
-            <TouchableOpacity style={styles.moreButton}>
-              <Entypo name="dots-three-horizontal" size={20} color="#666" />
+             <TouchableOpacity onPress={() => setShowDetail(false)} style={styles.closeButton}>
+              <AntDesign name="close" size={24} color="#333" />
             </TouchableOpacity>
           </View>
 
@@ -205,10 +203,6 @@ const getCategoryColor = (category: string) => {
               <TouchableOpacity style={styles.actionButton}>
                 <AntDesign name="message1" size={20} color="#666" />
                 <Text style={styles.actionText}>댓글 {commentCount}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.actionButton}>
-                <AntDesign name="sharealt" size={20} color="#666" />
-                <Text style={styles.actionText}>공유</Text>
               </TouchableOpacity>
             </View>
 
@@ -325,6 +319,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   postStats: {
+    justifyContent: 'flex-end',
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: 10,
@@ -429,6 +424,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   actionButtons: {
+    justifyContent: 'space-around',
     flexDirection: 'row',
     paddingVertical: 15,
     borderTopWidth: 1,

@@ -99,9 +99,7 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
     const [dateField, setDateField] = useState<'start_date' | 'end_date' | null>(null);
     const [dateComponents, setDateComponents] = useState({ year: '2000', month: '01', day: '01' });
 
-    console.log('Current medications state:', medications);
     useEffect(() => {
-        console.log('user.history from prop:', user?.history);
         if (user?.diseases) setSelectedDiseases(user.diseases.map(d => d.id));
         if (user?.history) setMedications(user.history.map(h => ({
             history_id: h.history_id,
@@ -138,39 +136,23 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
         (copy[index] as any)[field] = value;
         setMedications(copy);
     };
-    const handleAddMedication = async () => {
-        try {
-            const newMed: Medication = { history_id:0,medi_name: '', start_date: formatted, end_date: formatted, status: '', dosage: '' };
-              console.log('POST 보내는 데이터:', { user_id: user?.user_id, history: newMed });
-            const res = await fetch(`${BASE_URL}/users/medications`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ user_id: user?.user_id, history: newMed }),
-            });
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const savedMed = await res.json(); // 서버에서 생성된 historyId 포함된 객체 반환 가정
-            const newMedication: Medication = {
-                history_id: savedMed.historyId,
-                medi_name: savedMed.name,
-                start_date: savedMed.start_date,
-                end_date: savedMed.end_date,
-                status: savedMed.status,
-                dosage: savedMed.dosage,
-            };
-            setMedications(prev => [...prev, newMedication]);
-        } catch (err) {
-            console.error(err);
-            Alert.alert('오류', '복약 이력 추가에 실패했습니다.');
-        }
-    };
+    const handleAddMedication = () => {
+        const newMed: Medication = {
+          history_id: 0, // 서버에 아직 없음
+          medi_name: '',
+          start_date: formatted,
+          end_date: formatted,
+          status: '',
+          dosage: ''
+        };
+        setMedications(prev => [...prev, newMed]);
+      };
 
 
     const handleRemoveMedication = async (index: number) => {
         const historyId = medications[index].history_id; // 서버에서 받은 ID
-        console.log('삭제할 historyId:', historyId);
 
         try {
-            console.log('DELETE 보내는 데이터:', { user_id: user?.user_id, historyId });
             const res = await fetch(`${BASE_URL}/users/medications/${historyId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` },
@@ -223,32 +205,56 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
 
     const handleMedicationSave = async () => {
         try {
-            for (let m of medications) {
-                if (m.history_id) {
-                    // 기존 항목: 단일 업데이트
-                    await fetch(`${BASE_URL}/users/medications/${m.history_id}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                        body: JSON.stringify(m),
-                    });
-                } else {
-                    // 신규 항목: POST
-                    const res = await fetch(`${BASE_URL}/users/medications`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                        body: JSON.stringify({ user_id: user?.user_id, history: m }),
-                    });
-                    const saved = await res.json();
-                    m.history_id = saved.historyId; // 상태에 갱신
+          const newMedications = await Promise.all(
+            medications.map(async (m) => {
+      
+              // 서버가 기대하는 키(snake_case)로 맞춰 전송 페이로드 구성
+              const payload = {
+                medi_name: m.medi_name,     // ✅ 이름은 medi_name
+                start_date: m.start_date,
+                end_date: m.end_date,
+                status: m.status,
+                dosage: m.dosage,
+              };
+      
+              if (m.history_id) {
+                // ✅ 업데이트
+                const res = await fetch(`${BASE_URL}/users/medications/${m.history_id}`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                  body: JSON.stringify({history:payload}),
+                });
+                if (!res.ok) {
+                    console.log(payload)
+                    throw new Error(`HTTP ${res.status}`);
                 }
-            }
-            Alert.alert('성공', '복약 이력이 업데이트되었습니다.');
-            if (onUpdate) onUpdate();
+                return m;
+              } else {
+                // ✅ 신규 생성
+                const res = await fetch(`${BASE_URL}/users/medications`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                  body: JSON.stringify({ user_id: user?.user_id, history: payload }), // ✅ history 안에 medi_name 등
+                });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const saved = await res.json();
+                return {
+                  ...m,
+                  history_id: saved.history_id,                           // ✅ snake_case
+                  medi_name: saved.prod_name ?? saved.custom_name ?? m.medi_name,
+                };
+              }
+            })
+          );
+      
+          setMedications(newMedications);
+          Alert.alert('성공', '복약 이력이 업데이트되었습니다.');
+          onUpdate?.();
         } catch (err) {
-            console.error(err);
-            Alert.alert('오류', '복약 이력 업데이트에 실패했습니다.');
+          console.error(err);
+          Alert.alert('오류', '복약 이력 업데이트에 실패했습니다.');
         }
-    };
+      };
 
 
     return (

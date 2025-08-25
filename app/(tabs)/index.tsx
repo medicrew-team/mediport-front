@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  SafeAreaView,
   ScrollView, 
   StyleSheet, 
   Text, 
@@ -87,7 +86,7 @@ export default function ProfileScreen() {
 
   // 메인 프로필 화면
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.profileSection}>
         <View style={styles.avatar}>
           {user?.user_img ? (
@@ -152,7 +151,7 @@ export default function ProfileScreen() {
           <Text style={styles.arrow}>›</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 

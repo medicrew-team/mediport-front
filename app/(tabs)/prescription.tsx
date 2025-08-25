@@ -170,7 +170,7 @@ export default function PrescriptionScreen() {
         />
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>복용 중인 약품 정보 입력</Text>
+        <Text style={styles.sectionTitle}>처방전 정보 입력</Text>
         <Text style={styles.sectionSubtitle}>아래 방법 중 하나를 선택해주세요</Text>
 
         {/* 옵션 버튼들 */}
