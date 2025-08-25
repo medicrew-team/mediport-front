@@ -11,7 +11,7 @@ import { useOnboarding } from '../../contexts/OnboardingContext';
 const languages = [
   { code: 'ko', name: '한국어', flag: '🇰🇷' },
   { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'zh', name: '中文', flag: '🇨🇳' },
+  { code: 'zh-CN', name: '中文', flag: '🇨🇳' },
   { code: 'vi', name: 'Tiếng Việt', flag: '🇻🇳' },
   { code: 'th', name: 'ไทย', flag: '🇹🇭' },
 ];
