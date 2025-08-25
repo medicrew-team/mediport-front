@@ -42,6 +42,14 @@ export interface CreateBoardDto {
   categoryId: number;
 }
 
+export interface CommentResponseDto {
+  comment_id: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  author: Author;
+}   
+
 export interface UpdateBoardDto {
   title: string;
   content: string;

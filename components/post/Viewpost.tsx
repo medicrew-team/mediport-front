@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  Modal, 
-  StyleSheet, 
-  ScrollView,
-  SafeAreaView,
-  TextInput,
-  Alert,
-  Image
-} from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
-import { PostType, Comment } from "../../types/post";
+import React, { useState } from "react";
+import {
+  Alert,
+  Image,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from "react-native";
 import { BASE_URL } from '../../types/ip';
+import { Comment, PostType } from "../../types/post";
 
 interface ViewPostProps {
   post: PostType;
@@ -98,11 +98,17 @@ const getCategoryColor = (category: string) => {
   const openDetail = async () => {
     setShowDetail(true);
     try {
-      await fetch(`${BASE_URL}/boards/${post.board_id}/view`, {
-        method: "POST",
+      const res = await fetch(`${BASE_URL}/boards/${post.board_id}`, {
+        method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
-      setViewCount(prev => prev + 1);
+      const data = await res.json();
+
+      const board =data.board;
+      setLikeCount(board.likeCount ?? 0);
+      setCommentCount(board.commentCount ?? 0);
+      setViewCount(board.view ?? 0);
+      setComments(board.comments ?? []); // 🔥 추가
     } catch (err) {
       console.error(err);
     }

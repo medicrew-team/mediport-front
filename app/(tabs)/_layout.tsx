@@ -1,4 +1,5 @@
 // app/(tabs)/_layout.tsx
+import Similar from '@/components/medi/SimilarMedi';
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -18,6 +19,7 @@ const Pagename = () => {
     index: '내정보',
     prohibited: '반입금지 약품',
     prescription: '처방전 스캔',
+    similar: '유사약품 조회 결과',
   };
   const currentTitle = titles[route.name] || '페이지';
 
@@ -196,7 +198,15 @@ export default function TabLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="similar"
+        options={{
+          title: '유사약품 조회 결과',
+          href: null,
+        }}
+      />
     </Tabs>
+    
   );
 }
 
@@ -216,7 +226,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   pageNameTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#1A1C1E',
     letterSpacing: 0.5,

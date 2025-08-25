@@ -93,13 +93,13 @@ export default function PrescriptionScreen() {
       setIsLoading(true);
 
       const formData = new FormData();
-      formData.append('prescription', {
+      formData.append('file', {
         uri: imageAsset.uri,
         type: 'image/jpeg',
         name: 'prescription.jpg',
       } as any);
 
-      const response = await fetch(`${BASE_URL}/prescription/scan`, {
+      const response = await fetch(`${BASE_URL}/similar/foreign-medicine/image`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -114,8 +114,14 @@ export default function PrescriptionScreen() {
         Alert.alert('성공', '성공적으로 분석되었습니다.', [
           {
             text: '확인', onPress: () => {
-              // 결과 페이지로 이동하거나 결과를 표시
               console.log('유사약 분석결과', data);
+              router.push({
+                pathname: "/similar",
+                params: { 
+                  results: JSON.stringify(data),
+                  inputImage: imageAsset.uri,
+                },
+              });
             }
           }
         ]);
@@ -140,26 +146,35 @@ export default function PrescriptionScreen() {
     try {
       setIsLoading(true);
 
-      const response = await fetch(`${BASE_URL}/prescription/text`, {
+      const response = await fetch(`${BASE_URL}/similar/foreign-medicine/text`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          medicineText: medicineText.trim(),
+          text: medicineText.trim(),
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
+        const searchText = medicineText.trim(); // 검색한 텍스트 저장
         setShowTextModal(false);
         setMedicineText('');
+        
         Alert.alert('성공', '약품 정보가 성공적으로 조회되었습니다.', [
           {
             text: '확인', onPress: () => {
               console.log('Medicine search result:', data);
+              router.push({
+                pathname: "/similar",
+                params: { 
+                  results: JSON.stringify(data),
+                  inputText: searchText, // 검색한 텍스트 전달
+                },
+              });
             }
           }
         ]);
