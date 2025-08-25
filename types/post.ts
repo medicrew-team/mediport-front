@@ -27,18 +27,23 @@ export interface PostType {
   commentCount: number;
   likeCount: number;
   comments: Comment[]; // 상세 조회 시 포함
-  category?: string;   // CreateBoardDto / UpdateBoardDto와 연동 가능
+  category?: Category;   // CreateBoardDto / UpdateBoardDto와 연동 가능
+}
+
+export interface Category {
+  id: number;
+  name: string;
 }
 
 // 요청 DTO용 타입
 export interface CreateBoardDto {
   title: string;
   content: string;
-  category: string;
+  categoryId: number;
 }
 
 export interface UpdateBoardDto {
   title: string;
   content: string;
-  category: string;
+  categoryId: number;
 }

@@ -22,61 +22,118 @@ export default function CommunityScreen() {
   const [selectedCategory, setSelectedCategory] = useState('제목');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('전체');
+  const [selectedFilterId, setSelectedFilterId] = useState(1);
+  const [loading, setLoading] = useState(false);
   const { token } = useAuth();
 
   const categories = ['제목', '내용', '작성자'];
-  const filters = ['전체', '자유', '질문', '맛집', '동네사건사고', '정보 공유', '기타'];
+  
+  // 필터 배열 - 백엔드 API와 매칭되도록 설정
+  const filters = [
+    { id: 1, name: "전체", categoryName: null },
+    { id: 2, name: "자유", categoryName: "자유" },
+    { id: 3, name: "질문", categoryName: "질문" },
+    { id: 4, name: "맛집", categoryName: "맛집" },
+    { id: 5, name: "동네사건사고", categoryName: "동네사건사고" },
+    { id: 6, name: "정보 공유", categoryName: "정보 공유" },
+    { id: 7, name: "기타", categoryName: "기타" },
+  ];
 
-  // 게시글 가져오기
-  const fetchBoards = async () => {
+  // 통합된 게시글 조회 함수
+  const fetchPosts = async () => {
+    setLoading(true);
     try {
-      const res = await fetch(`${BASE_URL}/boards?page=1&limit=50`, {
+      // URL 생성
+      let url = `${BASE_URL}/boards?page=1&limit=50`;
+      
+      // 카테고리 필터 추가 (전체가 아닌 경우)
+      const selectedFilter = filters.find(f => f.id === selectedFilterId);
+      if (selectedFilter && selectedFilter.id !== 1) {
+        url += `&categoryId=${encodeURIComponent(selectedFilter.id)}`;
+      }
+      
+      // 검색어 추가 (검색어가 있는 경우)
+      if (searchQuery.trim()) {
+        const queryParam = encodeURIComponent(searchQuery.trim());
+        switch (selectedCategory) {
+          case '제목':
+            url += `&title=${queryParam}`;
+            break;
+          case '내용':
+            url += `&content=${queryParam}`;
+            break;
+          case '작성자':
+            url += `&author=${queryParam}`;
+            break;
+        }
+      }
+
+      console.log('API 호출 URL:', url); // 디버깅용
+      
+      const res = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) throw new Error("게시글 불러오기 실패");
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       const data = await res.json();
+      console.log('API 응답 데이터:', data); // 디버깅용
+      
       setPosts(data.boards || []);
     } catch (err) {
-      console.error(err);
+      console.error('fetchPosts 에러:', err);
       Alert.alert("오류", "게시글을 불러오는데 실패했습니다.");
+    } finally {
+      setLoading(false);
     }
   };
 
+  // 컴포넌트 마운트 시 게시글 로드
   useEffect(() => {
-    fetchBoards();
+    fetchPosts();
   }, []);
 
-  // 검색 처리
-  const handleSearch = async () => {
-    try {
-      const queryParam = encodeURIComponent(searchQuery);
-      const filterParam = selectedFilter === '전체' ? '' : `&category=${selectedFilter}`;
-      const searchParam = selectedCategory === '제목' ? `title=${queryParam}` :
-                          selectedCategory === '내용' ? `content=${queryParam}` :
-                          selectedCategory === '작성자' ? `author=${queryParam}` : '';
+  // 카테고리 필터 변경 시 자동 검색
+  useEffect(() => {
+    fetchPosts();
+  }, [selectedFilterId]);
 
-      const res = await fetch(`${BASE_URL}/boards?${searchParam}${filterParam}&page=1&limit=50`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error("검색 실패");
-      const data = await res.json();
-      setPosts(data.boards || []);
-    } catch (err) {
-      console.error(err);
-      Alert.alert("오류", "검색 중 오류가 발생했습니다.");
-    }
+  // 검색 실행
+  const handleSearch = () => {
+    fetchPosts();
   };
 
+  // 검색 카테고리 선택
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category);
     setIsDropdownOpen(false);
+    // 검색어가 있다면 새로운 카테고리로 다시 검색
+    if (searchQuery.trim()) {
+      // 다음 렌더링에서 fetchPosts가 호출되도록 설정
+      setTimeout(() => fetchPosts(), 0);
+    }
   };
 
-  const handleFilterSelect = (filter: string) => {
-    setSelectedFilter(filter);
-    // 필터 적용 후 검색 API 호출
-    handleSearch();
+  // 필터 선택
+  const handleFilterSelect = (filterId: number) => {
+    setSelectedFilterId(filterId);
+    // useEffect에서 자동으로 fetchPosts가 호출됨
+  };
+
+  // 검색어 변경 시 실시간 검색 (옵션)
+  const handleSearchInputChange = (text: string) => {
+    setSearchQuery(text);
+    // 검색어를 지우면 자동으로 새로고침
+    if (!text.trim() && searchQuery.trim()) {
+      setTimeout(() => fetchPosts(), 100);
+    }
+  };
+
+  // 엔터키로 검색 (TextInput의 onSubmitEditing)
+  const handleSearchSubmit = () => {
+    fetchPosts();
   };
 
   return (
@@ -118,10 +175,16 @@ export default function CommunityScreen() {
             placeholder="Search"
             placeholderTextColor="#999"
             value={searchQuery}
-            onChangeText={setSearchQuery}
+            onChangeText={handleSearchInputChange}
+            onSubmitEditing={handleSearchSubmit}
+            returnKeyType="search"
           />
-          <TouchableOpacity style={styles.searchIcon} onPress={handleSearch}>
-            <FontAwesome name="search" size={16} color="#666" />
+          <TouchableOpacity 
+            style={styles.searchIcon} 
+            onPress={handleSearch}
+            disabled={loading}
+          >
+            <FontAwesome name="search" size={16} color={loading ? "#ccc" : "#666"} />
           </TouchableOpacity>
         </View>
       </View>
@@ -133,22 +196,23 @@ export default function CommunityScreen() {
           showsHorizontalScrollIndicator={false}
           style={styles.smallContainer}
         >
-          {filters.map((filter, index) => (
+          {filters.map((filter) => (
             <TouchableOpacity
-              key={index}
+              key={filter.id}
               style={[
                 styles.categoryTitle,
-                selectedFilter === filter && styles.selectedCategoryTitle,
+                selectedFilterId === filter.id && styles.selectedCategoryTitle,
               ]}
-              onPress={() => handleFilterSelect(filter)}
+              onPress={() => handleFilterSelect(filter.id)}
+              disabled={loading}
             >
               <Text
                 style={[
                   styles.categoryText,
-                  selectedFilter === filter && styles.selectedCategoryText,
+                  selectedFilterId === filter.id && styles.selectedCategoryText,
                 ]}
               >
-                {filter}
+                {filter.name}
               </Text>
             </TouchableOpacity>
           ))}
@@ -158,12 +222,24 @@ export default function CommunityScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* 게시글 리스트 */}
-      <ScrollView style={styles.postsContainer} showsVerticalScrollIndicator={false}>
-        {posts.map((post) => (
-          <ViewPost key={post.board_id} post={post} token={token ?? ''} />
-        ))}
-      </ScrollView>
+      {/* 로딩 또는 게시글 리스트 */}
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <Text style={styles.loadingText}>로딩 중...</Text>
+        </View>
+      ) : (
+        <ScrollView style={styles.postsContainer} showsVerticalScrollIndicator={false}>
+          {posts.length === 0 ? (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>게시글이 없습니다.</Text>
+            </View>
+          ) : (
+            posts.map((post) => (
+              <ViewPost key={post.board_id} post={post} token={token ?? ''} />
+            ))
+          )}
+        </ScrollView>
+      )}
 
       {/* 글쓰기 버튼 */}
       <TouchableOpacity
@@ -177,13 +253,15 @@ export default function CommunityScreen() {
       <CreatePost
         visible={showCreate}
         onClose={() => setShowCreate(false)}
-        onCreated={fetchBoards}
+        onCreated={() => {
+          setShowCreate(false);
+          fetchPosts(); // 새 글 작성 후 목록 새로고침
+        }}
         token={token ?? ''}
       />
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -315,6 +393,26 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 10,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#666',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 100,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: '#999',
+    textAlign: 'center',
   },
   createBtn: {
     position: 'absolute',

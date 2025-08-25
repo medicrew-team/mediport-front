@@ -44,17 +44,19 @@ export default function ViewPost({ post, token }: ViewPostProps) {
     return `${diffDays}d`;
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors: { [key: string]: string } = {
-      '자유': '#4A90E2',
-      '질문': '#F5A623',
-      '맛집': '#7ED321',
-      '동네사건사고': '#D0021B',
-      '정보 공유': '#9013FE',
-      '기타': '#50E3C2'
-    };
-    return colors[category] || '#666';
+const primaryCategoryName = post.category?.name ?? '자유';
+
+const getCategoryColor = (category: string) => {
+  const colors: Record<string, string> = {
+    '자유': '#4A90E2',
+    '질문': '#F5A623',
+    '맛집': '#7ED321',
+    '동네사건사고': '#D0021B',
+    '정보 공유': '#9013FE',
+    '기타': '#50E3C2'
   };
+  return colors[category] ?? '#666';
+};
 
   const handleLike = async () => {
     try {
@@ -126,8 +128,8 @@ export default function ViewPost({ post, token }: ViewPostProps) {
               <Text style={styles.time}>• {formatTime(post.createdAt)}</Text>
             </View>
           </View>
-          <View style={[styles.categoryTag, { backgroundColor: getCategoryColor(post.category || '자유') }]}>
-            <Text style={styles.categoryText}>{post.category || '자유'}</Text>
+          <View style={[styles.categoryTag, { backgroundColor: getCategoryColor(primaryCategoryName) }]}>
+            <Text style={styles.categoryText}>{primaryCategoryName}</Text>
           </View>
         </View>
 
@@ -179,8 +181,8 @@ export default function ViewPost({ post, token }: ViewPostProps) {
                   <Text style={styles.detailTime}>• {formatTime(post.createdAt)}</Text>
                 </View>
               </View>
-              <View style={[styles.detailCategoryTag, { backgroundColor: getCategoryColor(post.category || '자유') }]}>
-                <Text style={styles.detailCategoryText}>{post.category || '자유'}</Text>
+              <View style={[styles.detailCategoryTag, { backgroundColor: getCategoryColor(primaryCategoryName) }]}>
+                <Text style={styles.detailCategoryText}>{primaryCategoryName}</Text>
               </View>
             </View>
 

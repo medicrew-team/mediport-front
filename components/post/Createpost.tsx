@@ -13,29 +13,46 @@ import {
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { BASE_URL } from '../../types/ip';
-
 interface CreatePostProps {
   visible: boolean;
   onClose: () => void;
   onCreated: () => void;
   token: string;
 }
+  const categories = [
+  { id: 1, name: "전체" },
+  { id: 2, name: "자유" },
+  { id: 3, name: "질문" },
+  { id: 4, name: "맛집" },
+  { id: 5, name: "동네사건사고" },
+  { id: 6, name: "정보 공유" },
+  { id: 7, name: "기타" },
+ ];
 
 export default function CreatePost({ visible, onClose, onCreated, token }: CreatePostProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("자유");
+  const [selectedCategoryId, setSelectedCategoryId] = useState(2);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const categories = ["자유", "질문", "맛집", "동네사건사고", "정보 공유", "기타"];
-
+ 
+  
   const handleSubmit = async () => {
     if (!title.trim() || !content.trim()) {
       Alert.alert("알림", "제목과 내용을 입력해주세요");
       return;
     }
+    const categoryToSend = selectedCategoryId === 1 ? undefined : selectedCategoryId;
 
     try {
+
+          const payload = { 
+      title: title.trim(), 
+      content: content.trim(),
+      categoryId: categoryToSend 
+    };
+
+    console.log("📤 게시글 전송 데이터:", payload);
+    
       const res = await fetch(`${BASE_URL}/boards`, {
         method: "POST",
         headers: {
@@ -45,7 +62,7 @@ export default function CreatePost({ visible, onClose, onCreated, token }: Creat
         body: JSON.stringify({ 
           title: title.trim(), 
           content: content.trim(),
-          category: selectedCategory 
+          categoryId: categoryToSend 
         }),
       });
 
@@ -53,7 +70,7 @@ export default function CreatePost({ visible, onClose, onCreated, token }: Creat
         Alert.alert("성공", "게시글이 작성되었습니다!");
         setTitle("");
         setContent("");
-        setSelectedCategory("자유");
+        setSelectedCategoryId(2);
         onCreated();
         onClose();
       } else {
@@ -69,13 +86,13 @@ export default function CreatePost({ visible, onClose, onCreated, token }: Creat
   const handleClose = () => {
     setTitle("");
     setContent("");
-    setSelectedCategory("자유");
+    setSelectedCategoryId(2);
     setIsDropdownOpen(false);
     onClose();
   };
 
-  const handleCategorySelect = (category: string) => {
-    setSelectedCategory(category);
+  const handleCategorySelect = (categoryId: number) => {
+    setSelectedCategoryId(categoryId);
     setIsDropdownOpen(false);
   };
 
@@ -101,7 +118,7 @@ export default function CreatePost({ visible, onClose, onCreated, token }: Creat
               style={styles.categoryDropdown}
               onPress={() => setIsDropdownOpen(!isDropdownOpen)}
             >
-              <Text style={styles.categoryText}>{selectedCategory}</Text>
+              <Text style={styles.categoryText}>{categories.find(c => c.id === selectedCategoryId)?.name}</Text>
               <Entypo name="chevron-down" size={20} color="#666" />
             </TouchableOpacity>
 
@@ -114,17 +131,17 @@ export default function CreatePost({ visible, onClose, onCreated, token }: Creat
                       styles.dropdownItem,
                       index === categories.length - 1 && styles.lastDropdownItem
                     ]}
-                    onPress={() => handleCategorySelect(category)}
+                    onPress={() => handleCategorySelect(category.id)}
                   >
                     <Text
                       style={[
                         styles.dropdownItemText,
-                        selectedCategory === category && styles.selectedDropdownItem,
+                        selectedCategoryId === category.id && styles.selectedDropdownItem,
                       ]}
                     >
-                      {category}
+                      {category.name}
                     </Text>
-                    {selectedCategory === category && (
+                    {selectedCategoryId === category.id && (
                       <AntDesign name="check" size={16} color="#FF6B35" />
                     )}
                   </TouchableOpacity>
