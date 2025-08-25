@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { Feather } from '@expo/vector-icons';
+import React, { useEffect, useRef, useState } from 'react';
 import {
+    Alert,
+    Modal,
+    ScrollView,
     StyleSheet,
     Text,
+    TextInput,
     TouchableOpacity,
     View,
-    Alert,
-    ScrollView,
-    Modal,
-    TextInput,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
-import { User, InfoScreenProps, DISEASES, Medication } from '../../types/profile';
 import { BASE_URL } from '../../types/ip';
+import { DISEASES, InfoScreenProps, Medication } from '../../types/profile';
 
 const today = new Date();
 const formatted = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2,'0')}-${today.getDate().toString().padStart(2,'0')}`;
@@ -99,15 +99,17 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
     const [dateField, setDateField] = useState<'start_date' | 'end_date' | null>(null);
     const [dateComponents, setDateComponents] = useState({ year: '2000', month: '01', day: '01' });
 
+    console.log('Current medications state:', medications);
     useEffect(() => {
+        console.log('user.history from prop:', user?.history);
         if (user?.diseases) setSelectedDiseases(user.diseases.map(d => d.id));
         if (user?.history) setMedications(user.history.map(h => ({
-            medi_name: h.name, 
-            start_date: h.start_date, 
-            end_date: h.end_date, 
-            status: h.status, 
+            history_id: h.history_id,
+            medi_name: h.name,
+            start_date: h.start_date,
+            end_date: h.end_date,
+            status: h.status,
             dosage: h.dosage,
-            
         })));
     }, [user]);
 
@@ -138,7 +140,7 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
     };
     const handleAddMedication = async () => {
         try {
-            const newMed: Medication = { medi_name: '', start_date: formatted, end_date: formatted, status: '', dosage: '' };
+            const newMed: Medication = { history_id:0,medi_name: '', start_date: formatted, end_date: formatted, status: '', dosage: '' };
               console.log('POST 보내는 데이터:', { user_id: user?.user_id, history: newMed });
             const res = await fetch(`${BASE_URL}/users/medications`, {
                 method: 'POST',
@@ -147,7 +149,15 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const savedMed = await res.json(); // 서버에서 생성된 historyId 포함된 객체 반환 가정
-            setMedications(prev => [...prev, savedMed]);
+            const newMedication: Medication = {
+                history_id: savedMed.historyId,
+                medi_name: savedMed.name,
+                start_date: savedMed.start_date,
+                end_date: savedMed.end_date,
+                status: savedMed.status,
+                dosage: savedMed.dosage,
+            };
+            setMedications(prev => [...prev, newMedication]);
         } catch (err) {
             console.error(err);
             Alert.alert('오류', '복약 이력 추가에 실패했습니다.');
@@ -156,10 +166,10 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
 
 
     const handleRemoveMedication = async (index: number) => {
-        const historyId = medications[index].historyId; // 서버에서 받은 ID
+        const historyId = medications[index].history_id; // 서버에서 받은 ID
+        console.log('삭제할 historyId:', historyId);
 
         try {
-            console.log(medications);
             console.log('DELETE 보내는 데이터:', { user_id: user?.user_id, historyId });
             const res = await fetch(`${BASE_URL}/users/medications/${historyId}`, {
                 method: 'DELETE',
@@ -214,9 +224,9 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
     const handleMedicationSave = async () => {
         try {
             for (let m of medications) {
-                if (m.historyId) {
+                if (m.history_id) {
                     // 기존 항목: 단일 업데이트
-                    await fetch(`${BASE_URL}/users/medications/${m.historyId}`, {
+                    await fetch(`${BASE_URL}/users/medications/${m.history_id}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                         body: JSON.stringify(m),
@@ -229,7 +239,7 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
                         body: JSON.stringify({ user_id: user?.user_id, history: m }),
                     });
                     const saved = await res.json();
-                    m.historyId = saved.historyId; // 상태에 갱신
+                    m.history_id = saved.historyId; // 상태에 갱신
                 }
             }
             Alert.alert('성공', '복약 이력이 업데이트되었습니다.');

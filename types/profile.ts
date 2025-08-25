@@ -20,6 +20,7 @@ export interface User {
   residence?: string;
   diseases?: { id: number }[];
   history?: {
+    history_id: number;
     name: string;
     start_date: string;
     end_date: string;
@@ -35,12 +36,12 @@ export interface InfoScreenProps {
 }
 
 export interface Medication {
+  history_id?: number; // API에서 가져온 ID
   medi_name: string;
   start_date: string;
   end_date?: string;
   status: string; // '복용중' | '복용완료'
   dosage: string;
-  historyId?: number; // API에서 가져온 ID
 }
 
 // 질병 목록 상수
