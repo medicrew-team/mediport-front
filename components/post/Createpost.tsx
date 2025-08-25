@@ -101,12 +101,10 @@ export default function CreatePost({ visible, onClose, onCreated, token }: Creat
       <SafeAreaView style={styles.container}>
         {/* 헤더 */}
         <View style={styles.header}>
-          <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
-            <AntDesign name="close" size={24} color="#333" />
-          </TouchableOpacity>
+          <View style={{ width: 30 }}></View>
           <Text style={styles.headerTitle}>새 게시글</Text>
-          <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
-            <Text style={styles.submitButtonText}>완료</Text>
+                    <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
+            <AntDesign name="close" size={24} color="#333" />
           </TouchableOpacity>
         </View>
 
@@ -179,6 +177,9 @@ export default function CreatePost({ visible, onClose, onCreated, token }: Creat
             />
             <Text style={styles.charCount}>{content.length}/1000</Text>
           </View>
+                    <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
+            <Text style={styles.submitButtonText}>완료</Text>
+          </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
     </Modal>
@@ -209,12 +210,15 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   submitButton: {
+    alignSelf: 'flex-end',
+    width: 70,
     backgroundColor: '#FF6B35',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
   },
   submitButtonText: {
+    textAlign: 'center',
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
@@ -249,6 +253,10 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   dropdownMenu: {
+    zIndex: 1000,
+    position: 'absolute',
+    width: '100%',
+    top: 70,
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#E0E0E0',
