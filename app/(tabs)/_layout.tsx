@@ -13,7 +13,7 @@ const Pagename = () => {
   const titles: Record<string, string> = {
     chatbot: '챗봇',
     translate: '번역',
-    alternative: '대체약품 조회',
+    alternative: '유사약품 조회',
     community: '커뮤니티',
     index: '내정보',
     prohibited: '반입금지 약품',
@@ -157,7 +157,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="alternative"
         options={{
-          title: '대체약품 조회',
+          title: '유사약품 조회',
           tabBarIcon: ({ color, focused }) => (
             <TabBarMaterialIcon color={color} focused={focused} iconName="line-scan" />
           ),

@@ -17,7 +17,11 @@ export default function AppEntry() {
   useEffect(() => {
   async function loadAssets() {
     try {
-      await Asset.loadAsync(require('../assets/images/mediport.png'));
+      await Asset.loadAsync([
+        require('../assets/images/mediport.png'),
+        require('../assets/images/medicamera.png'),
+        require('../assets/images/meditrip.png'),
+      ]);
     } catch (e) {
       console.warn('Asset loading failed:', e);
     } finally {
