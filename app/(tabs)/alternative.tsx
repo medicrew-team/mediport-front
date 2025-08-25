@@ -17,7 +17,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../types/ip';
 
-export default function PrescriptionScreen() {
+export default function AlternativeScreen() {
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showTextModal, setShowTextModal] = useState(false);

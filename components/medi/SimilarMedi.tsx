@@ -57,66 +57,67 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
         )}
       </View>
       <View style={styles.drugBasicInfo}>
+        <Text style={styles.infoLabel}>제품명(prod_name)</Text>
         <Text style={styles.drugName}>{item.prod_name}</Text>
       </View>
     </View>
 
     <View style={styles.cardContent}>
       <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>류 (BIT)</Text>
+        <Text style={styles.infoLabel}>약물 분류 (BIT)</Text>
         <Text style={styles.infoText}>{item.bit}</Text>
       </View>
 
       <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>적응증 (ICD Sum)</Text>
+        <Text style={styles.infoLabel}>주요 효능 및 적응증 요약 (ICD Sum)</Text>
         <Text style={styles.infoText}>{item.icd_sum || "정보 없음"}</Text>
       </View>
 
       <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>용법/용량</Text>
+        <Text style={styles.infoLabel}>권장 복용법(dosage)</Text>
         <Text style={styles.infoText}>{item.dosage || "정보 없음"}</Text>
       </View>
 
       <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>금기 대상</Text>
+        <Text style={styles.infoLabel}>투여 금지 대상(contraindicated)</Text>
         <Text style={[styles.infoText, styles.warningText]}>
           {item.contraindicated || "(특이 보고 없음)"}
         </Text>
       </View>
 
       <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>복용 시 유의사항</Text>
+        <Text style={styles.infoLabel}>일상생활에서 주의할 음식(daily_interaction)</Text>
         <Text style={[styles.infoText, styles.cautionText]}>
           {item.daily_interaction || "(특이 보고 없음)"}
         </Text>
       </View>
 
       <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>부작용</Text>
+        <Text style={styles.infoLabel}>부작용(adverse_reaction)</Text>
         <Text style={styles.infoText}>
           {item.adverse_reaction || "(특이 보고 없음)"}
         </Text>
       </View>
 
       <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>약물 상호작용</Text>
+        <Text style={styles.infoLabel}>다른 약물과의 상호작용(drug_interaction)</Text>
         <Text style={styles.infoText}>
           {item.drug_interaction || "(특이 보고 없음)"}
         </Text>
       </View>
 
       <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>제형</Text>
+        <Text style={styles.infoLabel}>제형(medi_form)</Text>
         <Text style={styles.infoText}>{item.medi_form || "정보 없음"}</Text>
       </View>
 
       <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>구입 경로</Text>
+        <Text style={styles.infoLabel}>비치 위치 (Standby, pharmacy, specialty 등)</Text>
         <Text style={styles.infoText}>{item.purchase_loc || "정보 없음"}</Text>
       </View>
 
       <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>보관 방법</Text>
+        <Text style={styles.infoLabel}>보관 방법(storage_method)</Text>
         <Text style={styles.infoText}>{item.storage_method || "(별도 정보 없음)"}</Text>
       </View>
     </View>

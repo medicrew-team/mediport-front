@@ -4,7 +4,7 @@ import { useLocalSearchParams } from "expo-router";
 import { View, Text } from "react-native";
 import Similar from "../../components/medi/SimilarMedi";
 
-export default function AlternativePage() {
+export default function SimilarPage() {
   const { results, inputImage, inputText } = useLocalSearchParams();
 
   let parsedResults: any[] = [];
