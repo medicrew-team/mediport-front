@@ -1,13 +1,43 @@
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Alert,
+} from 'react-native';
+import { useAuth } from '../../contexts/AuthContext';
+import { BASE_URL } from '../../types/ip';
+
+export interface ProhibitedMedicine {
+  restricted_medi_id: number;
+  division: string;
+  ing_name: string;
+  prod_name: string;
+  medi_img: string;
+  punish: string;
+  substitute: string;
+  substitute_img: string;
+}
+
+interface ApiResponse {
+  list: ProhibitedMedicine[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
 
 export default function ProhibitedScreen() {
   const navigateToAlternative = () => {
     router.push('/alternative');
-  };    
+  };
 
   const navigateToPrescription = () => {
     router.push('/prescription');
@@ -16,60 +46,143 @@ export default function ProhibitedScreen() {
   const navigateToProhibited = () => {
     router.push('/prohibited');
   };
+
+  const { token } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('통합검색');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const categories = ['통합검색', '약품명', '성분명'];
+  
+  // 페이지네이션 상태 추가
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const limit = 10;
+
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category);
     setIsDropdownOpen(false);
   };
 
-  const prohibitedMedicines = [
-    {
-      name: 'Cidetuss',
-      description: '항정신성 의약품',
-      ingredients: '덱스트로메토르판',
-      punishment: '10년 이하의 징역이나 1억원 이하의 벌금형',
-      substitute: '지르텍정',
-      image:'https://www.imexpharm.com/Data/Sites/1/Product/8825/Cidetuss-hop-100v.png'
-    },
-    {
-      name: 'Cedipect',
-      description: '마약',
-      ingredients: '코데인',
-      punishment: '무기 또는 5년 이상의 징역형',
-      substitute: '뮤코로솔정',
-      image: 'https://cdnv2.tgdd.vn/mwg-static/ankhang/Products/Images/10029/209230/cedipect-hinh-1-638645837001204883.jpg'
-    },
-    {
-      name: 'Xanax',
-      description: '항정신성 의약품',
-      ingredients: '알프라졸탐',
-      punishment: '3년 이하의 징역이나 3천만 원 이하의 벌금',
-      substitute: '자낙스',
-      image: 'https://i.guim.co.uk/img/media/b016fd83aa487350cf0008913709cd38c7a0d8d2/0_73_5200_3120/master/5200.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=c84b7b70788e0c02b42f3465146b488f'
+  const [prohibitedMedicines, setProhibitedMedicines] = useState<ProhibitedMedicine[]>([]);
+
+  const fetchProhibitedMedicines = async (page: number = 1) => {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`${BASE_URL}/restricts?page=${page}&limit=${limit}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data: ApiResponse = await res.json();
+      
+      setProhibitedMedicines(data.list);
+      setTotalPages(data.totalPages || Math.ceil(data.total / limit));
+      setCurrentPage(page);
+    } catch (err) {
+      console.error(err);
+      Alert.alert('오류', '제한 약물 정보를 불러오는 데 실패했습니다.');
+    } finally {
+      setIsLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchProhibitedMedicines(1);
+  }, []);
+
+  // 페이지 변경 핸들러
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages && !isLoading) {
+      fetchProhibitedMedicines(page);
+    }
+  };
+
+  // 페이지네이션 버튼 생성
+  const renderPaginationButtons = () => {
+    const buttons = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    // 시작 페이지 재조정
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    // 이전 버튼
+    if (currentPage > 1) {
+      buttons.push(
+        <TouchableOpacity
+          key="prev"
+          style={styles.paginationButton}
+          onPress={() => handlePageChange(currentPage - 1)}
+          disabled={isLoading}
+        >
+          <Text style={styles.paginationButtonText}>‹</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    // 페이지 번호 버튼들
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+        <TouchableOpacity
+          key={i}
+          style={[
+            styles.paginationButton,
+            currentPage === i && styles.activePaginationButton
+          ]}
+          onPress={() => handlePageChange(i)}
+          disabled={isLoading}
+        >
+          <Text style={[
+            styles.paginationButtonText,
+            currentPage === i && styles.activePaginationButtonText
+          ]}>
+            {i}
+          </Text>
+        </TouchableOpacity>
+      );
+    }
+
+    // 다음 버튼
+    if (currentPage < totalPages) {
+      buttons.push(
+        <TouchableOpacity
+          key="next"
+          style={styles.paginationButton}
+          onPress={() => handlePageChange(currentPage + 1)}
+          disabled={isLoading}
+        >
+          <Text style={styles.paginationButtonText}>›</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    return buttons;
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity 
-          style={[styles.navButton, styles.inactiveButton]} 
+        <TouchableOpacity
+          style={[styles.navButton, styles.inactiveButton]}
           onPress={navigateToAlternative}
         >
           <Text style={[styles.buttonText, styles.inactiveButtonText]}>대체약품 조회</Text>
         </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={[styles.navButton, styles.activeButton]} 
+
+        <TouchableOpacity
+          style={[styles.navButton, styles.activeButton]}
           onPress={navigateToProhibited}
         >
           <Text style={[styles.buttonText, styles.activeButtonText]}>반입금지 약품</Text>
         </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={[styles.navButton, styles.inactiveButton]} 
+
+        <TouchableOpacity
+          style={[styles.navButton, styles.inactiveButton]}
           onPress={navigateToPrescription}
         >
           <Text style={[styles.buttonText, styles.inactiveButtonText]}>처방전 스캔</Text>
@@ -77,14 +190,14 @@ export default function ProhibitedScreen() {
       </View>
 
       <View style={styles.searchContainer}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.dropdownButton}
           onPress={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           <Text style={styles.dropdownText}>{selectedCategory}</Text>
           <Entypo name="chevron-down" size={16} color="#666" />
         </TouchableOpacity>
-        
+
         {isDropdownOpen && (
           <View style={styles.dropdownMenu}>
             {categories.map((category, index) => (
@@ -103,7 +216,7 @@ export default function ProhibitedScreen() {
             ))}
           </View>
         )}
-        
+
         <View style={styles.searchInputContainer}>
           <TextInput
             style={styles.searchInput}
@@ -117,41 +230,82 @@ export default function ProhibitedScreen() {
           </TouchableOpacity>
         </View>
       </View>
+      
+      {/* 페이지네이션 */}
+      {totalPages > 1 && (
+        <View style={styles.paginationContainer}>
+          <View style={styles.paginationWrapper}>
+            {renderPaginationButtons()}
+          </View>
+        </View>
+      )}
 
       <View style={styles.warningContainer}>
         <FontAwesome name="info-circle" size={18} color="#E65100" marginLeft={8} />
         <Text style={styles.warningText}>하단의 의약품들은 대한민국에서 불법입니다.</Text>
       </View>
-      {prohibitedMedicines.map((medicine, index) => (
+
+      {/* 로딩 상태 표시 */}
+      {isLoading && (
+        <View style={styles.loadingContainer}>
+          <Text style={styles.loadingText}>로딩 중...</Text>
+        </View>
+      )}
+
+      {/* 약품 목록 */}
+      {prohibitedMedicines.map((data, index) => (
         <View key={index} style={styles.medicineCard}>
-          <View style={styles.medicineInfo}>
-            <View style={styles.medicineHeader}>
-              <Text style={styles.medicineName}>{medicine.name}</Text>
-              <Text style={styles.medicineDescription}>{medicine.description}</Text>
+          <View style={styles.medicineHeader}>
+            <Text style={styles.medicineName}>{data.prod_name}</Text>
+            <Text style={styles.medicineDescription}>{data.division}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', }}>
+            <View style={styles.medicineInfo}>
+              <View style={styles.medicineDetails}>
+                <Text style={styles.ingredientsLabel}>
+                  위험성분: <Text style={styles.ingredientsText}>{data.ing_name}</Text>
+                </Text>
+                <Text style={styles.punishmentLabel}>
+                  처벌내용: <Text style={styles.punishmentText}>{data.punish}</Text>
+                </Text>
+              </View>
             </View>
-            
-            <View style={styles.medicineDetails}>
-              <Text style={styles.ingredientsLabel}>
-                위험성분: <Text style={styles.ingredientsText}>{medicine.ingredients}</Text>
-              </Text>
-              <Text style={styles.punishmentLabel}>
-                처벌내용: <Text style={styles.punishmentText}>{medicine.punishment}</Text>
-              </Text>
-              <Text style={styles.substituteLabel}>
-                대체약품: <Text style={styles.substituteText}>{medicine.substitute}</Text>
-              </Text>
+            <View style={styles.medicineImageContainer}>
+              <Image
+                source={{ uri: data.medi_img }}
+                style={styles.medicineImage}
+                resizeMode="contain"
+              />
             </View>
           </View>
-          
-          <View style={styles.medicineImageContainer}>
-           <Image 
-              source={{ uri: medicine.image }} 
-              style={styles.medicineImage}
-              resizeMode="contain"
-            />
+
+          <View style={styles.substituteContainer}>
+            <View>
+              <Text style={styles.substituteLabel}>대체약품:</Text>
+              <Text style={styles.substituteText}>{data.substitute}</Text>
+            </View>
+            <View style={styles.substituteImageContainer}>
+              <Image
+                source={{ uri: data.substitute_img }}
+                style={styles.substituteImage}
+                resizeMode="contain"
+              />
+            </View>
           </View>
         </View>
       ))}
+
+      {/* 페이지네이션 */}
+      {totalPages > 1 && (
+        <View style={styles.paginationContainer}>
+          <View style={styles.paginationWrapper}>
+            {renderPaginationButtons()}
+          </View>
+        </View>
+      )}
+
+      {/* 하단 여백 */}
+      <View style={{ height: 30 }} />
     </ScrollView>
   );
 }
@@ -168,7 +322,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderColor: '#ccc',
     borderWidth: 1,
-
   },
   sectionTitle: {
     fontSize: 18,
@@ -225,13 +378,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#E65100',
   },
+  loadingContainer: {
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#666',
+  },
   medicineCard: {
     marginHorizontal: 20,
     marginVertical: 8,
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingTop: 10,
+    paddingBottom: 5,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -246,7 +408,6 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   medicineHeader: {
-    marginBottom: 12,
     flexDirection: 'row',
   },
   medicineName: {
@@ -289,22 +450,43 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     color: '#666',
   },
+  substituteContainer: {
+    flexDirection: 'row',
+    marginTop: 15,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingRight: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#EEE'
+  },
   substituteLabel: {
     fontSize: 13,
     color: '#007AFF',
     fontWeight: '500',
   },
   substituteText: {
-    fontWeight: 'normal',
-    color: '#007AFF',
+    marginTop: 4,
+    marginBottom: 10,
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#333',
   },
   medicineImageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-    medicineImage: {
+  medicineImage: {
     width: 100,
     height: 80,
+    borderRadius: 8,
+  },
+  substituteImageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  substituteImage: {
+    width: 80,
+    height: 64,
     borderRadius: 8,
   },
   searchContainer: {
@@ -399,5 +581,46 @@ const styles = StyleSheet.create({
   },
   searchIcon: {
     padding: 5,
+  },
+  // 페이지네이션 스타일 추가
+  paginationContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
+  },
+  paginationWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  paginationButton: {
+    minWidth: 40,
+    height: 40,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  activePaginationButton: {
+    backgroundColor: '#FF6B35',
+    borderColor: '#FF6B35',
+  },
+  paginationButtonText: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '500',
+  },
+  activePaginationButtonText: {
+    color: '#fff',
   },
 });
