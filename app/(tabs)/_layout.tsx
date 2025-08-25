@@ -1,5 +1,4 @@
 // app/(tabs)/_layout.tsx
-import Similar from '@/components/medi/SimilarMedi';
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -20,6 +19,7 @@ const Pagename = () => {
     prohibited: '반입금지 약품',
     prescription: '처방전 스캔',
     similar: '유사약품 조회 결과',
+    pharmacy: '처방전 조회 결과',
   };
   const currentTitle = titles[route.name] || '페이지';
 
@@ -202,6 +202,13 @@ export default function TabLayout() {
         name="similar"
         options={{
           title: '유사약품 조회 결과',
+          href: null,
+        }}
+      />
+            <Tabs.Screen
+        name="pharmacy"
+        options={{
+          title: '처방전 조회 결과',
           href: null,
         }}
       />
