@@ -13,6 +13,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import BasicInfoScreen from '../../components/profile/BasicInfo';
 import HealthInfoScreen from '../../components/profile/HealthInfo';
 import { User } from '../../types/profile';
+import { BASE_URL } from '../../types/ip';
 
 export default function ProfileScreen() {
   const { token, logout } = useAuth();
@@ -25,7 +26,7 @@ export default function ProfileScreen() {
 
   const fetchUserProfile = async () => {
     try {
-      const res = await fetch('http://192.168.45.33:3000/api/users/profile', {
+      const res = await fetch(`${BASE_URL}/users/profile`, {
         method: 'GET',
         headers: { 'Authorization': `Bearer ${token}` },
       });

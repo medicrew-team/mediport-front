@@ -15,6 +15,7 @@ import {
   FlatList,
 } from "react-native"
 import { Audio } from "expo-av"
+import { BASE_URL } from "../../types/ip"
 
 const LANGUAGES = [
   { code: "ko", name: "Korean", flag: "🇰🇷" },
@@ -38,8 +39,6 @@ export default function TranslateScreen() {
 
   const recordingRef = useRef<Audio.Recording | null>(null)
   const soundRef = useRef<Audio.Sound | null>(null)
-
-  const BASE_URL = "http://192.168.45.33:3000";
 
   const swapLanguages = () => {
     const temp = sourceLanguage
@@ -120,7 +119,7 @@ export default function TranslateScreen() {
       formData.append("sourceLanguage", sourceLanguage.code);
       formData.append("targetLanguage", targetLanguage.code);
 
-      const response = await fetch(`${BASE_URL}/api/translate`, {
+      const response = await fetch(`${BASE_URL}/translate`, {
         method: "POST",
         body: formData,
       })
@@ -166,7 +165,7 @@ const translateText = async () => {
     formData.append("sourceLanguage", sourceLanguage.code); // 예: "EN"
     formData.append("targetLanguage", targetLanguage.code); // 예: "KO"
 
-    const response = await fetch(`${BASE_URL}/api/translate`, {
+    const response = await fetch(`${BASE_URL}/translate`, {
       method: "POST",
       body: formData
     })
@@ -234,7 +233,7 @@ const translateText = async () => {
       formData.append("targetLanguage", targetLanguage.code);
       formData.append("inputType", "text");
 
-      const response = await fetch(`${BASE_URL}/api/translate`, {
+      const response = await fetch(`${BASE_URL}/translate`, {
         method: "POST",
         body: formData,
       })

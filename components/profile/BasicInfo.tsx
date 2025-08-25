@@ -11,6 +11,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useAuth } from '../../contexts/AuthContext';
 import { languages,InfoScreenProps } from '../../types/profile';
 import { Feather } from '@expo/vector-icons';
+import { BASE_URL } from '../../types/ip';
 
 const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) => {
   const { token } = useAuth();
@@ -26,7 +27,7 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
 
   const handleSave = async () => {
     try {
-      const res = await fetch('http://192.168.45.33:3000/api/users/profile', {
+      const res = await fetch(`${BASE_URL}/users/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +87,7 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
           />
         </View>
 
-        <View style={[styles.dropdownContainer, { zIndex: 3000 }]}>
+        <View style={[styles.dropdownContainer, { zIndex: 1000 }]}>
           <Text style={styles.inputLabel}>언어</Text>
           <TouchableOpacity style={styles.dropdownTitle} onPress={() => setShowDropdown(!showDropdown)}>
             <Text style={styles.dropdownText}>

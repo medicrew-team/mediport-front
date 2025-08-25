@@ -14,12 +14,13 @@ import {
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 import { PostType, Comment } from "../../types/post";
+import { BASE_URL } from '../../types/ip';
 
 interface ViewPostProps {
   post: PostType;
   token: string;
 }
-const API_BASE_URL = "http://192.168.45.33:3000/api";
+
 
 export default function ViewPost({ post, token }: ViewPostProps) {
   const [showDetail, setShowDetail] = useState(false);
@@ -57,7 +58,7 @@ export default function ViewPost({ post, token }: ViewPostProps) {
 
   const handleLike = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/boards/${post.board_id}/like`, {
+      const res = await fetch(`${BASE_URL}/boards/${post.board_id}/likes`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -73,7 +74,7 @@ export default function ViewPost({ post, token }: ViewPostProps) {
   const handleComment = async () => {
     if (!comment.trim()) return;
     try {
-      const res = await fetch(`${API_BASE_URL}/boards/${post.board_id}/comments`, {
+      const res = await fetch(`${BASE_URL}/boards/${post.board_id}/comments`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
@@ -95,7 +96,7 @@ export default function ViewPost({ post, token }: ViewPostProps) {
   const openDetail = async () => {
     setShowDetail(true);
     try {
-      await fetch(`${API_BASE_URL}/boards/${post.board_id}/view`, {
+      await fetch(`${BASE_URL}/boards/${post.board_id}/view`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });

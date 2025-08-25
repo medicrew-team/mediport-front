@@ -13,6 +13,10 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { User, InfoScreenProps, DISEASES, Medication } from '../../types/profile';
+import { BASE_URL } from '../../types/ip';
+
+const today = new Date();
+const formatted = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2,'0')}-${today.getDate().toString().padStart(2,'0')}`;
 
 // ScrollPicker 컴포넌트
 const ScrollPicker = ({ data, selectedValue, onValueChange, style }: {
@@ -98,7 +102,12 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
     useEffect(() => {
         if (user?.diseases) setSelectedDiseases(user.diseases.map(d => d.id));
         if (user?.history) setMedications(user.history.map(h => ({
-            medi_name: h.name, start_date: h.start_date, end_date: h.end_date, status: h.status, dosage: h.dosage
+            medi_name: h.name, 
+            start_date: h.start_date, 
+            end_date: h.end_date, 
+            status: h.status, 
+            dosage: h.dosage,
+            
         })));
     }, [user]);
 
@@ -108,7 +117,7 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
 
     const handleDiseaseSave = async () => {
         try {
-            const res = await fetch('http://192.168.45.33:3000/api/users/profile/diseases', {
+            const res = await fetch(`${BASE_URL}/users/profile/diseases`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ disease_ids: selectedDiseases }),
@@ -127,8 +136,42 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
         (copy[index] as any)[field] = value;
         setMedications(copy);
     };
-    const handleAddMedication = () => setMedications(prev => [...prev, { medi_name: '', start_date: '', end_date: '', status: '', dosage: '' }]);
-    const handleRemoveMedication = (index: number) => setMedications(prev => prev.filter((_, i) => i !== index));
+    const handleAddMedication = async () => {
+        try {
+            const newMed: Medication = { medi_name: '', start_date: formatted, end_date: formatted, status: '', dosage: '' };
+              console.log('POST 보내는 데이터:', { user_id: user?.user_id, history: newMed });
+            const res = await fetch(`${BASE_URL}/users/medications`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ user_id: user?.user_id, history: newMed }),
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const savedMed = await res.json(); // 서버에서 생성된 historyId 포함된 객체 반환 가정
+            setMedications(prev => [...prev, savedMed]);
+        } catch (err) {
+            console.error(err);
+            Alert.alert('오류', '복약 이력 추가에 실패했습니다.');
+        }
+    };
+
+
+    const handleRemoveMedication = async (index: number) => {
+        const historyId = medications[index].historyId; // 서버에서 받은 ID
+
+        try {
+            console.log(medications);
+            console.log('DELETE 보내는 데이터:', { user_id: user?.user_id, historyId });
+            const res = await fetch(`${BASE_URL}/users/medications/${historyId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` },
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            setMedications(prev => prev.filter((_, i) => i !== index));
+        } catch (err) {
+            console.error(err);
+            Alert.alert('오류', '복약 이력 삭제에 실패했습니다.');
+        }
+    };
 
     const openDateModal = (index: number, field: 'start_date' | 'end_date') => {
         const currentDate = medications[index][field] ? parseDate(medications[index][field]) : parseDate('');
@@ -170,14 +213,25 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
 
     const handleMedicationSave = async () => {
         try {
-            console.log('Sending user_id:', user?.user_id); 
-            console.log('Sending medications:', medications);
-            const res = await fetch('http://192.168.45.33:3000/api/users/medications', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ user_id: user?.user_id, history: medications }),
-            });
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            for (let m of medications) {
+                if (m.historyId) {
+                    // 기존 항목: 단일 업데이트
+                    await fetch(`${BASE_URL}/users/medications/${m.historyId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify(m),
+                    });
+                } else {
+                    // 신규 항목: POST
+                    const res = await fetch(`${BASE_URL}/users/medications`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ user_id: user?.user_id, history: m }),
+                    });
+                    const saved = await res.json();
+                    m.historyId = saved.historyId; // 상태에 갱신
+                }
+            }
             Alert.alert('성공', '복약 이력이 업데이트되었습니다.');
             if (onUpdate) onUpdate();
         } catch (err) {
@@ -186,14 +240,15 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
         }
     };
 
+
     return (
-      <KeyboardAwareScrollView
-        style={{ flex: 1 }}
-        contentContainerStyle={{ paddingBottom: 50 }}
-        enableOnAndroid={true}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
+        <KeyboardAwareScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={{ paddingBottom: 50 }}
+            enableOnAndroid={true}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+        >
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={onBack}>
                     <Text style={styles.backButtonText}>‹ 뒤로</Text>

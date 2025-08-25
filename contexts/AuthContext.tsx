@@ -11,9 +11,7 @@ import React, { createContext, ReactNode, useContext, useEffect, useState } from
 import { Alert } from 'react-native';
 import { auth } from '../config/firebase';
 import { OnboardingData } from '../types/onboarding';
-
-// 백엔드 API 기본 URL (환경에 맞게 수정하세요)
-const API_BASE_URL = 'http://192.168.45.33:3000/api'; // 실제 백엔드 URL로 변경
+import { BASE_URL } from '../types/ip';
 
 interface User {
   user_id: string;
@@ -63,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const authToken = firebaseToken || token;
 
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      const response = await fetch(`${BASE_URL}${endpoint}`, {
         method,
         headers: {
           'Content-Type': 'application/json',
@@ -296,7 +294,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         onboardingData.email.trim(),
         onboardingData.password
       );
-      const firebaseUser = userCredential.user;
+      firebaseUser = userCredential.user;
 
       // Firebase 프로필 업데이트
       if (onboardingData.name && onboardingData.name.trim()) {
@@ -326,8 +324,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (backendError) {
         console.error('백엔드 회원가입 실패:', backendError);
 
-        // 백엔드 등록 실패 시 Firebase 사용자 삭제
-        await firebaseUser.delete();
+        if (firebaseUser) {
+          try {
+            await firebaseUser.delete();
+          } catch (deleteError) {
+            console.error('Firebase 사용자 삭제 실패:', deleteError);
+          }
+        }
         throw new Error('서버 등록에 실패했습니다. 다시 시도해주세요.');
       }
       const backendUser = await registerUserToBackend(firebaseUser, onboardingData, idToken);
@@ -357,11 +360,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       Alert.alert('회원가입 실패', errorMessage);
-      await firebaseUser.delete();
+      if (firebaseUser) {
+        try {
+          await firebaseUser.delete();
+        } catch (deleteError) {
+          console.error('Firebase 사용자 삭제 실패:', deleteError);
+        }
+      }
       throw error;
     } finally {
-    setIsSignupInProgress(false);
-  }
+      setIsSignupInProgress(false);
+    }
   };
 
   const login = async (email: string, password: string) => {

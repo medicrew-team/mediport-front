@@ -14,8 +14,7 @@ import ViewPost from "../../components/post/Viewpost";
 import CreatePost from "../../components/post/Createpost";
 import { PostType } from "../../types/post";
 import { useAuth } from '../../contexts/AuthContext';
-
-const API_BASE_URL = "http://192.168.45.33:3000/api";
+import { BASE_URL } from '../../types/ip';
 
 export default function CommunityScreen() {
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -32,7 +31,7 @@ export default function CommunityScreen() {
   // 게시글 가져오기
   const fetchBoards = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/boards?page=1&limit=50`, {
+      const res = await fetch(`${BASE_URL}/boards?page=1&limit=50`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("게시글 불러오기 실패");
@@ -57,7 +56,7 @@ export default function CommunityScreen() {
                           selectedCategory === '내용' ? `content=${queryParam}` :
                           selectedCategory === '작성자' ? `author=${queryParam}` : '';
 
-      const res = await fetch(`${API_BASE_URL}/boards?${searchParam}${filterParam}&page=1&limit=50`, {
+      const res = await fetch(`${BASE_URL}/boards?${searchParam}${filterParam}&page=1&limit=50`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("검색 실패");

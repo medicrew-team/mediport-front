@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { BASE_URL } from '../../types/ip';
 
 interface CreatePostProps {
   visible: boolean;
@@ -19,8 +20,6 @@ interface CreatePostProps {
   onCreated: () => void;
   token: string;
 }
-
-const API_BASE_URL = "http://192.168.45.33:3000/api";
 
 export default function CreatePost({ visible, onClose, onCreated, token }: CreatePostProps) {
   const [title, setTitle] = useState("");
@@ -37,7 +36,7 @@ export default function CreatePost({ visible, onClose, onCreated, token }: Creat
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/boards`, {
+      const res = await fetch(`${BASE_URL}/boards`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

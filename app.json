@@ -9,12 +9,13 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "backgroundColor": "#FFFCF9"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/mediport.png",
-        "backgroundColor": "#50ACC5"
+        "backgroundColor": "#FFFCF9"
       },
       "edgeToEdgeEnabled": true
     },
