@@ -14,6 +14,7 @@ const languages = [
   { code: 'zh-CN', name: '中文', flag: '🇨🇳' },
   { code: 'vi', name: 'Tiếng Việt', flag: '🇻🇳' },
   { code: 'th', name: 'ไทย', flag: '🇹🇭' },
+  { code: 'fil', name: 'Filipino', flag: '🇵🇭' },
 ];
 
 export default function LanguageSelection() {

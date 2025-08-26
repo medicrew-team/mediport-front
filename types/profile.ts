@@ -4,6 +4,7 @@ export const languages = [
   { code: 'zh-CN', name: '中文', flag: '🇨🇳' },
   { code: 'vi', name: 'Tiếng Việt', flag: '🇻🇳' },
   { code: 'th', name: 'ไทย', flag: '🇹🇭' },
+  { code: 'fil', name: 'Filipino', flag: '🇵🇭' },
 ];
 // 사용자 타입 정의
 export interface User {
