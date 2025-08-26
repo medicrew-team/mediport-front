@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
+import { t } from 'i18next';
 
 export default function MemberCheck() {
   const { setCurrentStep } = useOnboarding();
@@ -25,9 +26,9 @@ export default function MemberCheck() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>        
-        <Text style={styles.title}>안녕하세요!</Text>
+        <Text style={styles.title}>{t('onboarding.memberCheck.title')}</Text>
         <Text style={styles.subtitle}>
-          저희 서비스의 회원이신가요?
+          {t('onboarding.memberCheck.subtitle')}
         </Text>
         <View style={styles.iconContainer}>
           <Image
@@ -41,14 +42,14 @@ export default function MemberCheck() {
             style={[styles.button, styles.yesButton]}
             onPress={handleYes}
           >
-            <Text style={styles.yesButtonText}>네, 회원이에요</Text>
+            <Text style={styles.yesButtonText}>{t('onboarding.memberCheck.yes')}</Text>
           </TouchableOpacity>
           
           <TouchableOpacity
             style={[styles.button, styles.noButton]}
             onPress={handleNo}
           >
-            <Text style={styles.noButtonText}>아니요, 처음이에요</Text>
+            <Text style={styles.noButtonText}>{t('onboarding.memberCheck.no')}</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -1,0 +1,18 @@
+{
+  "onboarding": {
+    "memberCheck": {
+      "title": "您好！",
+      "subtitle": "您是我们的会员吗？",
+      "yes": "是的，我是会员",
+      "no": "不，我是新用户"
+    },
+    "basicInfo": {
+      "title": "请输入基本信息",
+      "subtitle": "请输入姓名、年龄和性别"
+    },
+    "emailVerification": {
+      "title": "邮箱验证",
+      "subtitle": "请输入邮件中的验证码"
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
+import "../config/i18n"; // ✅ i18n 초기화 반드시 import
 
 const ONBOARDING_COMPLETED_KEY = 'onboarding_completed';
 

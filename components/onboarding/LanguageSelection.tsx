@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
+import i18n from "../../config/i18n";
 
 const languages = [
   { code: 'ko', name: '한국어', flag: '🇰🇷' },
@@ -24,6 +25,7 @@ export default function LanguageSelection() {
   const handleNext = () => {
     if (selectedLanguage) {
       updateData({ language: selectedLanguage });
+      i18n.changeLanguage(selectedLanguage);
       nextStep();
     }
   };

@@ -1,0 +1,18 @@
+{
+  "onboarding": {
+    "memberCheck": {
+      "title": "Xin chào!",
+      "subtitle": "Bạn đã là thành viên của dịch vụ chúng tôi chưa?",
+      "yes": "Vâng, tôi là thành viên",
+      "no": "Không, tôi mới sử dụng lần đầu"
+    },
+    "basicInfo": {
+      "title": "Vui lòng nhập thông tin cơ bản",
+      "subtitle": "Nhập tên, tuổi và giới tính của bạn"
+    },
+    "emailVerification": {
+      "title": "Xác minh Email",
+      "subtitle": "Vui lòng nhập mã từ email"
+    }
+  }
+}

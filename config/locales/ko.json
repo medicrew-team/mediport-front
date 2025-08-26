@@ -1,0 +1,18 @@
+{
+  "onboarding": {
+    "memberCheck": {
+      "title": "안녕하세요!",
+      "subtitle": "저희 서비스의 회원이신가요?",
+      "yes": "네, 회원이에요",
+      "no": "아니요, 처음이에요"
+    },
+    "basicInfo": {
+      "title": "기본 정보를 입력해주세요",
+      "subtitle": "이름, 나이, 성별 등을 입력하세요"
+    },
+    "emailVerification": {
+      "title": "이메일 인증",
+      "subtitle": "받은 메일의 코드를 입력해주세요"
+    }
+  }
+}

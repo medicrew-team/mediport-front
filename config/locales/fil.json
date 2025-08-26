@@ -1,0 +1,18 @@
+{
+  "onboarding": {
+    "memberCheck": {
+      "title": "Kamusta!",
+      "subtitle": "Ikaw ba ay miyembro na ng aming serbisyo?",
+      "yes": "Oo, miyembro ako",
+      "no": "Hindi, bago lang ako dito"
+    },
+    "basicInfo": {
+      "title": "Pakilagay ang iyong pangunahing impormasyon",
+      "subtitle": "Ilagay ang iyong pangalan, edad, at kasarian"
+    },
+    "emailVerification": {
+      "title": "Pagpapatunay ng Email",
+      "subtitle": "Pakilagay ang code mula sa iyong email"
+    }
+  }
+}

@@ -12,6 +12,7 @@ import {
   View,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
+import { useTranslation } from "react-i18next";
 
 // 커스텀 스크롤 휠 컴포넌트
 const ScrollPicker = ({
@@ -118,6 +119,8 @@ const generateDays = (year: string, month: string) => {
 type GenderType = '' | 'male' | 'female' | 'other';
 
 export default function BasicInfoForm() {
+  const { t } = useTranslation();
+  
   const { data, updateData, nextStep, previousStep } = useOnboarding();
   const [showDateModal, setShowDateModal] = useState(false);
   const [formData, setFormData] = useState({

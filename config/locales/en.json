@@ -1,0 +1,18 @@
+{
+  "onboarding": {
+    "memberCheck": {
+      "title": "Hello!",
+      "subtitle": "Are you already a member of our service?",
+      "yes": "Yes, I am a member",
+      "no": "No, I’m new here"
+    },
+    "basicInfo": {
+      "title": "Please enter your basic information",
+      "subtitle": "Enter your name, age, and gender"
+    },
+    "emailVerification": {
+      "title": "Email Verification",
+      "subtitle": "Please enter the code from the email"
+    }
+  }
+}
