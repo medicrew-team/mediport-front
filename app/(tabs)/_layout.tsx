@@ -48,10 +48,10 @@ const TabBarIcon = ({
 }) => (
   <View style={styles.tabIconContainer}>
     <View style={[
-      styles.tabIconBackground, 
+      styles.tabIconBackground,
       focused && styles.tabIconBackgroundFocused
     ]}>
-      <Ionicons 
+      <Ionicons
         name={iconName}
         size={24}
         color={focused ? '#fff' : color}
@@ -72,10 +72,10 @@ const TabBarMaterialIcon = ({
 }) => (
   <View style={styles.tabIconContainer}>
     <View style={[
-      styles.tabIconBackground, 
+      styles.tabIconBackground,
       focused && styles.tabIconBackgroundFocused
     ]}>
-      <MaterialCommunityIcons 
+      <MaterialCommunityIcons
         name={iconName}
         size={24}
         color={focused ? '#fff' : color}
@@ -94,10 +94,10 @@ const TabBarAwesomeIcon = ({
 }) => (
   <View style={styles.tabIconContainer}>
     <View style={[
-      styles.tabIconBackground, 
+      styles.tabIconBackground,
       focused && styles.tabIconBackgroundFocused
     ]}>
-      <FontAwesome5 
+      <FontAwesome5
         name={iconName}
         size={20}
         color={focused ? '#fff' : color}
@@ -205,7 +205,7 @@ export default function TabLayout() {
           href: null,
         }}
       />
-            <Tabs.Screen
+      <Tabs.Screen
         name="pharmacy"
         options={{
           title: '처방전 조회 결과',
@@ -213,7 +213,7 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
-    
+
   );
 }
 
