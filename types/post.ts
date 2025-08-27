@@ -2,7 +2,7 @@
 
 export interface Author {
   id: string;           // 백엔드 authorDto.id → user_id
-  profileImage: string | null; // user_img 또는 null
+  user_img?: string | null; // user_img 또는 null
   nickname: string;
   country: string;
   region: string;

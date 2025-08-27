@@ -109,11 +109,14 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                         <Text style={styles.labelSmall}>약효분류: </Text>
                         <Text style={styles.valueSmall}>{drug.dbInfo?.bit || "정보없음"}</Text>
                     </View>
-                    <Text style={styles.labelSmall}>주요 효능: </Text>
-                    <Text style={styles.summaryText} numberOfLines={2}>
-                        {drug.dbInfo?.icd_sum || "주요 효능 정보없음"}
-                    </Text>
-
+                    <View style={{ flexDirection: 'row', marginVertical: 4 }}>
+                        <Text style={styles.labelSmall}>복약안내: </Text>
+                        <Text style={styles.summaryText} numberOfLines={2}>
+                            {`${drug.ocrInfo["투약량"] || "-"}정씩 `}
+                            {`${drug.ocrInfo.횟수 || "-"}회 `}
+                            {`${drug.ocrInfo.일수 || "-"}일분 `}
+                        </Text>
+                    </View>
                     <View style={styles.badgeContainer}>
                         <View style={styles.locationBadge}>
                             <Text style={styles.badgeText}>{drug.dbInfo?.location || "구분"}</Text>
@@ -121,11 +124,6 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                         <View style={styles.formBadge}>
                             <Text style={styles.badgeText}>{drug.dbInfo?.form || "제형"}</Text>
                         </View>
-                        {drug.ocrInfo && (
-                            <View style={styles.ocrBadge}>
-                                <Text style={styles.badgeText}>OCR</Text>
-                            </View>
-                        )}
                     </View>
                 </View>
 
@@ -161,7 +159,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                         <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
                             <View style={styles.modalHeaderContent}>
                                 <View style={styles.sectionHeader}>
-                                    <Feather name="image" style={{marginRight: 6}} size={26} color="#8D4DE5" />
+                                    <Feather name="image" style={{ marginRight: 6 }} size={26} color="#8D4DE5" />
                                     <Text style={styles.sectionTitle}>제품 이미지</Text>
                                 </View>
                                 <View style={styles.modalImageContainer}>
@@ -178,7 +176,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                             {/* 기본 정보 섹션 */}
                             <View style={styles.section}>
                                 <View style={styles.sectionHeader}>
-                                    <Entypo name="info-with-circle" style={{marginRight: 8}} size={24} color="#0066ff" />
+                                    <Entypo name="info-with-circle" style={{ marginRight: 8 }} size={24} color="#0066ff" />
                                     <Text style={styles.sectionTitle}>기본 정보</Text>
                                 </View>
                                 <View style={styles.infoCard}>
@@ -201,15 +199,15 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                             {selectedDrug.ocrInfo && (
                                 <View style={styles.section}>
                                     <View style={styles.sectionHeader}>
-                                        <MaterialCommunityIcons name="text-recognition" style={{marginRight: 6}} size={24} color="#8B5CF6" />
+                                        <MaterialCommunityIcons name="text-recognition" style={{ marginRight: 6 }} size={24} color="#8B5CF6" />
                                         <Text style={styles.sectionTitle}>처방전 정보</Text>
                                     </View>
                                     <View style={[styles.detailCard, styles.ocrCard]}>
                                         <Text style={styles.detailCardLabel}>OCR 인식 결과</Text>
                                         <Text style={styles.detailCardValue}>
-                                            {`1회 복용량: ${selectedDrug.ocrInfo.일수 || "-"}정\n`}
-                                            {`복용 일수: ${selectedDrug.ocrInfo["투약량"] || "-"}일\n`}
-                                            {`1일 복용 횟수: ${selectedDrug.ocrInfo.횟수 || "-"}회`}
+                                            {`${selectedDrug.ocrInfo["투약량"] || "-"}정씩 `}
+                                            {`${selectedDrug.ocrInfo.횟수 || "-"}회 `}
+                                            {`${selectedDrug.ocrInfo.일수 || "-"}일분 `}
                                         </Text>
                                     </View>
                                 </View>
@@ -218,7 +216,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                             {/* 복용 정보 섹션 */}
                             <View style={styles.section}>
                                 <View style={styles.sectionHeader}>
-                                    <MaterialCommunityIcons name="hospital-box-outline" style={{marginRight: 6}} size={24} color="#10B981" />
+                                    <MaterialCommunityIcons name="hospital-box-outline" style={{ marginRight: 6 }} size={24} color="#10B981" />
                                     <Text style={styles.sectionTitle}>복용 정보</Text>
                                 </View>
                                 <View style={[styles.detailCard, styles.dosageCard]}>
@@ -230,7 +228,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                             {/* 주의사항 섹션 */}
                             <View style={styles.section}>
                                 <View style={styles.sectionHeader}>
-                                    <Ionicons name="warning" style={{marginRight: 6}} size={24} color="#D80027" />
+                                    <Ionicons name="warning" style={{ marginRight: 6 }} size={24} color="#D80027" />
                                     <Text style={styles.sectionTitle}>주의사항</Text>
                                 </View>
 
@@ -258,7 +256,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                             {/* 보관 정보 섹션 */}
                             <View style={styles.section}>
                                 <View style={styles.sectionHeader}>
-                                    <AntDesign name="medicinebox" size={28} style={{marginRight: 8}} color="black" />
+                                    <AntDesign name="medicinebox" size={28} style={{ marginRight: 8 }} color="black" />
                                     <Text style={styles.sectionTitle}>보관 방법</Text>
                                 </View>
                                 <View style={[styles.detailCard, styles.storageCard]}>
@@ -652,6 +650,13 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
         borderRadius: 12,
         alignItems: 'center',
+
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+
+        elevation: 3,
     },
     closeModalButtonText: {
         fontSize: 16,

@@ -14,18 +14,18 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../types/ip';
 import { InfoScreenProps, Medication } from '../../types/profile';
-import { t } from 'i18next';
+
 // 질병 목록 상수
  const DISEASES = [
-  { disease_id: 1, disease_name: t('DISEASES.1') },
-  { disease_id: 2, disease_name: t('DISEASES.2') },
-  { disease_id: 3, disease_name: t('DISEASES.3') },
-  { disease_id: 4, disease_name: t('DISEASES.4') },
-  { disease_id: 5, disease_name: t('DISEASES.5') },
-  { disease_id: 6, disease_name: t('DISEASES.6') },
-  { disease_id: 7, disease_name: t('DISEASES.7') },
-  { disease_id: 8, disease_name: t('DISEASES.8') },
-  { disease_id: 9, disease_name: t('DISEASES.9') },
+  { disease_id: 1, disease_name:"고혈압" },
+  { disease_id: 2, disease_name: "당뇨병" },
+  { disease_id: 3, disease_name: "고지혈증" },
+  { disease_id: 4, disease_name: "심부전" },
+  { disease_id: 5, disease_name: "협심증" },
+  { disease_id: 6, disease_name: "뇌졸증" },
+  { disease_id: 7, disease_name: "통풍" },
+  { disease_id: 8, disease_name: "천식" },
+  { disease_id: 9, disease_name: "관절염" },
 ];
 
 const today = new Date();

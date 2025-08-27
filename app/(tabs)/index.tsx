@@ -11,12 +11,13 @@ import {
 import { useAuth } from '../../contexts/AuthContext';
 import BasicInfoScreen from '../../components/profile/BasicInfo';
 import HealthInfoScreen from '../../components/profile/HealthInfo';
+import CautionInfoScreen from '../../components/profile/CautionInfo';
 import { User } from '../../types/profile';
 import { BASE_URL } from '../../types/ip';
 
 export default function ProfileScreen() {
   const { token, logout } = useAuth();
-  const [currentView, setCurrentView] = useState('profile'); // 'profile', 'basic', 'health'
+  const [currentView, setCurrentView] = useState('profile');
   const [user, setUser] = useState<User | null>(null);
 
   const handleLogout = async () => {
@@ -84,6 +85,16 @@ export default function ProfileScreen() {
     );
   }
 
+    if (currentView === 'caution') {
+    return (
+      <CautionInfoScreen 
+        user={user} 
+        onBack={handleBackToProfile} 
+        onUpdate={fetchUserProfile} 
+      />
+    );
+  }
+
   // 메인 프로필 화면
   return (
     <ScrollView style={styles.container}>
@@ -120,6 +131,13 @@ export default function ProfileScreen() {
           onPress={() => setCurrentView('health')}
         >
           <Text style={styles.menuText}>건강 정보</Text>
+          <Text style={styles.arrow}>›</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => setCurrentView('caution')}
+        >
+          <Text style={styles.menuText}>병용 금지</Text>
           <Text style={styles.arrow}>›</Text>
         </TouchableOpacity>
       </View>

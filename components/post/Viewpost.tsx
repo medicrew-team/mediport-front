@@ -119,8 +119,8 @@ const getCategoryColor = (category: string) => {
       <TouchableOpacity style={styles.postCard} onPress={openDetail}>
         <View style={styles.postHeader}>
           <View style={styles.avatar}>
-            {post.author?.profileImage && (
-              <Image source={{ uri: post.author.profileImage }} style={styles.avatarImage} />
+            {post.author?.user_img && (
+              <Image source={{ uri: post.author.user_img }} style={styles.avatarImage} />
             )}
           </View>
           <View style={styles.postInfo}>
@@ -174,8 +174,8 @@ const getCategoryColor = (category: string) => {
           <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
             <View style={styles.detailHeader}>
               <View style={styles.avatar}>
-                {post.author?.profileImage && (
-                  <Image source={{ uri: post.author.profileImage }} style={styles.avatarImage} />
+                {post.author?.user_img && (
+                  <Image source={{ uri: post.author.user_img }} style={styles.avatarImage} />
                 )}
               </View>
               <View style={styles.detailInfo}>
