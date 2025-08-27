@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Alert,
 } from 'react-native';
 import { t } from 'i18next';
 
@@ -24,10 +25,15 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (!email.trim() || !password.trim()) {
+    if (!email || !email.trim()) {
+      Alert.alert(t('onboarding.alert.error'), t('onboarding.alert.email?'));
       return;
     }
-    
+    if (!password) {
+      Alert.alert(t('onboarding.alert.error'), t('onboarding.alert.password?'));
+      return;
+    }
+
     setIsLoading(true);
     try {
       await onLogin(email, password);
@@ -43,15 +49,15 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.container}>
             {/* 뒤로가기 버튼 */}
-            <TouchableOpacity 
-              style={styles.backButton} 
+            <TouchableOpacity
+              style={styles.backButton}
               onPress={handleBackToOnboarding}
             >
               <Text style={styles.backButtonText}>{t('onboarding.login.back')}</Text>
@@ -60,7 +66,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
             <View style={styles.content}>
               <Text style={styles.title}>{t('onboarding.login.title')}</Text>
               <Text style={styles.subtitle}>{t('onboarding.login.subtitle')}</Text>
-              
+
               <View style={styles.form}>
                 <View style={styles.inputGroup}>
                   <Text style={styles.label}>{t('onboarding.login.email')}</Text>
@@ -88,13 +94,12 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
                   />
                 </View>
 
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={[
                     styles.loginButton,
                     isLoading && styles.disabledButton
-                  ]} 
+                  ]}
                   onPress={handleLogin}
-                  disabled={isLoading || !email.trim() || !password.trim()}
                 >
                   <Text style={[
                     styles.loginButtonText,

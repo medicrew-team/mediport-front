@@ -20,7 +20,8 @@
       "nationality?": "Pumili ng iyong nasyonalidad",
       "phone?": "Pakilagay ang iyong numero ng telepono",
       "residence?": "Pakilagay ang iyong tirahan",
-      "onboardingfail": "Nagkaroon ng problema sa pagpaparehistro. Pakisubukang muli."
+      "onboardingfail": "Nagkaroon ng problema sa pagpaparehistro. Pakisubukang muli.",
+      "loginfail": "Nabigo ang pag-login.\nPakisubukang muli."
     },
     "modal": {
       "close": "Kanselahin",

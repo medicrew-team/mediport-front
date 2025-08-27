@@ -12,6 +12,7 @@ import { Alert } from 'react-native';
 import { auth } from '../config/firebase';
 import { OnboardingData } from '../types/onboarding';
 import { BASE_URL } from '../types/ip';
+import { t } from 'i18next';
 
 interface User {
   user_id: string;
@@ -263,30 +264,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsSignupInProgress(true);
     let firebaseUser: any = null;
     try {
-      // 입력 검증
-      if (!onboardingData.name || !onboardingData.name.trim()) {
-        Alert.alert('오류', '이름을 입력해주세요.');
-        return;
-      }
-      if (!onboardingData.email || !onboardingData.email.trim()) {
-        Alert.alert('오류', '이메일을 입력해주세요.');
-        return;
-      }
       if (!onboardingData.password) {
-        Alert.alert('오류', '비밀번호를 입력해주세요.');
         return;
       }
-      if (onboardingData.password.length < 6) {
-        Alert.alert('오류', '비밀번호는 6자리 이상이어야 합니다.');
-        return;
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(onboardingData.email.trim())) {
-        Alert.alert('오류', '올바른 이메일 형식을 입력해주세요.');
-        return;
-      }
-
       // 1. Firebase 회원가입
       console.log('AuthContext: Firebase 회원가입 시도 중...');
       const userCredential = await createUserWithEmailAndPassword(
@@ -359,7 +339,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      Alert.alert('회원가입 실패', errorMessage);
+      console.error('회원가입 실패', errorMessage);
       if (firebaseUser) {
         try {
           await firebaseUser.delete();
@@ -375,19 +355,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      // 입력 검증
-      if (!email || !email.trim()) {
-        Alert.alert('오류', '이메일을 입력해주세요.');
-        return;
-      }
-      if (!password) {
-        Alert.alert('오류', '비밀번호를 입력해주세요.');
-        return;
-      }
-
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email.trim())) {
-        Alert.alert('오류', '올바른 이메일 형식을 입력해주세요.');
+        Alert.alert(t('onboarding.alert.error'), t('onboarding.alert.emailRegex?'));
         return;
       }
 
@@ -443,7 +413,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      Alert.alert('로그인 실패', errorMessage);
+      Alert.alert(t('onboarding.alert.loginfail'));
+      console.log('로그인 실패', errorMessage);
       throw error;
     }
   };

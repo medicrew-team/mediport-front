@@ -25,7 +25,8 @@
       "phone?": "请输入电话号码",
       "residence?": "请输入居住地",
 
-      "onboardingfail": "注册过程中发生错误，请重试。"
+      "onboardingfail": "注册过程中发生错误，请重试。",
+      "loginfail": "登录失败,\n请重试。"
     },
     "modal": {
       "close": "取消",

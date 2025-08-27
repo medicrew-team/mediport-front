@@ -25,7 +25,8 @@
       "phone?": "Vui lòng nhập số điện thoại",
       "residence?": "Vui lòng nhập nơi cư trú",
 
-      "onboardingfail": "Có lỗi xảy ra khi đăng ký. Vui lòng thử lại."
+      "onboardingfail": "Có lỗi xảy ra khi đăng ký. Vui lòng thử lại.",
+      "loginfail": "Đăng nhập thất bại.\nVui lòng thử lại."
     },
     "modal": {
       "close": "Hủy",

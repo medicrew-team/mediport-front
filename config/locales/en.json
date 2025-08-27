@@ -25,7 +25,8 @@
       "phone?": "Please enter your phone number",
       "residence?": "Please enter your residence",
 
-      "onboardingfail": "An error occurred during registration.\n Please try again."
+      "onboardingfail": "An error occurred during registration.\n Please try again.",
+      "loginfail": "Login failed.\nPlease try again."
     },
     "modal": {
       "close": "Cancel",
