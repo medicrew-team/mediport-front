@@ -12,7 +12,7 @@ import {
   View,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
-import { useTranslation } from "react-i18next";
+import { t } from 'i18next';
 
 // 커스텀 스크롤 휠 컴포넌트
 const ScrollPicker = ({
@@ -119,7 +119,6 @@ const generateDays = (year: string, month: string) => {
 type GenderType = '' | 'male' | 'female' | 'other';
 
 export default function BasicInfoForm() {
-  const { t } = useTranslation();
   
   const { data, updateData, nextStep, previousStep } = useOnboarding();
   const [showDateModal, setShowDateModal] = useState(false);
@@ -152,19 +151,19 @@ export default function BasicInfoForm() {
 
   const handleNext = () => {
     if (!formData.name.trim()) {
-      Alert.alert('알림', '이름을 입력해주세요.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.name?'));
       return;
     }
     if (!formData.nickname.trim()) {
-      Alert.alert('알림', '닉네임을 입력해주세요.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.nickname?'));
       return;
     }
     if (!formData.gender) {
-      Alert.alert('알림', '성별을 선택해주세요.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.gender?'));
       return;
     }
     if (!formData.birthDate) {
-      Alert.alert('알림', '생년월일을 선택해주세요.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.birthDate?'));
       return;
     }
 
@@ -217,14 +216,14 @@ export default function BasicInfoForm() {
           </View>
 
           <View style={styles.content}>
-            <Text style={styles.title}>기본 정보를 입력해주세요</Text>
+            <Text style={styles.title}>{t('onboarding.basicInfo.title')}</Text>
 
             <View style={styles.form}>
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>이름 *</Text>
+                <Text style={styles.label}>{t('onboarding.basicInfo.name')}</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="실명을 입력해주세요"
+                  placeholder={t('onboarding.basicInfo.nameplaceholder')}
                   placeholderTextColor="#999"
                   value={formData.name}
                   onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
@@ -232,10 +231,10 @@ export default function BasicInfoForm() {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>닉네임 *</Text>
+                <Text style={styles.label}>{t('onboarding.basicInfo.nickname')}</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="사용하실 닉네임을 입력해주세요"
+                  placeholder={t('onboarding.basicInfo.nicknameplaceholder')}
                   placeholderTextColor="#999"
                   value={formData.nickname}
                   onChangeText={(text) => setFormData(prev => ({ ...prev, nickname: text }))}
@@ -243,12 +242,12 @@ export default function BasicInfoForm() {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>성별 *</Text>
+                <Text style={styles.label}>{t('onboarding.basicInfo.gender')}</Text>
                 <View style={styles.genderContainer}>
                   {[
-                    { key: 'male', label: '남성' },
-                    { key: 'female', label: '여성' },
-                    { key: 'other', label: '기타' },
+                    { key: 'male', label: t('onboarding.basicInfo.male') },
+                    { key: 'female', label: t('onboarding.basicInfo.female') },
+                    { key: 'other', label: t('onboarding.basicInfo.other') },
                   ].map((option) => (
                     <TouchableOpacity
                       key={option.key}
@@ -270,7 +269,7 @@ export default function BasicInfoForm() {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>생년월일 *</Text>
+                <Text style={styles.label}>{t('onboarding.basicInfo.birthDate')}</Text>
                 <TouchableOpacity
                   style={styles.dateButton}
                   onPress={() => {
@@ -284,14 +283,14 @@ export default function BasicInfoForm() {
                     styles.dateButtonText,
                     !formData.birthDate && styles.placeholderText
                   ]}>
-                    {formData.birthDate || '생년월일을 선택해주세요'}
+                    {formData.birthDate || t('onboarding.basicInfo.birthDateplaceholder')}
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
 
             <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-              <Text style={styles.nextButtonText}>다음</Text>
+              <Text style={styles.nextButtonText}>{t('onboarding.basicInfo.next')}</Text>
             </TouchableOpacity>
           </View>
       </KeyboardAwareScrollView>
@@ -310,20 +309,20 @@ export default function BasicInfoForm() {
                 onPress={() => setShowDateModal(false)}
                 style={styles.modalButton}
               >
-                <Text style={styles.modalButtonText}>취소</Text>
+                <Text style={styles.modalButtonText}>{t('onboarding.modal.close')}</Text>
               </TouchableOpacity>
-              <Text style={styles.modalTitle}>생년월일 선택</Text>
+              <Text style={styles.modalTitle}>{t('onboarding.modal.title')}</Text>
               <TouchableOpacity
                 onPress={handleDateConfirm}
                 style={styles.modalButton}
               >
-                <Text style={[styles.modalButtonText, styles.confirmText]}>확인</Text>
+                <Text style={[styles.modalButtonText, styles.confirmText]}>{t('onboarding.modal.confirm')}</Text>
               </TouchableOpacity>
             </View>
 
             <View style={styles.datePickerContainer}>
               <View style={styles.datePickerColumn}>
-                <Text style={styles.columnLabel}>년</Text>
+                <Text style={styles.columnLabel}>{t('onboarding.modal.year')}</Text>
                 <ScrollPicker
                   data={years}
                   selectedValue={dateComponents.year}
@@ -332,7 +331,7 @@ export default function BasicInfoForm() {
               </View>
 
               <View style={styles.datePickerColumn}>
-                <Text style={styles.columnLabel}>월</Text>
+                <Text style={styles.columnLabel}>{t('onboarding.modal.month')}</Text>
                 <ScrollPicker
                   data={months}
                   selectedValue={dateComponents.month}
@@ -341,7 +340,7 @@ export default function BasicInfoForm() {
               </View>
 
               <View style={styles.datePickerColumn}>
-                <Text style={styles.columnLabel}>일</Text>
+                <Text style={styles.columnLabel}>{t('onboarding.modal.day')}</Text>
                 <ScrollPicker
                   data={days}
                   selectedValue={dateComponents.day}

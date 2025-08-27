@@ -11,27 +11,28 @@ import {
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
 import CountryPicker from './CountryPicker';
+import { t } from 'i18next';
 
 export default function LocationContactForm() {
   const { data, updateData, nextStep, previousStep } = useOnboarding();
-  const [nationality, setNationality] = useState(data.nationality || '대한민국');
+  const [nationality, setNationality] = useState(data.nationality || t('onboarding.countries.korea'));
   const [countryCode, setCountryCode] = useState(data.countryCode || '+82');
   const [phone, setPhone] = useState(data.phone);
   const [residence, setResidence] = useState(data.residence);
 
-  const countries = ['대한민국', '중국', '미국', '베트남', '필리핀', '태국', '기타'];
+  const countries = [t('onboarding.countries.korea'), t('onboarding.countries.china'), t('onboarding.countries.english'), t('onboarding.countries.vietnam'), t('onboarding.countries.philippines'), t('onboarding.countries.thailand'), t('onboarding.countries.others')];
 
   const handleNext = () => {
     if (!nationality) {
-      Alert.alert('알림', '국적을 선택해주세요.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.nationality?'));
       return;
     }
     if (!phone.trim() || phone.trim().length < 7) { // 최소 7자리 (국가코드 제외)
-      Alert.alert('알림', '유효한 전화번호를 입력해주세요.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.phone?'));
       return;
     }
     if (!residence.trim()) {
-      Alert.alert('알림', '거주 지역을 입력해주세요.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.residence?'));
       return;
     }
 
@@ -62,14 +63,14 @@ export default function LocationContactForm() {
         </View>
 
         <View style={styles.content}>
-          <Text style={styles.title}>연락처 및 거주지 정보</Text>
+          <Text style={styles.title}>{t('onboarding.locationContact.title')}</Text>
           <Text style={styles.subtitle}>
-            정확한 정보 입력을 부탁드립니다.
+            {t('onboarding.locationContact.subtitle')}
           </Text>
           
           <View style={styles.form}>
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>국적 *</Text>
+              <Text style={styles.label}>{t('onboarding.locationContact.nationality')}</Text>
               <CountryPicker
                 selectedCountry={nationality}
                 onCountrySelect={setNationality}
@@ -78,7 +79,7 @@ export default function LocationContactForm() {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>전화번호 *</Text>
+              <Text style={styles.label}>{t('onboarding.locationContact.phone')}</Text>
               <View style={styles.phoneContainer}>
                 <Text style={styles.plusSign}>+</Text>
                 <TextInput
@@ -92,7 +93,7 @@ export default function LocationContactForm() {
                 />
                 <TextInput
                   style={styles.phoneInput}
-                  placeholder="전화번호 (숫자만 입력)"
+                  placeholder={t('onboarding.locationContact.phoneplaceholder')}
                   placeholderTextColor="#999"
                   value={phone}
                   onChangeText={(text) => setPhone(text.replace(/[^0-9]/g, ''))}
@@ -102,10 +103,10 @@ export default function LocationContactForm() {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>거주 지역 *</Text>
+              <Text style={styles.label}>{t('onboarding.locationContact.residence')}</Text>
               <TextInput
                 style={styles.input}
-                placeholder="예: 서울시 강남구"
+                placeholder={t('onboarding.locationContact.residenceplaceholder')}
                 placeholderTextColor="#999"
                 value={residence}
                 onChangeText={setResidence}
@@ -114,7 +115,7 @@ export default function LocationContactForm() {
           </View>
 
           <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-            <Text style={styles.nextButtonText}>다음</Text>
+            <Text style={styles.nextButtonText}>{t('onboarding.locationContact.next')}</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>

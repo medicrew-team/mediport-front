@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
+import { t } from 'i18next';
 
 export default function PasswordSetupForm() {
   const { data, updateData, nextStep, previousStep } = useOnboarding();
@@ -18,15 +19,15 @@ export default function PasswordSetupForm() {
 
   const handleNext = () => {
     if (!password.trim()) {
-      Alert.alert('알림', '비밀번호를 입력해주세요.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.password?'));
       return;
     }
     if (password.length < 6) {
-      Alert.alert('알림', '비밀번호는 6자리 이상이어야 합니다.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.passwordRegex?'));
       return;
     }
     if (password !== confirmPassword) {
-      Alert.alert('알림', '비밀번호가 일치하지 않습니다.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.passwordMismatch?'));
       return;
     }
 
@@ -51,17 +52,17 @@ export default function PasswordSetupForm() {
         </View>
 
         <View style={styles.content}>
-          <Text style={styles.title}>비밀번호 설정</Text>
+          <Text style={styles.title}>{t('onboarding.passwordSetup.title')}</Text>
           <Text style={styles.subtitle}>
-            안전한 계정을 위해 비밀번호를 설정해주세요.
+            {t('onboarding.passwordSetup.subtitle')}
           </Text>
 
           <View style={styles.form}>
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>비밀번호 *</Text>
+              <Text style={styles.label}>{t('onboarding.passwordSetup.password')}</Text>
               <TextInput
                 style={styles.input}
-                placeholder="6자리 이상 입력해주세요"
+                placeholder={t('onboarding.passwordSetup.passwordplaceholder')}
                 placeholderTextColor="#999"
                 value={password}
                 onChangeText={setPassword}
@@ -71,10 +72,10 @@ export default function PasswordSetupForm() {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>비밀번호 확인 *</Text>
+              <Text style={styles.label}>{t('onboarding.passwordSetup.confirmPassword')}</Text>
               <TextInput
                 style={styles.input}
-                placeholder="비밀번호를 다시 입력해주세요"
+                placeholder={t('onboarding.passwordSetup.confirmPasswordplaceholder')}
                 placeholderTextColor="#999"
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
@@ -85,7 +86,7 @@ export default function PasswordSetupForm() {
           </View>
 
           <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-            <Text style={styles.nextButtonText}>다음</Text>
+            <Text style={styles.nextButtonText}>{t('onboarding.passwordSetup.next')}</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>

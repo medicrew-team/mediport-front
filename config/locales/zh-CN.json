@@ -1,18 +1,154 @@
 {
   "onboarding": {
+    "alert": {
+      "title": "提示",
+      "success": "成功",
+      "error": "错误",
+
+      "name?": "请输入姓名",
+      "nickname?": "请输入昵称",
+      "gender?": "请选择性别",
+      "birthDate?": "请选择出生日期",
+
+      "email?": "请输入邮箱地址",
+      "emailRegex?": "请输入正确的邮箱格式",
+      "emailsend?": "验证码已发送至 ",
+      "emailcode?": "请输入验证码",
+      "emailverified?": "邮箱验证完成",
+      "emailcodeinvalid?": "验证码无效",
+
+      "password?": "请输入密码",
+      "passwordRegex?": "密码至少为6位字符",
+      "passwordMismatch?": "两次输入的密码不一致",
+
+      "nationality?": "请选择国籍",
+      "phone?": "请输入电话号码",
+      "residence?": "请输入居住地",
+
+      "onboardingfail": "注册过程中发生错误，请重试。"
+    },
+    "modal": {
+      "close": "取消",
+      "title": "选择出生日期",
+      "startDate": "选择开始日期",
+      "endDate": "选择结束日期",
+      "confirm": "确认",
+      "year": "年",
+      "month": "月",
+      "day": "日"
+    },
+    "login": {
+      "back": "← 返回",
+      "title": "登录",
+      "subtitle": "登录到您的账户",
+      "email": "邮箱",
+      "emailplaceholder": "请输入邮箱",
+      "password": "密码",
+      "passwordplaceholder": "请输入密码",
+      "loadingLogin": "正在登录...",
+      "LoginBTN": "登录"
+    },
     "memberCheck": {
       "title": "您好！",
       "subtitle": "您是我们的会员吗？",
       "yes": "是的，我是会员",
-      "no": "不，我是新用户"
+      "no": "不是，我是新用户"
     },
     "basicInfo": {
       "title": "请输入基本信息",
-      "subtitle": "请输入姓名、年龄和性别"
+      "name": "姓名 *",
+      "nameplaceholder": "请输入真实姓名",
+      "nickname": "昵称 *",
+      "nicknameplaceholder": "请输入您的昵称",
+      "gender": "性别 *",
+      "male": "男",
+      "female": "女",
+      "other": "其他",
+      "birthDate": "出生日期 *",
+      "birthDateplaceholder": "请选择出生日期",
+      "next": "下一步"
     },
     "emailVerification": {
       "title": "邮箱验证",
-      "subtitle": "请输入邮件中的验证码"
+      "subtitle": "请验证邮箱地址以继续注册",
+      "email": "邮箱 *",
+      "emailplaceholder": "请输入邮箱地址",
+      "sendCode": "发送验证码",
+      "sendCodeCountdown": "秒后可重发",
+      "sendCodeResend": "重新发送",
+      "verificationCode": "验证码 *",
+      "verificationCodeplaceholder": "请输入发送到邮箱的6位验证码",
+      "loadingVerify": "验证中...",
+      "onVerify": "验证"
+    },
+    "passwordSetup": {
+      "title": "设置密码",
+      "subtitle": "请为您的账户设置一个安全的密码",
+      "password": "密码 *",
+      "passwordplaceholder": "至少输入6位字符",
+      "confirmPassword": "确认密码 *",
+      "confirmPasswordplaceholder": "请再次输入密码",
+      "next": "下一步"
+    },
+    "countries": {
+      "choose": "选择国家",
+      "korea": "韩国",
+      "china": "中国",
+      "english": "美国",
+      "vietnam": "越南",
+      "philippines": "菲律宾",
+      "thailand": "泰国",
+      "others": "其他地区"
+    },
+    "locationContact": {
+      "title": "联系方式与居住地",
+      "subtitle": "请填写准确的信息",
+      "nationality": "国籍 *",
+      "phone": "电话号码 *",
+      "phoneplaceholder": "仅输入数字",
+      "residence": "居住地 *",
+      "residenceplaceholder": "例如：首尔 江南区",
+      "next": "下一步"
+    },
+    "MedicalConditions": {
+      "title": "既往病史",
+      "subtitle": "如有基础疾病，请填写。\n（可选）",
+      "next": "下一步",
+      "skip": "跳过"
+    },
+    "MedicationsForm": {
+      "title": "正在服用的药物",
+      "subtitle": "如有正在服用的药物，请填写。\n（可选）",
+      "mediName": "药品名称",
+      "mediNameplaceholder": "请输入药品名称",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "chooseDate": "选择日期",
+      "taken": "是否正在服用",
+      "takenNow": "服用中",
+      "takenEnd": "已结束",
+      "dosage": "剂量",
+      "dosageplaceholder": "例如：每天2次，100mg",
+      "addMedi": "+ 添加药物",
+      "next": "下一步",
+      "skip": "跳过"
+    },
+    "Completion": {
+      "title": "注册完成！",
+      "welcome": "欢迎加入我们的服务！",
+      "ready": "您已准备就绪。\n现在就开始体验吧。",
+      "start": "开始使用"
     }
+  },
+  "DISEASES": {
+    "1": "高血压",
+    "2": "糖尿病",
+    "3": "高脂血症",
+    "4": "心力衰竭",
+    "5": "心绞痛",
+    "6": "中风",
+    "7": "痛风",
+    "8": "哮喘",
+    "9": "关节炎"
   }
 }

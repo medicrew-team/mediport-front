@@ -13,7 +13,20 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../types/ip';
-import { DISEASES, InfoScreenProps, Medication } from '../../types/profile';
+import { InfoScreenProps, Medication } from '../../types/profile';
+import { t } from 'i18next';
+// 질병 목록 상수
+ const DISEASES = [
+  { disease_id: 1, disease_name: t('DISEASES.1') },
+  { disease_id: 2, disease_name: t('DISEASES.2') },
+  { disease_id: 3, disease_name: t('DISEASES.3') },
+  { disease_id: 4, disease_name: t('DISEASES.4') },
+  { disease_id: 5, disease_name: t('DISEASES.5') },
+  { disease_id: 6, disease_name: t('DISEASES.6') },
+  { disease_id: 7, disease_name: t('DISEASES.7') },
+  { disease_id: 8, disease_name: t('DISEASES.8') },
+  { disease_id: 9, disease_name: t('DISEASES.9') },
+];
 
 const today = new Date();
 const formatted = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2,'0')}-${today.getDate().toString().padStart(2,'0')}`;
@@ -488,7 +501,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#FF6600',
         borderRadius: 6,
-        marginRight: 12,
+        marginRight: 6,
     },
     checkboxSelected: {
         backgroundColor: '#FF6600'

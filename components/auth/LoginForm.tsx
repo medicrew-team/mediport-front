@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { t } from 'i18next';
 
 interface LoginFormProps {
   onLogin: (email: string, password: string) => void;
@@ -53,19 +54,19 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
               style={styles.backButton} 
               onPress={handleBackToOnboarding}
             >
-              <Text style={styles.backButtonText}>← 뒤로</Text>
+              <Text style={styles.backButtonText}>{t('onboarding.login.back')}</Text>
             </TouchableOpacity>
 
             <View style={styles.content}>
-              <Text style={styles.title}>로그인</Text>
-              <Text style={styles.subtitle}>계정에 로그인하세요</Text>
+              <Text style={styles.title}>{t('onboarding.login.title')}</Text>
+              <Text style={styles.subtitle}>{t('onboarding.login.subtitle')}</Text>
               
               <View style={styles.form}>
                 <View style={styles.inputGroup}>
-                  <Text style={styles.label}>이메일</Text>
+                  <Text style={styles.label}>{t('onboarding.login.email')}</Text>
                   <TextInput
                     style={styles.input}
-                    placeholder="이메일을 입력하세요"
+                    placeholder={t('onboarding.login.emailplaceholder')}
                     placeholderTextColor="#999"
                     value={email}
                     onChangeText={setEmail}
@@ -76,10 +77,10 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
                 </View>
 
                 <View style={styles.inputGroup}>
-                  <Text style={styles.label}>비밀번호</Text>
+                  <Text style={styles.label}>{t('onboarding.login.password')}</Text>
                   <TextInput
                     style={styles.input}
-                    placeholder="비밀번호를 입력하세요"
+                    placeholder={t('onboarding.login.passwordplaceholder')}
                     placeholderTextColor="#999"
                     value={password}
                     onChangeText={setPassword}
@@ -99,14 +100,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
                     styles.loginButtonText,
                     isLoading && styles.disabledButtonText
                   ]}>
-                    {isLoading ? '로그인 중...' : '로그인'}
-                  </Text>
-                </TouchableOpacity>
-
-                {/* 비밀번호 찾기 (선택사항) */}
-                <TouchableOpacity style={styles.forgotPasswordButton}>
-                  <Text style={styles.forgotPasswordText}>
-                    비밀번호를 잊으셨나요?
+                    {isLoading ? t('onboarding.login.loadingLogin') : t('onboarding.login.LoginBTN')}
                   </Text>
                 </TouchableOpacity>
               </View>

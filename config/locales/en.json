@@ -1,18 +1,154 @@
 {
   "onboarding": {
+    "alert": {
+      "title": "Alert",
+      "success": "Success",
+      "error": "Error",
+
+      "name?": "Please enter your name",
+      "nickname?": "Please enter your nickname",
+      "gender?": "Please select your gender",
+      "birthDate?": "Please select your date of birth",
+
+      "email?": "Please enter your email",
+      "emailRegex?": "Please enter a valid email address",
+      "emailsend?": "Verification code has been sent to ",
+      "emailcode?": "Please enter the verification code",
+      "emailverified?": "Email verification completed",
+      "emailcodeinvalid?": "Invalid verification code",
+
+      "password?": "Please enter your password",
+      "passwordRegex?": "Password must be at least 6 characters",
+      "passwordMismatch?": "Passwords do not match",
+
+      "nationality?": "Please select your nationality",
+      "phone?": "Please enter your phone number",
+      "residence?": "Please enter your residence",
+
+      "onboardingfail": "An error occurred during registration.\n Please try again."
+    },
+    "modal": {
+      "close": "Cancel",
+      "title": "Select DoB",
+      "startDate": "Select Start Date",
+      "endDate": "Select End Date",
+      "confirm": "Confirm",
+      "year": "Year",
+      "month": "Month",
+      "day": "Day"
+    },
+    "login": {
+      "back": "← Back",
+      "title": "Login",
+      "subtitle": "Sign in to your account",
+      "email": "Email",
+      "emailplaceholder": "Enter your email",
+      "password": "Password",
+      "passwordplaceholder": "Enter your password",
+      "loadingLogin": "Logging in...",
+      "LoginBTN": "Login"
+    },
     "memberCheck": {
       "title": "Hello!",
-      "subtitle": "Are you already a member of our service?",
-      "yes": "Yes, I am a member",
-      "no": "No, I’m new here"
+      "subtitle": "Are you already a member?",
+      "yes": "Yes, I am",
+      "no": "No, I’m new"
     },
     "basicInfo": {
-      "title": "Please enter your basic information",
-      "subtitle": "Enter your name, age, and gender"
+      "title": "Enter Basic Information",
+      "name": "Name *",
+      "nameplaceholder": "Enter your real name",
+      "nickname": "Nickname *",
+      "nicknameplaceholder": "Enter your nickname",
+      "gender": "Gender *",
+      "male": "Male",
+      "female": "Female",
+      "other": "Other",
+      "birthDate": "Date of Birth *",
+      "birthDateplaceholder": "Select your birth date",
+      "next": "Next"
     },
     "emailVerification": {
       "title": "Email Verification",
-      "subtitle": "Please enter the code from the email"
+      "subtitle": "Verify your email address to continue",
+      "email": "Email *",
+      "emailplaceholder": "Enter your email address",
+      "sendCode": "Send Code",
+      "sendCodeCountdown": "Resend in seconds",
+      "sendCodeResend": "Resend Code",
+      "verificationCode": "Verification Code *",
+      "verificationCodeplaceholder": "Enter the 6-digit code sent to you",
+      "loadingVerify": "Verifying...",
+      "onVerify": "Verify"
+    },
+    "passwordSetup": {
+      "title": "Set Password",
+      "subtitle": "Create a secure password for your account",
+      "password": "Password *",
+      "passwordplaceholder": "Enter at least 6 characters",
+      "confirmPassword": "Confirm Password *",
+      "confirmPasswordplaceholder": "Re-enter your password",
+      "next": "Next"
+    },
+    "countries": {
+      "choose": "Select Country",
+      "korea": "Korea",
+      "china": "China",
+      "english": "USA",
+      "vietnam": "Vietnam",
+      "philippines": "Philippines",
+      "thailand": "Thailand",
+      "others": "Others"
+    },
+    "locationContact": {
+      "title": "Contact & Residence",
+      "subtitle": "Please provide accurate information",
+      "nationality": "Nationality *",
+      "phone": "Phone Number *",
+      "phoneplaceholder": "Enter numbers only",
+      "residence": "Residence *",
+      "residenceplaceholder": "e.g., Gangnam-gu, Seoul",
+      "next": "Next"
+    },
+    "MedicalConditions": {
+      "title": "Medical Conditions",
+      "subtitle": "If you have any pre-existing conditions,\n please enter them.(Optional)",
+      "next": "Next",
+      "skip": "Skip"
+    },
+    "MedicationsForm": {
+      "title": "Medications",
+      "subtitle": "If you are taking any medications,\n please enter them. (Optional)",
+      "mediName": "Medicine Name",
+      "mediNameplaceholder": "Enter the medicine name",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "chooseDate": "Choose Date",
+      "taken": "Currently Taking",
+      "takenNow": "Taking",
+      "takenEnd": "Completed",
+      "dosage": "Dosage",
+      "dosageplaceholder": "e.g., 2 times a day, 100mg",
+      "addMedi": "+ Add Medication",
+      "next": "Next",
+      "skip": "Skip"
+    },
+    "Completion": {
+      "title": "Registration Complete!",
+      "welcome": "Welcome to our service!",
+      "ready": "You are all set.\nStart using the service now.",
+      "start": "Get Started"
     }
+  },
+  "DISEASES": {
+    "1": "Hypertension",
+    "2": "Diabetes",
+    "3": "Hyperlipidemia",
+    "4": "Heart Failure",
+    "5": "Angina",
+    "6": "Stroke",
+    "7": "Gout",
+    "8": "Asthma",
+    "9": "Arthritis"
   }
 }

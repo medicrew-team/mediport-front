@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
+import { t } from 'i18next';
 
 export default function EmailVerificationForm() {
   const { data, updateData, nextStep, previousStep } = useOnboarding();
@@ -29,17 +30,17 @@ export default function EmailVerificationForm() {
 
   const handleSendCode = async () => {
     if (!email.trim()) {
-      Alert.alert('알림', '이메일을 입력해주세요.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.email?'));
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.trim())) {
-      Alert.alert('오류', '올바른 이메일 형식을 입력해주세요.');
+      Alert.alert(t('onboarding.alert.error'), t('onboarding.alert.emailRegex?'));
       return;
     }
 
     // Mock: 실제 이메일 전송 로직은 여기에 구현
-    Alert.alert('알림', `${email}으로 인증 코드를 전송했습니다.`);
+    Alert.alert(t('onboarding.alert.title'), `${email} ${t('onboarding.alert.emailsend?')}`);
     setIsCodeSent(true);
     setCountdown(10); // 10초 카운트다운 시작
     updateData({ email: email.trim() }); // 이메일 데이터 업데이트
@@ -47,7 +48,7 @@ export default function EmailVerificationForm() {
 
   const handleVerifyCode = async () => {
     if (!verificationCode.trim()) {
-      Alert.alert('알림', '인증 코드를 입력해주세요.');
+      Alert.alert(t('onboarding.alert.title'), t('onboarding.alert.emailcode?'));
       return;
     }
     setIsVerifying(true);
@@ -55,11 +56,11 @@ export default function EmailVerificationForm() {
     await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
 
     if (verificationCode === '123456') { // Mock code
-      Alert.alert('성공', '이메일이 인증되었습니다.');
+      Alert.alert(t('onboarding.alert.success'), t('onboarding.alert.emailverified?'));
       updateData({ emailVerified: true });
       nextStep();
     } else {
-      Alert.alert('오류', '잘못된 인증 코드입니다.');
+      Alert.alert(t('onboarding.alert.error'), t('onboarding.alert.emailcodeinvalid?'));
     }
     setIsVerifying(false);
   };
@@ -81,17 +82,17 @@ export default function EmailVerificationForm() {
         </View>
 
         <View style={styles.content}>
-          <Text style={styles.title}>이메일 인증</Text>
+          <Text style={styles.title}>{t('onboarding.emailVerification.title')}</Text>
           <Text style={styles.subtitle}>
-            회원가입을 위해 이메일 주소를 인증해주세요.
+            {t('onboarding.emailVerification.subtitle')}
           </Text>
 
           <View style={styles.form}>
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>이메일 *</Text>
+              <Text style={styles.label}>{t('onboarding.emailVerification.email')}</Text>
               <TextInput
                 style={styles.input}
-                placeholder="이메일 주소를 입력해주세요"
+                placeholder={t('onboarding.emailVerification.emailplaceholder')}
                 placeholderTextColor="#999"
                 value={email}
                 onChangeText={setEmail}
@@ -108,17 +109,17 @@ export default function EmailVerificationForm() {
                 disabled={!email.trim() || isCodeSent || countdown > 0}
               >
                 <Text style={styles.sendCodeButtonText}>
-                  {isCodeSent ? (countdown > 0 ? `${countdown}초 후 재전송` : '코드 재전송') : '인증 코드 전송'}
+                  {isCodeSent ? (countdown > 0 ? `${countdown}${t('onboarding.emailVerification.sendCodeCountdown')}` : t('onboarding.emailVerification.sendCodeResend')) : t('onboarding.emailVerification.sendCode')}
                 </Text>
               </TouchableOpacity>
             </View>
 
             {isCodeSent && (
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>인증 코드 *</Text>
+                <Text style={styles.label}>{t('onboarding.emailVerification.verificationCode')}</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="전송된 6자리 코드를 입력해주세요"
+                  placeholder={t('onboarding.emailVerification.verificationCodeplaceholder')}
                   placeholderTextColor="#999"
                   value={verificationCode}
                   onChangeText={setVerificationCode}
@@ -134,7 +135,7 @@ export default function EmailVerificationForm() {
                   disabled={!verificationCode.trim() || isVerifying}
                 >
                   <Text style={styles.verifyButtonText}>
-                    {isVerifying ? '인증 중...' : '인증하기'}
+                    {isVerifying ? t('onboarding.emailVerification.loadingVerify') : t('onboarding.emailVerification.onVerify')}
                   </Text>
                 </TouchableOpacity>
               </View>

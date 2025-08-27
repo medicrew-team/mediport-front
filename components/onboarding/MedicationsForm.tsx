@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useOnboarding } from '../../contexts/OnboardingContext';
+import { t } from 'i18next';
 
 interface Medication {
   medi_name: string;
@@ -118,7 +119,7 @@ export default function MedicationsForm() {
   const [showDateModal, setShowDateModal] = useState(false);
   const [dateIndex, setDateIndex] = useState<number | null>(null);
   const [dateField, setDateField] = useState<'start_date' | 'end_date' | null>(null);
-  const [dateComponents, setDateComponents] = useState({ year: '2000', month: '01', day: '01' });
+  const [dateComponents, setDateComponents] = useState({ year: '2025', month: '01', day: '01' });
 
   const openDateModal = (index: number, field: 'start_date' | 'end_date') => {
     const currentDate = medications[index][field] ? parseDate(medications[index][field]) : parseDate('');
@@ -153,7 +154,7 @@ export default function MedicationsForm() {
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return `${date.getFullYear()}년 ${(date.getMonth()+1).toString().padStart(2,'0')}월 ${date.getDate().toString().padStart(2,'0')}일`;
+    return `${date.getFullYear()}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}`;
   };
 
   return (
@@ -172,9 +173,9 @@ export default function MedicationsForm() {
         </View>
 
         <View style={styles.content}>
-          <Text style={styles.title}>복용 중인 약물</Text>
+          <Text style={styles.title}>{t('onboarding.MedicationsForm.title')}</Text>
           <Text style={styles.subtitle}>
-            현재 복용 중인 약물이 있다면 입력해주세요. {'\n'}(선택 사항)
+            {t('onboarding.MedicationsForm.subtitle')}
           </Text>
 
           <View style={styles.form}>
@@ -185,10 +186,10 @@ export default function MedicationsForm() {
                 </TouchableOpacity>
 
                 <View style={styles.inputGroup}>
-                  <Text style={styles.inputLabel}>약물명</Text>
+                  <Text style={styles.inputLabel}>{t('onboarding.MedicationsForm.mediName')}</Text>
                   <TextInput
                     style={styles.input}
-                    placeholder="약물명을 입력해주세요"
+                    placeholder={t('onboarding.MedicationsForm.mediNameplaceholder')}
                     placeholderTextColor="#999"
                     value={m.medi_name}
                     onChangeText={(t) => handleChange(idx, 'medi_name', t)}
@@ -198,13 +199,13 @@ export default function MedicationsForm() {
                 <View style={styles.dateRow}>
                   {['start_date','end_date'].map(field => (
                     <View style={styles.dateInputGroup} key={field}>
-                      <Text style={styles.inputLabel}>{field==='start_date' ? '시작일' : '종료일'}</Text>
+                      <Text style={styles.inputLabel}>{field==='start_date' ? t('onboarding.MedicationsForm.startDate') : t('onboarding.MedicationsForm.endDate')}</Text>
                       <TouchableOpacity
                         style={styles.dateInput}
                         onPress={() => openDateModal(idx, field as 'start_date' | 'end_date')}
                       >
                         <Text style={[styles.dateText, !m[field as 'start_date' | 'end_date'] && styles.placeholderText]}>
-                          {m[field as 'start_date' | 'end_date'] ? formatDate(m[field as 'start_date' | 'end_date']) : '날짜 선택'}
+                          {m[field as 'start_date' | 'end_date'] ? formatDate(m[field as 'start_date' | 'end_date']) : t('onboarding.MedicationsForm.chooseDate')}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -212,9 +213,9 @@ export default function MedicationsForm() {
                 </View>
 
                 <View style={styles.inputGroup}>
-                  <Text style={styles.inputLabel}>현재 복용 여부</Text>
+                  <Text style={styles.inputLabel}>{t('onboarding.MedicationsForm.taken')}</Text>
                   <View style={styles.radioContainer}>
-                    {['복용중','복용완료'].map(status => (
+                    {[t('onboarding.MedicationsForm.takenNow'), t('onboarding.MedicationsForm.takenEnd')].map(status => (
                       <TouchableOpacity
                         key={status}
                         style={[styles.radioButton, m.status===status && styles.radioSelected]}
@@ -229,10 +230,10 @@ export default function MedicationsForm() {
                 </View>
 
                 <View style={styles.inputGroup}>
-                  <Text style={styles.inputLabel}>복용량</Text>
+                  <Text style={styles.inputLabel}>{t('onboarding.MedicationsForm.dosage')}</Text>
                   <TextInput
                     style={styles.input}
-                    placeholder="예: 1일 2회 100mg"
+                    placeholder={t('onboarding.MedicationsForm.dosageplaceholder')}
                     placeholderTextColor="#999"
                     value={m.dosage}
                     onChangeText={(t) => handleChange(idx, 'dosage', t)}
@@ -242,16 +243,16 @@ export default function MedicationsForm() {
             ))}
 
             <TouchableOpacity onPress={addRow} style={styles.addButton}>
-              <Text style={styles.addButtonText}>+ 약물 추가</Text>
+              <Text style={styles.addButtonText}>{t('onboarding.MedicationsForm.addMedi')}</Text>
             </TouchableOpacity>
           </View>
 
           <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-            <Text style={styles.nextButtonText}>다음</Text>
+            <Text style={styles.nextButtonText}>{t('onboarding.MedicationsForm.next')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
-            <Text style={styles.skipButtonText}>건너뛰기</Text>
+            <Text style={styles.skipButtonText}>{t('onboarding.MedicationsForm.skip')}</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
@@ -262,25 +263,25 @@ export default function MedicationsForm() {
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <TouchableOpacity onPress={() => setShowDateModal(false)} style={styles.modalButton}>
-                <Text style={styles.modalButtonText}>취소</Text>
+                <Text style={styles.modalButtonText}>{t('onboarding.modal.close')}</Text>
               </TouchableOpacity>
-              <Text style={styles.modalTitle}>{dateField==='start_date' ? '시작일 선택' : '종료일 선택'}</Text>
+              <Text style={styles.modalTitle}>{dateField==='start_date' ? t('onboarding.modal.startDate') : t('onboarding.modal.endDate')}</Text>
               <TouchableOpacity onPress={handleDateConfirm} style={styles.modalButton}>
-                <Text style={[styles.modalButtonText, styles.confirmText]}>확인</Text>
+                <Text style={[styles.modalButtonText, styles.confirmText]}>{t('onboarding.modal.confirm')}</Text>
               </TouchableOpacity>
             </View>
 
             <View style={styles.datePickerContainer}>
               <View style={styles.datePickerColumn}>
-                <Text style={styles.columnLabel}>년</Text>
+                <Text style={styles.columnLabel}>{t('onboarding.modal.year')}</Text>
                 <ScrollPicker data={years} selectedValue={dateComponents.year} onValueChange={handleYearChange}/>
               </View>
               <View style={styles.datePickerColumn}>
-                <Text style={styles.columnLabel}>월</Text>
+                <Text style={styles.columnLabel}>{t('onboarding.modal.month')}</Text>
                 <ScrollPicker data={months} selectedValue={dateComponents.month} onValueChange={handleMonthChange}/>
               </View>
               <View style={styles.datePickerColumn}>
-                <Text style={styles.columnLabel}>일</Text>
+                <Text style={styles.columnLabel}>{t('onboarding.modal.day')}</Text>
                 <ScrollPicker data={days} selectedValue={dateComponents.day} onValueChange={handleDayChange}/>
               </View>
             </View>

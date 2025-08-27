@@ -1,18 +1,154 @@
 {
   "onboarding": {
+    "alert": {
+      "title": "Thông báo",
+      "success": "Thành công",
+      "error": "Lỗi",
+
+      "name?": "Vui lòng nhập tên của bạn",
+      "nickname?": "Vui lòng nhập biệt danh",
+      "gender?": "Vui lòng chọn giới tính",
+      "birthDate?": "Vui lòng chọn ngày sinh",
+
+      "email?": "Vui lòng nhập email",
+      "emailRegex?": "Vui lòng nhập đúng định dạng email",
+      "emailsend?": "Mã xác minh đã được gửi đến ",
+      "emailcode?": "Vui lòng nhập mã xác minh",
+      "emailverified?": "Xác minh email thành công",
+      "emailcodeinvalid?": "Mã xác minh không hợp lệ",
+
+      "password?": "Vui lòng nhập mật khẩu",
+      "passwordRegex?": "Mật khẩu phải có ít nhất 6 ký tự",
+      "passwordMismatch?": "Mật khẩu không khớp",
+
+      "nationality?": "Vui lòng chọn quốc tịch",
+      "phone?": "Vui lòng nhập số điện thoại",
+      "residence?": "Vui lòng nhập nơi cư trú",
+
+      "onboardingfail": "Có lỗi xảy ra khi đăng ký. Vui lòng thử lại."
+    },
+    "modal": {
+      "close": "Hủy",
+      "title":"Chọn ngày sinh",
+      "startDate": "Chọn ngày bắt đầu",
+      "endDate":"Chọn ngày kết thúc",
+      "confirm": "Xác nhận",
+      "year": "Năm",
+      "month": "Tháng",
+      "day": "Ngày"
+    },
+    "login": {
+      "back": "← Quay lại",
+      "title": "Đăng nhập",
+      "subtitle": "Đăng nhập vào tài khoản của bạn",
+      "email": "Email",
+      "emailplaceholder": "Nhập email của bạn",
+      "password": "Mật khẩu",
+      "passwordplaceholder": "Nhập mật khẩu của bạn",
+      "loadingLogin": "Đang đăng nhập...",
+      "LoginBTN": "Đăng nhập"
+    },
     "memberCheck": {
       "title": "Xin chào!",
-      "subtitle": "Bạn đã là thành viên của dịch vụ chúng tôi chưa?",
+      "subtitle": "Bạn đã là thành viên chưa?",
       "yes": "Vâng, tôi là thành viên",
-      "no": "Không, tôi mới sử dụng lần đầu"
+      "no": "Chưa, tôi mới"
     },
     "basicInfo": {
-      "title": "Vui lòng nhập thông tin cơ bản",
-      "subtitle": "Nhập tên, tuổi và giới tính của bạn"
+      "title": "Nhập thông tin cơ bản",
+      "name": "Tên *",
+      "nameplaceholder": "Nhập tên thật của bạn",
+      "nickname": "Biệt danh *",
+      "nicknameplaceholder": "Nhập biệt danh",
+      "gender": "Giới tính *",
+      "male": "Nam",
+      "female": "Nữ",
+      "other": "Khác",
+      "birthDate": "Ngày sinh *",
+      "birthDateplaceholder": "Chọn ngày sinh",
+      "next": "Tiếp theo"
     },
     "emailVerification": {
       "title": "Xác minh Email",
-      "subtitle": "Vui lòng nhập mã từ email"
+      "subtitle": "Vui lòng xác minh địa chỉ email của bạn",
+      "email": "Email *",
+      "emailplaceholder": "Nhập địa chỉ email",
+      "sendCode": "Gửi mã",
+      "sendCodeCountdown": "Gửi lại sau vài giây",
+      "sendCodeResend": "Gửi lại mã",
+      "verificationCode": "Mã xác minh *",
+      "verificationCodeplaceholder": "Nhập mã 6 số đã gửi cho bạn",
+      "loadingVerify": "Đang xác minh...",
+      "onVerify": "Xác minh"
+    },
+    "passwordSetup": {
+      "title": "Thiết lập mật khẩu",
+      "subtitle": "Tạo mật khẩu an toàn cho tài khoản",
+      "password": "Mật khẩu *",
+      "passwordplaceholder": "Nhập ít nhất 6 ký tự",
+      "confirmPassword": "Xác nhận mật khẩu *",
+      "confirmPasswordplaceholder": "Nhập lại mật khẩu",
+      "next": "Tiếp theo"
+    },
+    "countries": {
+      "choose": "Chọn quốc gia",
+      "korea": "Hàn Quốc",
+      "china": "Trung Quốc",
+      "english": "Mỹ",
+      "vietnam": "Việt Nam",
+      "philippines": "Philippines",
+      "thailand": "Thái Lan",
+      "others": "Khác"
+    },
+    "locationContact": {
+      "title": "Liên hệ & Nơi ở",
+      "subtitle": "Vui lòng nhập thông tin chính xác",
+      "nationality": "Quốc tịch *",
+      "phone": "Số điện thoại *",
+      "phoneplaceholder": "Chỉ nhập số",
+      "residence": "Nơi ở *",
+      "residenceplaceholder": "Ví dụ: Quận 1, TP. Hồ Chí Minh",
+      "next": "Tiếp theo"
+    },
+    "MedicalConditions": {
+      "title": "Bệnh lý",
+      "subtitle": "Nếu bạn có bệnh lý nền, vui lòng nhập.\n(Tùy chọn)",
+      "next": "Tiếp theo",
+      "skip": "Bỏ qua"
+    },
+    "MedicationsForm": {
+      "title": "Thuốc đang dùng",
+      "subtitle": "Nếu bạn đang dùng thuốc, vui lòng nhập.\n(Tùy chọn)",
+      "mediName": "Tên thuốc",
+      "mediNameplaceholder":"Nhập tên thuốc",
+      "startDate": "Ngày bắt đầu",
+      "endDate":"Ngày kết thúc",
+      "chooseDate": "Chọn ngày",
+      "taken": "Tình trạng dùng",
+      "takenNow":"Đang dùng",
+      "takenEnd": "Đã ngừng",
+      "dosage": "Liều lượng",
+      "dosageplaceholder": "Ví dụ: 2 lần/ngày, 100mg",
+      "addMedi": "+ Thêm thuốc",
+      "next": "Tiếp theo",
+      "skip": "Bỏ qua"
+    },
+    "Completion": {
+      "title": "Đăng ký hoàn tất!",
+      "welcome": "Chào mừng bạn đến với dịch vụ của chúng tôi!",
+      "ready": "Bạn đã sẵn sàng.\nBắt đầu sử dụng ngay bây giờ.",
+      "start": "Bắt đầu"
     }
+  },
+  "DISEASES":{
+    "1": "Tăng huyết áp",
+    "2": "Tiểu đường",
+    "3": "Mỡ máu cao",
+    "4": "Suy tim",
+    "5": "Đau thắt ngực",
+    "6": "Đột quỵ",
+    "7": "Gút",
+    "8": "Hen suyễn",
+    "9": "Viêm khớp"
   }
 }

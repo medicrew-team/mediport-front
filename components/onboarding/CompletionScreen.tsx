@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import { useOnboarding } from '../../contexts/OnboardingContext';
+import { t } from 'i18next';
 
 export default function CompletionScreen() {
   const { data, resetOnboarding } = useOnboarding();
@@ -26,7 +27,7 @@ export default function CompletionScreen() {
     } catch (error) {
       // 에러는 AuthContext에서 이미 Alert으로 처리됨
       console.error('회원가입 최종 처리 실패:', error);
-      Alert.alert('오류', '회원가입 중 문제가 발생했습니다. 다시 시도해주세요.');
+      Alert.alert(t('onboarding.alert.error'), t('onboarding.alert.onboardingfail'));
     } finally {
       setIsLoading(false);
     }
@@ -35,7 +36,7 @@ export default function CompletionScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>가입이 완료되었어요!</Text>
+        <Text style={styles.title}>{t('onboarding.Completion.title')}</Text>
         <View style={styles.iconContainer}>
                     <Image
                       source={require('../../assets/images/mediport.png')}
@@ -43,11 +44,11 @@ export default function CompletionScreen() {
                     />
         </View>
         <Text style={styles.subtitle}>
-          {data.name || data.nickname}님, 저희 서비스에 오신 것을 환영합니다!
+          {t('onboarding.Completion.welcome')}
+          <Text style={{fontWeight: 'bold'}}>{data.name || data.nickname}</Text>
         </Text>
         <Text style={styles.description}>
-          이제 모든 준비가 끝났습니다. {'\n'}
-          지금 바로 서비스를 시작해보세요.
+          {t('onboarding.Completion.ready')}
         </Text>
         
         <TouchableOpacity
@@ -58,7 +59,7 @@ export default function CompletionScreen() {
           {isLoading ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.startButtonText}>시작하기</Text>
+            <Text style={styles.startButtonText}>{t('onboarding.Completion.start')}</Text>
           )}
         </TouchableOpacity>
       </View>

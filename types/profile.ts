@@ -44,16 +44,3 @@ export interface Medication {
   status: string; // '복용중' | '복용완료'
   dosage: string;
 }
-
-// 질병 목록 상수
-export const DISEASES = [
-  { disease_id: 1, disease_name: '고혈압' },
-  { disease_id: 2, disease_name: '당뇨병' },
-  { disease_id: 3, disease_name: '고지혈증' },
-  { disease_id: 4, disease_name: '심부전' },
-  { disease_id: 5, disease_name: '협심증' },
-  { disease_id: 6, disease_name: '뇌졸증' },
-  { disease_id: 7, disease_name: '통풍' },
-  { disease_id: 8, disease_name: '천식' },
-  { disease_id: 9, disease_name: '관절염' },
-];

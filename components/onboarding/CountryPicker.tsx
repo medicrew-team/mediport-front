@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { t } from 'i18next';
 
 interface CountryPickerProps {
   selectedCountry: string;
@@ -62,7 +63,7 @@ export default function CountryPicker({ selectedCountry, onCountrySelect, countr
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>국가 선택</Text>
+              <Text style={styles.modalTitle}>{t('onboarding.countries.choose')}</Text>
               <TouchableOpacity
                 style={styles.closeButton}
                 onPress={() => setIsVisible(false)}
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     width: Dimensions.get('window').width * 0.8,
-    maxHeight: Dimensions.get('window').height * 0.6,
+    maxHeight: Dimensions.get('window').height * 0.65,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

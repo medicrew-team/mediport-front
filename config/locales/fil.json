@@ -1,18 +1,149 @@
 {
   "onboarding": {
+    "alert": {
+      "title": "Abiso",
+      "success": "Tagumpay",
+      "error": "Error",
+      "name?": "Pakilagay ang iyong pangalan",
+      "nickname?": "Pakilagay ang iyong palayaw",
+      "gender?": "Pumili ng iyong kasarian",
+      "birthDate?": "Pumili ng iyong petsa ng kapanganakan",
+      "email?": "Pakilagay ang iyong email",
+      "emailRegex?": "Pakilagay ang wastong email address",
+      "emailsend?": "Naipadala ang verification code sa ",
+      "emailcode?": "Pakilagay ang verification code",
+      "emailverified?": "Kumpleto na ang email verification",
+      "emailcodeinvalid?": "Hindi wasto ang verification code",
+      "password?": "Pakilagay ang iyong password",
+      "passwordRegex?": "Ang password ay dapat hindi bababa sa 6 na karakter",
+      "passwordMismatch?": "Hindi tugma ang mga password",
+      "nationality?": "Pumili ng iyong nasyonalidad",
+      "phone?": "Pakilagay ang iyong numero ng telepono",
+      "residence?": "Pakilagay ang iyong tirahan",
+      "onboardingfail": "Nagkaroon ng problema sa pagpaparehistro. Pakisubukang muli."
+    },
+    "modal": {
+      "close": "Kanselahin",
+      "title": "Kaarawan",
+      "startDate": "Petsa Simula",
+      "endDate": "Petsa Tapus",
+      "confirm": "Kumpirmahin",
+      "year": "Taon",
+      "month": "Buwan",
+      "day": "Araw"
+    },
+    "login": {
+      "back": "← Bumalik",
+      "title": "Mag-login",
+      "subtitle": "Mag-sign in sa iyong account",
+      "email": "Email",
+      "emailplaceholder": "Ilagay ang iyong email",
+      "password": "Password",
+      "passwordplaceholder": "Ilagay ang iyong password",
+      "loadingLogin": "Naglo-login...",
+      "LoginBTN": "Mag-login"
+    },
     "memberCheck": {
       "title": "Kamusta!",
-      "subtitle": "Ikaw ba ay miyembro na ng aming serbisyo?",
-      "yes": "Oo, miyembro ako",
-      "no": "Hindi, bago lang ako dito"
+      "subtitle": "Ikaw ba ay miyembro na?",
+      "yes": "Oo, miyembro na ako",
+      "no": "Hindi, bago pa lang ako"
     },
     "basicInfo": {
-      "title": "Pakilagay ang iyong pangunahing impormasyon",
-      "subtitle": "Ilagay ang iyong pangalan, edad, at kasarian"
+      "title": "Ilagay ang Impormasyon",
+      "name": "Pangalan *",
+      "nameplaceholder": "Ilagay ang iyong tunay na pangalan",
+      "nickname": "Palayaw *",
+      "nicknameplaceholder": "Ilagay ang iyong palayaw",
+      "gender": "Kasarian *",
+      "male": "Lalaki",
+      "female": "Babae",
+      "other": "Iba pa",
+      "birthDate": "Petsa ng Kapanganakan *",
+      "birthDateplaceholder": "Pumili ng petsa ng kapanganakan",
+      "next": "Susunod"
     },
     "emailVerification": {
       "title": "Pagpapatunay ng Email",
-      "subtitle": "Pakilagay ang code mula sa iyong email"
+      "subtitle": "Paki-verify ang iyong email address\n upang magpatuloy",
+      "email": "Email *",
+      "emailplaceholder": "Ilagay ang iyong email address",
+      "sendCode": "Ipadala ang Code",
+      "sendCodeCountdown": "Muling magpadala sa ilang segundo",
+      "sendCodeResend": "Muling Ipadala ang Code",
+      "verificationCode": "Verification Code *",
+      "verificationCodeplaceholder": "Ilagay ang 6-digit code",
+      "loadingVerify": "Nagve-verify...",
+      "onVerify": "I-verify"
+    },
+    "passwordSetup": {
+      "title": "Itakda ang Password",
+      "subtitle": "Gumawa ng ligtas na password",
+      "password": "Password *",
+      "passwordplaceholder": "Maglagay ng ≥6 na karakter",
+      "confirmPassword": "Kumpirmahin ang Password *",
+      "confirmPasswordplaceholder": "Ilagay muli ang iyong password",
+      "next": "Susunod"
+    },
+    "countries": {
+      "choose": "Pumili ng Bansa",
+      "korea": "Korea",
+      "china": "Tsina",
+      "english": "USA",
+      "vietnam": "Vietnam",
+      "philippines": "Pilipinas",
+      "thailand": "Thailand",
+      "others": "Iba pa"
+    },
+    "locationContact": {
+      "title": "Impormasyon sa Contact at Tirahan",
+      "subtitle": "Mangyaring magbigay ng tumpak na impormasyon",
+      "nationality": "Nasyonalidad *",
+      "phone": "Numero ng Telepono *",
+      "phoneplaceholder": "Mga numero lamang",
+      "residence": "Tirahan *",
+      "residenceplaceholder": "Halimbawa: Quezon City, Manila",
+      "next": "Susunod"
+    },
+    "MedicalConditions": {
+      "title": "Mga Kondisyon Medikal",
+      "subtitle": "Kung mayroon kang dating kondisyon?\nilagay dito(Pwedeng laktawan)",
+      "next": "Susunod",
+      "skip": "Laktawan"
+    },
+    "MedicationsForm": {
+      "title": "Mga Gamot",
+      "subtitle": "Kung umiinom ka ng mga gamot.\nilagay dito(Pwedeng laktawan)",
+      "mediName": "Pangalan ng Gamot",
+      "mediNameplaceholder": "Ilagay ang pangalan ng gamot",
+      "startDate": "Petsa Simula",
+      "endDate": "Petsa Tapus",
+      "chooseDate": "Pumili ng Petsa",
+      "taken": "Kasalukuyang Ini-inom",
+      "takenNow": "Umiinom",
+      "takenEnd": "Natapos na",
+      "dosage": "Dosis",
+      "dosageplaceholder": "Halimbawa: 2x/day, 100mg",
+      "addMedi": "+ Magdagdag ng Gamot",
+      "next": "Susunod",
+      "skip": "Laktawan"
+    },
+    "Completion": {
+      "title": "Tapos na ang Pagpaparehistro!",
+      "welcome": "Maligayang pagdating!",
+      "ready": "Handa ka na. Simulan na!",
+      "start": "Simulan"
     }
+  },
+  "DISEASES": {
+    "1": "Alta-presyon",
+    "2": "Diabetes",
+    "3": "Mataas na\n Cholesterol",
+    "4": "Pagpalya\n ng Puso",
+    "5": "Angina",
+    "6": "Stroke",
+    "7": "Gota",
+    "8": "Hika",
+    "9": "Rayuma"
   }
 }
