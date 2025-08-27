@@ -1,23 +1,33 @@
-import React from "react";
-import { 
-  View, 
-  Text, 
-  Image, 
-  StyleSheet, 
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Dimensions 
+  Dimensions,
+  Modal,
+  SafeAreaView
 } from "react-native";
+import Entypo from '@expo/vector-icons/Entypo';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Feather from '@expo/vector-icons/Feather';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 interface SimilarProps {
   results: any[];
-  inputImage?: string; // 사용자가 입력한 이미지 URL
-  inputText?: string;  // 사용자가 입력한 텍스트
+  inputImage?: string;
+  inputText?: string;
 }
 
 const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => {
+  const [selectedDrug, setSelectedDrug] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   if (!results || results.length === 0) {
     return (
       <View style={styles.container}>
@@ -28,9 +38,21 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
     );
   }
 
+  const handleCardClick = (drug: any) => {
+    setSelectedDrug(drug);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedDrug(null);
+  };
+
   const renderInputSection = () => (
     <View style={styles.inputSection}>
-      <Text style={styles.inputSectionTitle}>매핑 이미지 or 텍스트</Text>
+      <View style={styles.inputSectionHeader}>
+        <Text style={styles.inputSectionTitle}>매핑 이미지 or 텍스트</Text>
+      </View>
       {inputImage && (
         <View style={styles.inputImageContainer}>
           <Image source={{ uri: inputImage }} style={styles.inputImage} />
@@ -44,108 +66,201 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
     </View>
   );
 
-  const renderDrugCard = ({ item, index }: { item: any; index: number }) => (
-  <TouchableOpacity style={styles.drugCard} activeOpacity={0.8}>
-    <View style={styles.cardHeader}>
-      <View style={styles.drugImageContainer}>
-        {item.prod_img ? (
-          <Image source={{ uri: item.prod_img }} style={styles.drugImage} />
-        ) : (
-          <View style={styles.placeholderImage}>
-            <Text style={styles.placeholderText}>이미지 없음</Text>
+  const renderBasicCard = (drug: any, index: number) => (
+    <TouchableOpacity
+      key={index}
+      style={styles.basicCard}
+      onPress={() => handleCardClick(drug)}
+      activeOpacity={0.7}
+    >
+      <View style={styles.cardRow}>
+        {/* 약품 이미지 */}
+        <View style={styles.drugImageContainer}>
+          {drug.prod_img ? (
+            <Image source={{ uri: drug.prod_img }} style={styles.drugImageSmall} />
+          ) : (
+            <View style={styles.placeholderImageSmall}>
+              <Text style={styles.placeholderTextSmall}>404</Text>
+            </View>
+          )}
+        </View>
+
+        {/* 기본 정보 */}
+        <View style={styles.basicInfoContainer}>
+          <Text style={styles.drugNameSmall} numberOfLines={1}>
+            {drug.prod_name || "제품명 없음"}
+          </Text>
+
+          <View style={styles.infoRowSmall}>
+            <Text style={styles.labelSmall}>약효분류: </Text>
+            <Text style={styles.valueSmall}>{drug.bit || "정보없음"}</Text>
           </View>
-        )}
-      </View>
-      <View style={styles.drugBasicInfo}>
-        <Text style={styles.infoLabel}>제품명(prod_name)</Text>
-        <Text style={styles.drugName}>{item.prod_name}</Text>
-      </View>
-    </View>
+            <Text style={styles.labelSmall}>주요 효능: </Text>
+            <Text style={styles.summaryText} numberOfLines={2}>
+            {drug.icd_sum || "주요 효능 정보없음"}
+          </Text>
 
-    <View style={styles.cardContent}>
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>약물 분류 (BIT)</Text>
-        <Text style={styles.infoText}>{item.bit}</Text>
-      </View>
+          <View style={styles.badgeContainer}>
+            <View style={styles.purchaseBadge}>
+              <Text style={styles.badgeText}>{drug.purchase_loc || "구매처"}</Text>
+            </View>
+            <View style={styles.formBadge}>
+              <Text style={styles.badgeText}>{drug.medi_form || "제형"}</Text>
+            </View>
+          </View>
+        </View>
 
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>주요 효능 및 적응증 요약 (ICD Sum)</Text>
-        <Text style={styles.infoText}>{item.icd_sum || "정보 없음"}</Text>
+        {/* 더보기 아이콘 */}
+        <View style={styles.moreIconContainer}>
+          <Entypo name="info-with-circle" size={20} color="#FF6600" />
+        </View>
       </View>
+    </TouchableOpacity>
+  );
 
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>권장 복용법(dosage)</Text>
-        <Text style={styles.infoText}>{item.dosage || "정보 없음"}</Text>
-      </View>
+  const renderDetailModal = () => {
+    if (!isModalOpen || !selectedDrug) return null;
 
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>투여 금지 대상(contraindicated)</Text>
-        <Text style={[styles.infoText, styles.warningText]}>
-          {item.contraindicated || "(특이 보고 없음)"}
-        </Text>
-      </View>
+    return (
+      <Modal
+        visible={isModalOpen}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={closeModal}
+      >
+        <View style={styles.modalOverlay}>
+          <SafeAreaView style={styles.modalContainer}>
+            {/* 모달 헤더 */}
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalDrugName}>{selectedDrug.prod_name}</Text>
+              <View style={styles.modalBadge}>
+                <Text style={styles.modalBadgeText}>{selectedDrug.bit}</Text>
+              </View>
+            </View>
 
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>일상생활에서 주의할 음식(daily_interaction)</Text>
-        <Text style={[styles.infoText, styles.cautionText]}>
-          {item.daily_interaction || "(특이 보고 없음)"}
-        </Text>
-      </View>
+            {/* 모달 내용 */}
+            <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
+              <View style={styles.modalHeaderContent}>
+                <View style={styles.sectionHeader}>
+                  <Feather name="image" style={{marginRight:6}} size={26} color="#8D4DE5" />
+                  <Text style={styles.sectionTitle}>제품 이미지</Text>
+                </View>
+                <View style={styles.modalImageContainer}>
+                  {selectedDrug.prod_img ? (
+                    <Image source={{ uri: selectedDrug.prod_img }} style={styles.modalDrugImage} />
+                  ) : (
+                    <View style={styles.modalPlaceholderImage}>
+                      <Text style={styles.modalPlaceholderText}>404</Text>
+                    </View>
+                  )}
+                </View>
+              </View>
+              {/* 기본 정보 섹션 */}
+              <View style={styles.section}>
+                <View style={styles.sectionHeader}>
+                  <Entypo name="info-with-circle" style={{marginRight:8}} size={24} color="#0066ff" />
+                  <Text style={styles.sectionTitle}>기본 정보</Text>
+                </View>
+                <View style={styles.infoCard}>
+                  <Text style={styles.infoCardLabel}>주요 효능</Text>
+                  <Text style={styles.modalSummary}>{selectedDrug.icd_sum}</Text>
+                </View>
+                <View style={styles.infoGrid}>
+                  <View style={styles.infoCard}>
+                    <Text style={styles.infoCardLabel}>구매처</Text>
+                    <Text style={styles.infoCardValue}>{selectedDrug.purchase_loc || "정보없음"}</Text>
+                  </View>
+                  <View style={styles.infoCard}>
+                    <Text style={styles.infoCardLabel}>제형</Text>
+                    <Text style={styles.infoCardValue}>{selectedDrug.medi_form || "정보없음"}</Text>
+                  </View>
+                </View>
+              </View>
 
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>부작용(adverse_reaction)</Text>
-        <Text style={styles.infoText}>
-          {item.adverse_reaction || "(특이 보고 없음)"}
-        </Text>
-      </View>
+              {/* 복용 정보 섹션 */}
+              <View style={styles.section}>
+                <View style={styles.sectionHeader}>
+                  <MaterialCommunityIcons name="hospital-box-outline" style={{marginRight:6}} size={24} color="#10B981" />
+                  <Text style={styles.sectionTitle}>복용 정보</Text>
+                </View>
+                <View style={[styles.detailCard, styles.dosageCard]}>
+                  <Text style={styles.detailCardLabel}>권장 복용법</Text>
+                  <Text style={styles.detailCardValue}>{selectedDrug.dosage || "정보없음"}</Text>
+                </View>
+              </View>
 
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>다른 약물과의 상호작용(drug_interaction)</Text>
-        <Text style={styles.infoText}>
-          {item.drug_interaction || "(특이 보고 없음)"}
-        </Text>
-      </View>
+              {/* 주의사항 섹션 */}
+              <View style={styles.section}>
+                <View style={styles.sectionHeader}>
+                  <Ionicons name="warning" style={{marginRight:6}} size={24} color="#D80027" />
+                  <Text style={styles.sectionTitle}>주의사항</Text>
+                </View>
 
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>제형(medi_form)</Text>
-        <Text style={styles.infoText}>{item.medi_form || "정보 없음"}</Text>
-      </View>
+                <View style={[styles.detailCard, styles.warningCard]}>
+                  <Text style={styles.detailCardLabel}>투여 금지 대상</Text>
+                  <Text style={styles.detailCardValue}>{selectedDrug.contraindicated || "(특이 보고 없음)"}</Text>
+                </View>
 
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>비치 위치 (Standby, pharmacy, specialty 등)</Text>
-        <Text style={styles.infoText}>{item.purchase_loc || "정보 없음"}</Text>
-      </View>
+                <View style={[styles.detailCard, styles.cautionCard]}>
+                  <Text style={styles.detailCardLabel}>주의할 음식</Text>
+                  <Text style={styles.detailCardValue}>{selectedDrug.daily_interaction || "(특이 보고 없음)"}</Text>
+                </View>
 
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>보관 방법(storage_method)</Text>
-        <Text style={styles.infoText}>{item.storage_method || "(별도 정보 없음)"}</Text>
-      </View>
-    </View>
-  </TouchableOpacity>
-);
+                <View style={[styles.detailCard, styles.interactionCard]}>
+                  <Text style={styles.detailCardLabel}>약물 상호작용</Text>
+                  <Text style={styles.detailCardValue}>{selectedDrug.drug_interaction || "(특이 보고 없음)"}</Text>
+                </View>
 
+                <View style={[styles.detailCard, styles.adverseCard]}>
+                  <Text style={styles.detailCardLabel}>부작용</Text>
+                  <Text style={styles.detailCardValue}>{selectedDrug.adverse_reaction || "(특이 보고 없음)"}</Text>
+                </View>
+              </View>
+
+              {/* 보관 정보 섹션 */}
+              <View style={styles.section}>
+                <View style={styles.sectionHeader}>
+                  <AntDesign name="medicinebox" size={28} style={{marginRight:8}} color="black" />
+                  <Text style={styles.sectionTitle}>보관 방법</Text>
+                </View>
+                <View style={[styles.detailCard, styles.storageCard]}>
+                  <Text style={styles.detailCardValue}>{selectedDrug.storage_method || "(별도 정보 없음)"}</Text>
+                </View>
+              </View>
+            </ScrollView>
+
+            {/* 모달 푸터 */}
+            <View style={styles.modalFooter}>
+              <TouchableOpacity onPress={closeModal} style={styles.closeModalButton}>
+                <Text style={styles.closeModalButtonText}>닫기</Text>
+              </TouchableOpacity>
+            </View>
+          </SafeAreaView>
+        </View>
+      </Modal>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* 입력 섹션 */}
         {renderInputSection()}
-        
+
         {/* 결과 헤더 */}
         <View style={styles.resultsHeader}>
           <Text style={styles.resultsTitle}>유사 의약품 분석 결과</Text>
           <Text style={styles.resultsSubtitle}>{results.length}개의 유사 약품을 찾았습니다</Text>
         </View>
 
-        {/* 약품 리스트 */}
-        <View style={styles.drugsContainer}>
-          {results.map((item, index) => (
-            <View key={index}>
-              {renderDrugCard({ item, index })}
-            </View>
-          ))}
+        {/* 약품 기본 카드 리스트 */}
+        <View style={styles.cardsContainer}>
+          {results.map((drug, index) => renderBasicCard(drug, index))}
         </View>
       </ScrollView>
+
+      {/* 상세 정보 모달 */}
+      {renderDetailModal()}
     </View>
   );
 };
@@ -166,8 +281,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#666",
   },
-  
-  // 입력 섹션 스타일
+
+  // 입력 섹션
   inputSection: {
     marginTop: 20,
     marginHorizontal: 20,
@@ -181,6 +296,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     elevation: 3,
+  },
+  inputSectionHeader: {
+    marginBottom: 15,
+    borderColor: '#c8c8c8',
+    borderBottomWidth: 1,
+    paddingBottom: 10,
   },
   inputSectionTitle: {
     fontSize: 18,
@@ -200,13 +321,14 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   inputTextContainer: {
-    backgroundColor: '#F8F9FA',
+    borderColor: '#c8c8c8',
+    borderWidth: 1,
     padding: 15,
     borderRadius: 8,
     marginTop: 10,
   },
   inputText: {
-    fontSize: 14,
+    fontSize: 24,
     color: '#333',
     textAlign: 'center',
   },
@@ -228,18 +350,16 @@ const styles = StyleSheet.create({
     color: '#666',
   },
 
-  // 약품 컨테이너
-  drugsContainer: {
+  // 기본 카드 스타일
+  cardsContainer: {
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
-
-  // 약품 카드 스타일
-  drugCard: {
+  basicCard: {
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 20,
-    marginBottom: 16,
+    padding: 16,
+    marginBottom: 12,
     borderColor: '#E8E8E8',
     borderWidth: 1,
     shadowColor: '#000',
@@ -248,88 +368,267 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 3,
   },
-  cardHeader: {
+  cardRow: {
     flexDirection: 'row',
-    marginBottom: 20,
+    alignItems: 'flex-start',
   },
   drugImageContainer: {
-    marginRight: 15,
+    marginRight: 12,
   },
-  drugImage: {
-    width: 80,
-    height: 80,
+  drugImageSmall: {
+    width: 60,
+    height: 60,
     borderRadius: 8,
     resizeMode: 'contain',
     backgroundColor: '#F8F9FA',
   },
-  placeholderImage: {
-    width: 80,
-    height: 80,
+  placeholderImageSmall: {
+    width: 60,
+    height: 60,
     borderRadius: 8,
     backgroundColor: '#F8F9FA',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  placeholderText: {
-    fontSize: 10,
-    color: '#999',
-    textAlign: 'center',
+  placeholderTextSmall: {
+    fontSize: 24,
   },
-  drugBasicInfo: {
+  basicInfoContainer: {
     flex: 1,
-    justifyContent: 'center',
+    paddingRight: 8,
   },
-  drugName: {
-    fontSize: 18,
+  drugNameSmall: {
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 5,
+    marginBottom: 4,
   },
-  drugType: {
-    fontSize: 14,
+  infoRowSmall: {
+    flexDirection: 'row',
+    marginVertical: 4,
+  },
+  labelSmall: {
+    fontSize: 12,
     color: '#666',
+    fontWeight: '500',
+  },
+  valueSmall: {
+    fontSize: 12,
+    color: '#333',
+    fontWeight: '600',
+  },
+  summaryText: {
+    fontSize: 13,
+    color: '#333',
+    lineHeight: 18,
     marginBottom: 8,
   },
-  formBadge: {
-    backgroundColor: '#007AFF',
+  badgeContainer: {
+    flexDirection: 'row',
+    gap: 6,
+  },
+  purchaseBadge: {
+    backgroundColor: '#F5A623',
     paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  formBadge: {
+    backgroundColor: '#D0021B',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  badgeText: {
+    fontSize: 10,
+    color: '#fff',
+    fontWeight: '600',
+  },
+  moreIconContainer: {
+    justifyContent: 'center',
+    paddingLeft: 8,
+  },
+  moreIcon: {
+    fontSize: 18,
+  },
+
+  // 모달 스타일
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContainer: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    height: height * 0.9
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E8E8E8',
+  },
+  modalHeaderContent: {
+    marginTop: 40,
+  },
+  modalImageContainer: {
+    alignItems: 'center',
+    borderColor: '#666',
+    borderWidth: 1,
+    borderRadius: 12,
+    marginBottom: 20,
+    },
+  modalDrugImage: {
+    width: 240,
+    height: 240,
+    borderRadius: 12,
+    resizeMode: 'contain',
+    backgroundColor: '#F8F9FA',
+  },
+  modalPlaceholderImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 12,
+    backgroundColor: '#F8F9FA',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalPlaceholderText: {
+    fontSize: 32,
+  },
+  modalDrugName: {
+    marginTop: 6,
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  modalBadge: {
+    marginTop: 6,
+    backgroundColor: '#ff6600',
+    paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
     alignSelf: 'flex-start',
   },
-  formText: {
+  modalBadgeText: {
     fontSize: 12,
     color: '#fff',
     fontWeight: '600',
   },
+  modalSummary: {
+    fontSize: 14,
+    color: '#333',
+    lineHeight: 20,
+  },
 
-  // 카드 내용
-  cardContent: {
+  // 모달 내용
+  modalContent: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  sectionIcon: {
+    fontSize: 18,
+    marginRight: 8,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  infoGrid: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  infoCard: {
+    marginVertical: 6,
+    flex: 1,
+    backgroundColor: '#F8F9FA',
+    padding: 12,
+    borderRadius: 8,
+    borderColor: '#E0E0E0',
+    borderWidth: 1,
+  },
+  infoCardLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#666',
+    marginBottom: 4,
+  },
+  infoCardValue: {
+    fontSize: 14,
+    color: '#333',
+  },
+  detailCard: {
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+  },
+  dosageCard: {
+    backgroundColor: '#F0FDF4',
+    borderColor: '#BBF7D0',
+  },
+  warningCard: {
+    backgroundColor: '#FEF2F2',
+    borderColor: '#FECACA',
+  },
+  cautionCard: {
+    backgroundColor: '#FFFBEB',
+    borderColor: '#FED7AA',
+  },
+  interactionCard: {
+    backgroundColor: '#FEFCE8',
+    borderColor: '#FDE68A',
+  },
+  adverseCard: {
+    backgroundColor: '#FAF5FF',
+    borderColor: '#E9D5FF',
+  },
+  storageCard: {
+    backgroundColor: '#EFF6FF',
+    borderColor: '#DBEAFE',
+  },
+  detailCardLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#374151',
+    marginBottom: 6,
+  },
+  detailCardValue: {
+    fontSize: 14,
+    color: '#111827',
+    lineHeight: 20,
+  },
+
+  // 모달 푸터
+  modalFooter: {
+    padding: 20,
     borderTopWidth: 1,
-    borderTopColor: '#F0F0F0',
-    paddingTop: 15,
+    borderTopColor: '#E8E8E8',
   },
-  infoRow: {
-    marginBottom: 15,
+  closeModalButton: {
+    backgroundColor: '#ff6600',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
   },
-  infoLabel: {
-  fontSize: 14,
-  fontWeight: '600',
-  color: '#222',
-  marginBottom: 3,
-},
-infoText: {
-  fontSize: 14,
-  color: '#555',
-  lineHeight: 20,
-},
-warningText: {
-  color: '#FF3B30',
-},
-cautionText: {
-  color: '#FF9500',
-},
-
+  closeModalButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
+  },
 });
 
 export default Similar;

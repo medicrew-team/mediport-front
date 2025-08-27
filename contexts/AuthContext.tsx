@@ -355,6 +355,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
+      // 입력 검증
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email.trim())) {
         Alert.alert(t('onboarding.alert.error'), t('onboarding.alert.emailRegex?'));
