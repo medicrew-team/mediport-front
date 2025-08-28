@@ -151,5 +151,32 @@
     "7": "Gút",
     "8": "Hen suyễn",
     "9": "Viêm khớp"
+    },
+  "User": {
+    "layout": {
+      "chatbot": "Chatbot",
+      "translate": "Dịch",
+      "alternative": "Thuốc Tương",
+      "community": "Cộng đồng",
+      "index": "Hồ sơ",
+      "prohibited": "Cấm",
+      "prescription": "Quét Đơn",
+      "similar": "KQ Tương",
+      "pharmacy": "KQ Đơn",
+      "Tabs_chatbot": "Chat",
+      "Tabs_translate": "Dịch",
+      "Tabs_alternative": "Thuốc",
+      "Tabs_community": "Cộng đồng",
+      "Tabs_index": "Hồ sơ"
+    },
+    "chatbot": {
+      "chatbot_hi": "Xin chào 👋 Tôi là Medi. Hãy cho tôi biết triệu chứng của bạn, tôi sẽ gợi ý thuốc phù hợp. Bạn có triệu chứng gì?",
+      "chatbox_Alert": "Vui lòng nhập tin nhắn.",
+      "chatbox_placeholder": "Nhập triệu chứng..."
+    },
+    "index": {},
+    "basicInfo": {
+      "title": "뱃남"
+    }
   }
 }

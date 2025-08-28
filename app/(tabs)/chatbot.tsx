@@ -16,6 +16,8 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../types/ip';
+import { t } from 'i18next';
+import i18n from "../../config/i18n";
 
 interface Message {
   id: string;
@@ -31,7 +33,7 @@ export default function ChatbotScreen() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: '안녕하세요👋 메디입니다. 증상을 알려주시면 적절한 일반의약품을 추천해드릴게요. 어떤 증상이 있으신가요?',
+      text: t("User.chatbot.chatbot_hi"),
       isUser: false,
       timestamp: new Date(),
     },
@@ -92,7 +94,7 @@ export default function ChatbotScreen() {
 
   const sendMessage = async () => {
     if (!inputText.trim()) {
-      Alert.alert('알림', '메시지를 입력해주세요.');
+      Alert.alert(t('User.alert.title'), t('User.chatbot.chatbox_Alert'));
       return;
     }
 
@@ -179,7 +181,20 @@ export default function ChatbotScreen() {
   };
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('ko-KR', {
+    const lng = i18n.language;
+    const localeMap: Record<string, string> = {
+      ko: "ko-KR",      // 한국어
+      en: "en-US",      // 영어
+      "zh-CN": "zh-CN", // 중국어(간체)
+      zh: "zh-CN",      // 중국어 (fallback)
+      vi: "vi-VN",      // 베트남어
+      th: "th-TH",      // 태국어
+      fil: "fil-PH",    // 필리핀어
+      tl: "fil-PH",     // 태그로그 (동일 처리)
+    };
+    const locale = localeMap[lng] || "en-US";
+
+    return date.toLocaleTimeString(locale, {
       hour: '2-digit',
       minute: '2-digit',
     });
@@ -257,7 +272,7 @@ export default function ChatbotScreen() {
               style={styles.textInput}
               value={inputText}
               onChangeText={setInputText}
-              placeholder="증상을 입력하세요..."
+              placeholder={t('User.chatbot.chatbox_Alert')}
               placeholderTextColor="#999"
               multiline
               maxLength={500}
@@ -271,7 +286,6 @@ export default function ChatbotScreen() {
                 (!inputText.trim() || isLoading) && styles.sendButtonDisabled
               ]}
               onPress={sendMessage}
-              disabled={!inputText.trim() || isLoading}
             >
               <Ionicons
                 name="send"

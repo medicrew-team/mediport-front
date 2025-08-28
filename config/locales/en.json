@@ -151,5 +151,33 @@
     "7": "Gout",
     "8": "Asthma",
     "9": "Arthritis"
+    },
+  "User": {
+    "layout": {
+      "chatbot": "Chatbot",
+      "translate": "Translate",
+      "alternative": "Alt. Drugs",
+      "community": "Community",
+      "index": "My Info",
+      "prohibited": "Banned",
+      "prescription": "Scan Rx",
+      "similar": "Alt. Result",
+      "pharmacy": "Rx Result",
+      "Tabs_chatbot": "Chatbot",
+      "Tabs_translate": "Translate",
+      "Tabs_alternative": "Drugs",
+      "Tabs_community": "Community",
+      "Tabs_index": "Profile"
+    },
+    "chatbot": {
+      "chatbot_hi": "Hi 👋 I'm Medi. Tell me your symptoms and I'll suggest suitable OTC medicine. What symptoms do you have?",
+      "chatbox_Alert": "Please enter a message.",
+      "chatbox_placeholder": "Type symptoms..."
+    },
+    "index": {
+    },
+    "basicInfo":{
+      "title":"영어"
+    }
   }
 }

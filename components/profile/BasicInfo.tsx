@@ -12,6 +12,8 @@ import { useAuth } from '../../contexts/AuthContext';
 import { languages,InfoScreenProps } from '../../types/profile';
 import { Feather } from '@expo/vector-icons';
 import { BASE_URL } from '../../types/ip';
+import i18n from "../../config/i18n";
+import { t } from 'i18next';
 
 const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) => {
   const { token } = useAuth();
@@ -74,7 +76,7 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Text style={styles.backButtonText}>‹ 뒤로</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>기본 정보</Text>
+        <Text style={styles.headerTitle}>{t('User.basicInfo.title')}</Text>
       </View>
 
       <View style={styles.section}>
@@ -107,7 +109,11 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
                 <TouchableOpacity
                   key={lang.code}
                   style={styles.dropdownList}
-                  onPress={() => { setLanguage(lang.code); setShowDropdown(false); }}
+                  onPress={() => { 
+                    setLanguage(lang.code);
+                    setShowDropdown(false); 
+                    i18n.changeLanguage(lang.code);
+                  }}
                 >
                   <Text style={styles.dropdownText}>{lang.flag} {lang.name}</Text>
                   {language === lang.code && (

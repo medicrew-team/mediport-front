@@ -14,6 +14,7 @@ import HealthInfoScreen from '../../components/profile/HealthInfo';
 import CautionInfoScreen from '../../components/profile/CautionInfo';
 import { User } from '../../types/profile';
 import { BASE_URL } from '../../types/ip';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function ProfileScreen() {
   const { token, logout } = useAuth();
@@ -63,6 +64,7 @@ export default function ProfileScreen() {
   const handleBackToProfile = () => {
     setCurrentView('profile');
   };
+
 
   // 현재 뷰에 따라 다른 화면 렌더링
   if (currentView === 'basic') {
@@ -124,50 +126,50 @@ export default function ProfileScreen() {
           onPress={() => setCurrentView('basic')}
         >
           <Text style={styles.menuText}>기본 정보</Text>
-          <Text style={styles.arrow}>›</Text>
+          <FontAwesome name="chevron-right" size={14} color="#666" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuItem}
           onPress={() => setCurrentView('health')}
         >
           <Text style={styles.menuText}>건강 정보</Text>
-          <Text style={styles.arrow}>›</Text>
+          <FontAwesome name="chevron-right" size={14} color="#666" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuItem}
           onPress={() => setCurrentView('caution')}
         >
           <Text style={styles.menuText}>병용 금지</Text>
-          <Text style={styles.arrow}>›</Text>
+          <FontAwesome name="chevron-right" size={14} color="#666" />
         </TouchableOpacity>
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>앱 설정</Text>
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingText}>알림 설정</Text>
-          <Text style={styles.arrow}>›</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingText}>언어 설정</Text>
-          <Text style={styles.arrow}>›</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingText}>개인정보 보호</Text>
-          <Text style={styles.arrow}>›</Text>
-        </TouchableOpacity>
-      </View>
+        <TouchableOpacity 
+          style={styles.settingItem}
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Firebase 보안 토큰</Text>
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingText}>UID: {user?.user_id}</Text>
-          <Text style={styles.arrow}>›</Text>
+        >
+          <Text style={styles.settingText}>언어 설정</Text>
+          <FontAwesome name="chevron-right" size={14} color="#666" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingToken}>토큰: {token}</Text>
-          <Text style={styles.arrow}>›</Text>
+        <TouchableOpacity 
+          style={styles.settingItem}
+
+        >
+          <Text style={styles.settingText}>알림 설정</Text>
+          <FontAwesome name="chevron-right" size={14} color="#666" />
         </TouchableOpacity>
+
+        {/* 개인정보 보호 */}
+        <TouchableOpacity 
+          style={styles.settingItem}
+
+        >
+          <Text style={styles.settingText}>개인정보 보호</Text>
+          <FontAwesome name="chevron-right" size={14} color="#666" />
+        </TouchableOpacity>
+
       </View>
     </ScrollView>
   );
@@ -227,7 +229,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   section: {
-    marginTop: 20,
+    marginBottom: 30,
     marginHorizontal: 20,
     backgroundColor: '#fff',
     padding: 20,
@@ -253,10 +255,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
   },
-  arrow: {
-    fontSize: 18,
-    color: '#ccc',
-  },
   settingItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -269,9 +267,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
   },
-  settingToken: {
-    fontSize: 16,
-    color: '#333',
-    flexWrap: 'wrap',
+    dropdownContent: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: '#fafafa',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
   },
 });

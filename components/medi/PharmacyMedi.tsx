@@ -51,7 +51,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
         return (
             <View style={styles.container}>
                 <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>처방전 약 정보가 없습니다.</Text>
+                    <Text style={styles.emptyText}>처방약 정보가 없습니다.</Text>
                 </View>
             </View>
         );
@@ -70,7 +70,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
     const renderInputSection = () => (
         <View style={styles.inputSection}>
             <View style={styles.inputSectionHeader}>
-                <Text style={styles.inputSectionTitle}>처방전 이미지</Text>
+                <Text style={styles.inputSectionTitle}>처방약 이미지</Text>
             </View>
             {inputImage && (
                 <View style={styles.inputImageContainer}>
@@ -200,7 +200,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                                 <View style={styles.section}>
                                     <View style={styles.sectionHeader}>
                                         <MaterialCommunityIcons name="text-recognition" style={{ marginRight: 6 }} size={24} color="#8B5CF6" />
-                                        <Text style={styles.sectionTitle}>처방전 정보</Text>
+                                        <Text style={styles.sectionTitle}>처방약 정보</Text>
                                     </View>
                                     <View style={[styles.detailCard, styles.ocrCard]}>
                                         <Text style={styles.detailCardLabel}>OCR 인식 결과</Text>
@@ -285,7 +285,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
 
                 {/* 결과 헤더 */}
                 <View style={styles.resultsHeader}>
-                    <Text style={styles.resultsTitle}>처방전 분석 결과</Text>
+                    <Text style={styles.resultsTitle}>처방약 분석 결과</Text>
                     <Text style={styles.resultsSubtitle}>{results.length}개의 약품을 찾았습니다</Text>
                 </View>
 

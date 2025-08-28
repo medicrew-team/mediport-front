@@ -7,6 +7,7 @@ import { Tabs } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { t } from 'i18next';
 
 
 const CustomTabBar = (props: BottomTabBarProps) => {
@@ -35,17 +36,17 @@ const Pagename = () => {
   const effectiveRoute = groupMap[route.name] || route.name;
   
   const titles: Record<string, string> = {
-    chatbot: '챗봇',
-    translate: '번역',
-    alternative: '유사약품 조회',
-    community: '커뮤니티',
-    index: '내정보',
-    prohibited: '반입금지 약품',
-    prescription: '처방전 스캔',
-    similar: '유사약품 조회 결과',
-    pharmacy: '처방전 조회 결과',
+    chatbot: t("User.layout.chatbot"),
+    translate: t("User.layout.translate"),
+    alternative: t("User.layout.alternative"),
+    community: t("User.layout.community"),
+    index: t("User.layout.index"),
+    prohibited: t("User.layout.prohibited"),
+    prescription: t("User.layout.prescription"),
+    similar: t("User.layout.similar"),
+    pharmacy: t("User.layout.pharmacy"),
   };
-  const currentTitle = titles[route.name] || '페이지';
+  const currentTitle = titles[route.name] || 'page';
 
   return (
     <View style={styles.pageNameContainer}>
@@ -166,7 +167,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="chatbot"
         options={{
-          title: '챗봇',
+          title: t("User.layout.Tabs_chatbot"),
           tabBarIcon: ({ color, focused }) => (
             <TabBarMaterialIcon color={color} focused={focused} iconName="robot-excited" />
           ),
@@ -175,7 +176,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="translate"
         options={{
-          title: '번역',
+          title: t("User.layout.Tabs_translate"),
           tabBarIcon: ({ color, focused }) => (
             <TabBarMaterialIcon color={color} focused={focused} iconName="translate" />
           ),
@@ -184,7 +185,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="alternative"
         options={{
-          title: '유사약품 조회',
+          title: t("User.layout.Tabs_alternative"),
           tabBarIcon: ({ color, focused }) => (
             <TabBarMaterialIcon color={color} focused={focused} iconName="line-scan" />
           ),
@@ -193,7 +194,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="community"
         options={{
-          title: '커뮤니티',
+          title: t("User.layout.Tabs_community"),
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon color={color} focused={focused} iconName="people" />
           ),
@@ -202,7 +203,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: '내정보',
+          title: t("User.layout.Tabs_index"),
           tabBarIcon: ({ color, focused }) => (
             <TabBarAwesomeIcon color={color} focused={focused} iconName="user-edit" />
           ),
@@ -219,7 +220,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="prescription"
         options={{
-          title: '처방전 스캔',
+          title: '처방약 스캔',
           href: null,
         }}
       />
@@ -233,7 +234,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="pharmacy"
         options={{
-          title: '처방전 조회 결과',
+          title: '처방약 조회 결과',
           href: null,
         }}
       />

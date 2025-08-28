@@ -185,7 +185,7 @@ export default function ProhibitedScreen() {
           style={[styles.navButton, styles.inactiveButton]}
           onPress={navigateToPrescription}
         >
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>처방전 스캔</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>처방약 스캔</Text>
         </TouchableOpacity>
       </View>
 

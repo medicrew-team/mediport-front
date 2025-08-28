@@ -146,5 +146,32 @@
     "7": "Gota",
     "8": "Hika",
     "9": "Rayuma"
+    },
+  "User": {
+    "layout": {
+      "chatbot": "Chatbot",
+      "translate": "Salin",
+      "alternative": "Gamot Alt.",
+      "community": "Komunidad",
+      "index": "Akun",
+      "prohibited": "Bawal",
+      "prescription": "Scan Reseta",
+      "similar": "Alt. Resulta",
+      "pharmacy": "Reseta",
+      "Tabs_chatbot": "Chat",
+      "Tabs_translate": "Salin",
+      "Tabs_alternative": "Gamot",
+      "Tabs_community": "Komunidad",
+      "Tabs_index": "Akun"
+    },
+    "chatbot": {
+      "chatbot_hi": "Hi 👋 Ako si Medi. Sabihin mo ang iyong mga sintomas at magrerekomenda ako ng angkop na gamot. Ano ang iyong nararamdaman?",
+      "chatbox_Alert": "Maglagay ng mensahe.",
+      "chatbox_placeholder": "Ilagay sintomas..."
+    },
+    "index": {},
+    "basicInfo":{
+      "title":"필리"
+    }
   }
 }

@@ -151,5 +151,32 @@
     "7": "痛风",
     "8": "哮喘",
     "9": "关节炎"
+    },
+  "User": {
+    "layout": {
+      "chatbot": "聊天",
+      "translate": "翻译",
+      "alternative": "替代药",
+      "community": "社区",
+      "index": "我的",
+      "prohibited": "禁药",
+      "prescription": "扫描处方",
+      "similar": "替代结果",
+      "pharmacy": "处方结果",
+      "Tabs_chatbot": "聊天",
+      "Tabs_translate": "翻译",
+      "Tabs_alternative": "药品",
+      "Tabs_community": "社区",
+      "Tabs_index": "我的"
+    },
+    "chatbot": {
+      "chatbot_hi": "你好👋 我是Medi。请告诉我您的症状，我会推荐合适的非处方药。您有哪些症状？",
+      "chatbox_Alert": "请输入消息。",
+      "chatbox_placeholder": "输入症状..."
+    },
+    "index": {},
+    "basicInfo":{
+      "title":"기본 정보"
+    }
   }
 }

@@ -1,19 +1,21 @@
+import { FontAwesome } from '@expo/vector-icons';
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
   Dimensions,
+  Image,
   Modal,
-  SafeAreaView
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
-import Entypo from '@expo/vector-icons/Entypo';
-import Ionicons from '@expo/vector-icons/Ionicons';
+
 import AntDesign from '@expo/vector-icons/AntDesign';
+import Entypo from '@expo/vector-icons/Entypo';
 import Feather from '@expo/vector-icons/Feather';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const { width, height } = Dimensions.get('window');
@@ -140,6 +142,10 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
 
             {/* 모달 내용 */}
             <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
+              <View style={styles.infoContainer}>
+                <Ionicons name="warning" style={{marginRight:1}} size={18} color="#B91C1C" />
+                <Text style={styles.infoText}>실제 복용 전 약사에게 확인 바랍니다.</Text>
+              </View>
               <View style={styles.modalHeaderContent}>
                 <View style={styles.sectionHeader}>
                   <Feather name="image" style={{marginRight:6}} size={26} color="#8D4DE5" />
@@ -281,7 +287,25 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#666",
   },
-
+  infoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginTop: 30,
+    marginHorizontal: 20,
+    borderRadius: 12,
+    padding: 8,
+    borderWidth: 1,
+    backgroundColor: "#FFF5F5",
+    borderColor: "#FBCACA",
+  },
+  infoText: {
+    textAlign: 'center',
+    fontSize: 14,
+    color: '#B91C1C',
+    fontWeight: '500',
+    lineHeight: 20,
+  },
   // 입력 섹션
   inputSection: {
     marginTop: 20,
@@ -473,7 +497,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E8E8E8',
   },
   modalHeaderContent: {
-    marginTop: 40,
+    marginTop: 20,
   },
   modalImageContainer: {
     alignItems: 'center',

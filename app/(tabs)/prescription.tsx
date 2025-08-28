@@ -112,7 +112,7 @@ export default function PrescriptionScreen() {
           {
             text: '확인',
             onPress: () => {
-              console.log('처방전 분석결과', data);
+              console.log('처방약 분석결과', data);
               router.push({
                 pathname: "/pharmacy",
                 params: {
@@ -156,7 +156,7 @@ export default function PrescriptionScreen() {
           style={[styles.navButton, styles.activeButton]}
           onPress={navigateToPrescription}
         >
-          <Text style={[styles.buttonText, styles.activeButtonText]}>처방전 스캔</Text>
+          <Text style={[styles.buttonText, styles.activeButtonText]}>처방약 스캔</Text>
         </TouchableOpacity>
       </View>
 
@@ -170,7 +170,7 @@ export default function PrescriptionScreen() {
         />
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>처방전 정보 입력</Text>
+        <Text style={styles.sectionTitle}>처방약 정보 입력</Text>
         <Text style={styles.sectionSubtitle}>아래 방법 중 하나를 선택해주세요</Text>
 
         {/* 옵션 버튼들 */}

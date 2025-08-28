@@ -151,5 +151,37 @@
     "7": "통풍",
     "8": "천식",
     "9": "관절염"
+  },
+  "User": {
+    "alert": {
+      "title": "알림"
+    },
+    "layout": {
+      "chatbot": "챗봇",
+      "translate": "번역",
+      "alternative": "유사약품 조회",
+      "community": "커뮤니티",
+      "index": "내정보",
+      "prohibited": "반입금지 약품",
+      "prescription": "처방약 스캔",
+      "similar": "유사약품 조회 결과",
+      "pharmacy": "처방약 조회 결과",
+      "Tabs_chatbot":"챗봇",
+      "Tabs_translate":"번역",
+      "Tabs_alternative":"약품조회",
+      "Tabs_community":"커뮤니티",
+      "Tabs_index":"내정보"
+    },
+    "chatbot":{
+      "chatbot_hi":"안녕하세요👋 메디입니다. 증상을 알려주시면 적절한 일반의약품을 추천해드릴게요. 어떤 증상이 있으신가요?",
+      "chatbox_Alert":"메시지를 입력해주세요.",
+      "chatbox_placeholder":"증상을 입력하세요..."
+    },
+    "index":{
+
+    },
+    "basicInfo":{
+      "title":"기본 정보"
+    }
   }
 }

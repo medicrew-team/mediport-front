@@ -151,5 +151,32 @@
     "7": "เกาต์",
     "8": "โรคหืด",
     "9": "ข้ออักเสบ"
+    },
+  "User": {
+    "layout": {
+      "chatbot": "แชท",
+      "translate": "แปล",
+      "alternative": "ยาทดแทน",
+      "community": "ชุมชน",
+      "index": "ของฉัน",
+      "prohibited": "ห้ามนำเข้า",
+      "prescription": "สแกน Rx",
+      "similar": "ผลทดแทน",
+      "pharmacy": "ผล Rx",
+      "Tabs_chatbot": "แชท",
+      "Tabs_translate": "แปล",
+      "Tabs_alternative": "ยา",
+      "Tabs_community": "ชุมชน",
+      "Tabs_index": "โปรไฟล์"
+    },
+    "chatbot": {
+      "chatbot_hi": "สวัสดีค่ะ👋 ฉันชื่อ Medi บอกอาการของคุณ แล้วฉันจะแนะนำยาทั่วไปที่เหมาะสม อาการของคุณคืออะไรคะ?",
+      "chatbox_Alert": "กรุณากรอกข้อความ",
+      "chatbox_placeholder": "ใส่อาการ..."
+    },
+    "index": {},
+    "basicInfo": {
+      "title":"태국"
+    }
   }
 }
