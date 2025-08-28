@@ -149,7 +149,16 @@
     },
   "User": {
     "alert": {
-      "title": "Abiso"
+      "title": "Abiso",
+      "error": "Error",
+      "Permission": "Kailangang pahintulot",
+      "microphone_Permission": "Pahintulutan ang mikropono para sa boses",
+      "start_recording_fail": "Nabigong simulan ang recording",
+      "end_recording_fail": "Nabigong tapusin ang recording",
+      "tranalate_fail": "Nabigong isalin",
+      "input_please": "Maglagay ng pangungusap para isalin",
+      "audio_none": "Walang audio na mapapatugtog",
+      "audio_fail": "Hindi mapatugtog ang audio"
     },
     "layout": {
       "chatbot": "Chatbot",
@@ -171,6 +180,66 @@
       "chatbot_hi": "Hi 👋 Ako si Medi. Sabihin mo ang iyong mga sintomas at magrerekomenda ako ng angkop na gamot. Ano ang iyong nararamdaman?",
       "chatbox_Alert": "Maglagay ng mensahe.",
       "chatbox_placeholder": "Ilagay sintomas..."
+    },
+        "translate": {
+      "hospital": {
+        "1": "Gusto kong magpa-appointment sa doktor.",
+        "2": "May bakanteng oras ngayon?",
+        "3": "Gusto kong makita ang doktor.",
+        "4": "Saan ang sakit?",
+        "5": "Ikwento ko ang mga sintomas ko.",
+        "6": "Gusto kong makakuha ng reseta.",
+        "7": "Kailangan ba ng tests?",
+        "8": "Sakop ba ng insurance?",
+        "9": "Magkano ang bayad?",
+        "10": "Kailangan ko ng medical records.",
+        "11": "May resulta ako mula sa ibang ospital.",
+        "12": "Anong gamutan ang kailangan?",
+        "13": "Kailangan ba akong ma-hospital?",
+        "14": "Kailangan ba ng surgery?",
+        "15": "Kailangan ba ng injection?",
+        "16": "Gusto kong sukatin ang presyon ng dugo.",
+        "17": "Gusto kong sukatin ang temperatura.",
+        "18": "Lumalala ang aking sintomas.",
+        "19": "Matagal na akong ubo.",
+        "20": "Maliit lang ang sugat, puwede bang gamutin?"
+      },
+      "pharmacy": {
+        "1": "Ilang beses sa isang araw?",
+        "2": "May side effects ba?",
+        "3": "Kailangang sabayan ng pagkain?",
+        "4": "Pwede bang bilhin nang walang reseta?",
+        "5": "Puwede ba sabay sa ibang gamot?",
+        "6": "Puwede sa bata?",
+        "7": "Puwede sa buntis?",
+        "8": "Paano iimbak nang maayos?",
+        "9": "Ano ang dapat iwasan pagkatapos uminom?",
+        "10": "Gaano katagal uminom?",
+        "11": "Gaano katagal bago gumana?",
+        "12": "Ano kung mali ang dose?",
+        "13": "Puwede bang magdulot ng allergy?",
+        "14": "Hindi puwede tigilan ba?",
+        "15": "Paano kung ikumpara sa katulad na gamot?",
+        "16": "May ibang anyo ba?",
+        "17": "Puwede bilhin bilang over-the-counter?",
+        "18": "Kailangan ba ng ID?",
+        "19": "Puwede bang magmaneho pagkatapos uminom?",
+        "20": "May limitasyon ba sa pagkain o inumin pagkatapos?"
+      },
+      "language": {
+        "ko": "Korean",
+        "en": "Ingles",
+        "cn": "Intsik",
+        "vi": "Biyetnam",
+        "th": "Thai",
+        "fil": "Filipino"
+      },
+      "modal_title": "Karaniwang Pangungusap",
+      "modal_hospital": "🏥 Ospital",
+      "input_pharmacy": "💊 Parmasya",
+      "input_placeholder": "Mag-type o magsalita",
+      "translate_btn": "Isalin",
+      "see_FAQ": "Tingnan ang karaniwang gamit"
     },
     "index": {},
     "basicInfo":{

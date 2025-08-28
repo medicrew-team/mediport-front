@@ -154,7 +154,16 @@
     },
   "User": {
     "alert": {
-      "title": "Alert"
+      "title": "Alert",
+      "error": "Error",
+      "Permission": "Permission Required",
+      "microphone_Permission": "Please allow microphone access for voice input.",
+      "start_recording_fail": "Failed to start recording",
+      "end_recording_fail": "Failed to end recording",
+      "tranalate_fail": "Translation failed",
+      "input_please": "Please enter a sentence to translate",
+      "audio_none": "No audio available",
+      "audio_fail": "Failed to play audio"
     },
     "layout": {
       "chatbot": "Chatbot",
@@ -176,6 +185,66 @@
       "chatbot_hi": "Hi 👋 I'm Medi. Tell me your symptoms and I'll suggest suitable OTC medicine. What symptoms do you have?",
       "chatbox_Alert": "Please enter a message.",
       "chatbox_placeholder": "Type symptoms..."
+    },
+        "translate": {
+      "hospital": {
+        "1": "I would like to make a medical appointment.",
+        "2": "Is there an appointment available today?",
+        "3": "I want to see the doctor.",
+        "4": "Please explain where the pain is.",
+        "5": "I will tell you about my recent symptoms.",
+        "6": "I would like to get a prescription.",
+        "7": "Do I need any tests?",
+        "8": "Is it covered by insurance?",
+        "9": "How much is the consultation fee?",
+        "10": "I need my medical records.",
+        "11": "I have test results from another hospital.",
+        "12": "What treatment is needed?",
+        "13": "Do I need to be hospitalized?",
+        "14": "Might I need surgery?",
+        "15": "Do I need an injection?",
+        "16": "I want to check my blood pressure.",
+        "17": "I want to check my temperature.",
+        "18": "My symptoms are getting worse.",
+        "19": "I have a persistent cough.",
+        "20": "I have a minor injury; can it be treated?"
+      },
+      "pharmacy": {
+        "1": "How many times a day should I take this medicine?",
+        "2": "Are there any side effects?",
+        "3": "Should I take this medicine with food?",
+        "4": "Can I buy it without a prescription?",
+        "5": "Can I take this with other medicines?",
+        "6": "Is it safe for children?",
+        "7": "Can pregnant women take it?",
+        "8": "Any precautions for storing the medicine?",
+        "9": "Any precautions after taking it?",
+        "10": "How long should I take this medicine?",
+        "11": "How long does it take to work?",
+        "12": "What should I do if I take the wrong dose?",
+        "13": "Can this medicine cause allergies?",
+        "14": "Should I not stop taking it?",
+        "15": "How does it compare to other medicines with the same ingredient?",
+        "16": "Can I get it in another form?",
+        "17": "Is it available as an over-the-counter medicine?",
+        "18": "Do I need an ID to buy it?",
+        "19": "Can I drive after taking it?",
+        "20": "Any food or drink restrictions after taking it?"
+      },
+      "language": {
+        "ko": "Korean",
+        "en": "English",
+        "cn": "Chinese",
+        "vi": "Vietnamese",
+        "th": "Thai",
+        "fil": "Filipino"
+      },
+      "modal_title": "Common Phrases",
+      "modal_hospital": "🏥 Hospital",
+      "input_pharmacy": "💊 Pharmacy",
+      "input_placeholder": "Type text or speak",
+      "translate_btn": "Translate",
+      "see_FAQ": "View frequently used sentences"
     },
     "index": {
     },

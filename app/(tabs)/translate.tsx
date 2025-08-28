@@ -1,7 +1,7 @@
 "use client"
 
 import { Ionicons,Fontisto } from "@expo/vector-icons"
-import { useState, useRef } from "react"
+import { useState, useRef, useMemo  } from "react"
 import {
   ScrollView,
   StyleSheet,
@@ -16,21 +16,72 @@ import {
 } from "react-native"
 import { Audio } from "expo-av"
 import { BASE_URL } from "../../types/ip"
+import { t } from 'i18next';
 
-const LANGUAGES = [
-  { code: "ko", name: "Korean", flag: "🇰🇷" },
-  { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "zh-cn", name: "Chinese", flag: "🇨🇳" },
-  { code: "fil", name: "Filipino", flag: "🇵🇭" },
-  { code: "vi", name: "Vietnamese", flag: "🇻🇳" },
-  { code: "th", name: "Thai", flag: "🇹🇭" },
-]
+
 
 export default function TranslateScreen() {
   const [inputText, setInputText] = useState("")
+
+const LANGUAGES = useMemo(() => [
+  { code: "ko", name: t('User.translate.language.ko'), flag: "🇰🇷" },
+  { code: "en", name: t('User.translate.language.en'), flag: "🇺🇸" },
+  { code: "zh-cn", name: t('User.translate.language.cn'), flag: "🇨🇳" },
+  { code: "fil", name: t('User.translate.language.fil'), flag: "🇵🇭" },
+  { code: "vi", name: t('User.translate.language.vi'), flag: "🇻🇳" },
+  { code: "th", name: t('User.translate.language.th'), flag: "🇹🇭" },
+], [t])
+
+const PHRASES = useMemo(() => ({
+  hospital: [
+    t('User.translate.hospital.1'),
+    t('User.translate.hospital.2'),
+    t('User.translate.hospital.3'),
+    t('User.translate.hospital.4'),
+    t('User.translate.hospital.5'),
+    t('User.translate.hospital.6'),
+    t('User.translate.hospital.7'),
+    t('User.translate.hospital.8'),
+    t('User.translate.hospital.9'),
+    t('User.translate.hospital.10'),
+    t('User.translate.hospital.11'),
+    t('User.translate.hospital.12'),
+    t('User.translate.hospital.13'),
+    t('User.translate.hospital.14'),
+    t('User.translate.hospital.15'),
+    t('User.translate.hospital.16'),
+    t('User.translate.hospital.17'),
+    t('User.translate.hospital.18'),
+    t('User.translate.hospital.19'),
+    t('User.translate.hospital.20'),
+  ],
+  pharmacy: [
+    t('User.translate.pharmacy.1'),
+    t('User.translate.pharmacy.2'),
+    t('User.translate.pharmacy.3'),
+    t('User.translate.pharmacy.4'),
+    t('User.translate.pharmacy.5'),
+    t('User.translate.pharmacy.6'),
+    t('User.translate.pharmacy.7'),
+    t('User.translate.pharmacy.8'),
+    t('User.translate.pharmacy.9'),
+    t('User.translate.pharmacy.10'),
+    t('User.translate.pharmacy.11'),
+    t('User.translate.pharmacy.12'),
+    t('User.translate.pharmacy.13'),
+    t('User.translate.pharmacy.14'),
+    t('User.translate.pharmacy.15'),
+    t('User.translate.pharmacy.16'),
+    t('User.translate.pharmacy.17'),
+    t('User.translate.pharmacy.18'),
+    t('User.translate.pharmacy.19'),
+    t('User.translate.pharmacy.20'),
+  ]
+}), [t])
+  
   const [translatedText, setTranslatedText] = useState("")
-  const [sourceLanguage, setSourceLanguage] = useState(LANGUAGES[0])
-  const [targetLanguage, setTargetLanguage] = useState(LANGUAGES[1])
+  const [sourceLanguage, setSourceLanguage] = useState(LANGUAGES[1])
+  const [targetLanguage, setTargetLanguage] = useState(LANGUAGES[0])
   const [isRecording, setIsRecording] = useState(false)
   const [isTranslating, setIsTranslating] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -39,6 +90,49 @@ export default function TranslateScreen() {
 
   const recordingRef = useRef<Audio.Recording | null>(null)
   const soundRef = useRef<Audio.Sound | null>(null)
+
+  const [showPhraseModal, setShowPhraseModal] = useState(false)
+
+  
+
+const selectPhrase = (phrase: string) => {
+  setInputText(phrase)
+  setShowPhraseModal(false)
+}
+
+const renderPhraseModal = () => (
+  <Modal visible={showPhraseModal} transparent animationType="slide">
+    <View style={styles.modalOverlay}>
+      <View style={styles.modalContent}>
+        <View style={styles.modalHeader}>
+          <Text style={styles.modalTitle}>{t('User.translate.modal_title')}</Text>
+          <TouchableOpacity onPress={() => setShowPhraseModal(false)}>
+            <Ionicons name="close" size={24} color="#333" />
+          </TouchableOpacity>
+        </View>
+        <ScrollView>
+          {Object.entries(PHRASES).map(([category, phrases]) => (
+            <View key={category} style={{ marginBottom: 15 }}>
+              <Text style={{ fontWeight: "700", fontSize: 16, marginBottom: 8 }}>
+                {category === "hospital" ? t('User.translate.modal_hospital') :
+                 category === "pharmacy" ? t('User.translate.input_pharmacy') : category}
+              </Text>
+              {phrases.map((p, idx) => (
+                <TouchableOpacity
+                  key={idx}
+                  style={styles.phraseItem}
+                  onPress={() => selectPhrase(p)}
+                >
+                  <Text style={styles.phraseText}>{p}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    </View>
+  </Modal>
+)
 
   const swapLanguages = () => {
     const temp = sourceLanguage
@@ -64,7 +158,7 @@ export default function TranslateScreen() {
     try {
       const { status } = await Audio.requestPermissionsAsync()
       if (status !== "granted") {
-        Alert.alert("Permission required", "Please grant microphone permission to use voice input.")
+        Alert.alert(t('User.alert.Permission'), t('User.alert.microphone_Permission'))
         return
       }
 
@@ -82,8 +176,7 @@ export default function TranslateScreen() {
       recordingRef.current = recording
       setIsRecording(true)
     } catch (error) {
-      console.error("Failed to start recording:", error)
-      Alert.alert("Error", "Failed to start recording")
+      Alert.alert(t('User.alert.error'), t('User.alert.start_recording_fail'))
     }
   }
 
@@ -101,7 +194,7 @@ export default function TranslateScreen() {
       }
     } catch (error) {
       console.error("Failed to stop recording:", error)
-      Alert.alert("Error", "Failed to stop recording")
+      Alert.alert(t('User.alert.error'), t('User.alert.end_recording_fail'))
     }
   }
 
@@ -134,7 +227,7 @@ export default function TranslateScreen() {
       }
     } catch (error) {
       console.error("Transcription error:", error)
-      Alert.alert("Error", "Failed to transcribe audio")
+      Alert.alert(t('User.alert.error'), t('User.alert.tranalate_fail'))
     } finally {
       setIsTranslating(false)
     }
@@ -152,7 +245,7 @@ export default function TranslateScreen() {
 
 const translateText = async () => {
   if (!inputText.trim() || inputText === "Tap to enter text") {
-    Alert.alert("Error", "Please enter text to translate")
+    Alert.alert(t('User.alert.error'), t('User.alert.input_please'))
     return
   }
 
@@ -199,7 +292,7 @@ const translateText = async () => {
       errorMessage = `Translation failed: ${errorMsg}`
     }
     
-    Alert.alert("Translation Error", errorMessage)
+    console.error("Translation Error", errorMessage)
   } finally {
     setIsTranslating(false)
   }
@@ -207,7 +300,7 @@ const translateText = async () => {
 
   const playTranslatedText = async () => {
     if (!translatedText || translatedText === "") {
-      Alert.alert("Error", "No translated text to play")
+      Alert.alert(t('User.alert.error'), t('User.alert.audio_none'))
       return
     }
 
@@ -260,7 +353,7 @@ const translateText = async () => {
       await sound.playAsync();
     } catch (error) {
       console.error("TTS error:", error);
-      Alert.alert("Error", "Failed to play translated text");
+      Alert.alert(t('User.alert.error'), t('User.alert.audio_fail'));
       setIsPlaying(false);
     }
   };
@@ -307,13 +400,13 @@ const translateText = async () => {
         </TouchableOpacity>
         </View>
           <TouchableOpacity style={{ position: "absolute", zIndex: 1, top: 50, right: 10 }} onPress={() => setInputText("")}>
-            <Ionicons name="close" size={36} color="#000" />
+            <Ionicons name="close" size={30} color="#000" />
           </TouchableOpacity>
         <TextInput
           style={[styles.cardContent, styles.input,{paddingRight: 40}]}
           value={inputText}
           onChangeText={setInputText}
-          placeholder="Enter text..."
+          placeholder={t('User.translate.input_placeholder')}
           placeholderTextColor="#aaa"
           multiline
         />
@@ -333,15 +426,17 @@ const translateText = async () => {
             {isTranslating ? (
               <ActivityIndicator size="small" color="#fff" />
             ) : (
-              <Text style={styles.translateText}>Translate</Text>
+              <Text style={styles.translateText}>{t('User.translate.translate_btn')}</Text>
             )}
           </TouchableOpacity>
         </View>
       </View>
+
+      {renderPhraseModal()}
       {/* 리버스 */}
       <View style={styles.languageRow}>
         <TouchableOpacity onPress={swapLanguages}>
-          <Fontisto name="arrow-swap" size={30} color="#333" />
+          <Fontisto name="arrow-swap" size={24} color="#333" />
         </TouchableOpacity>
       </View>
       {/* 번역 결과 카드 */}
@@ -368,6 +463,12 @@ const translateText = async () => {
           </TouchableOpacity>
         </View>
       </View>
+            <TouchableOpacity
+        style={styles.presetBtn}
+        onPress={() => setShowPhraseModal(true)}
+      >
+        <Text style={styles.presetText}>{t('User.translate.see_FAQ')}</Text>
+      </TouchableOpacity>
 
       {renderLanguageModal(
         showSourceModal,
@@ -458,10 +559,11 @@ const styles = StyleSheet.create({
   },
   translateBtn: {
     backgroundColor: "#ff6600",
+    alignItems: "center",
+    justifyContent:"center",
     paddingHorizontal: 12,
     paddingVertical: 8,
     height: 35,
-    width: 88,
     borderRadius: 20,
   },
   translateText: {
@@ -522,4 +624,28 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: "#333",
   },
+  presetBtn: {
+  backgroundColor: "#fa6666",
+  padding: 12,
+  borderRadius: 8,
+  alignItems: "center",
+  marginBottom: 20,
+},
+presetText: {
+  color: "#fff",
+  fontSize: 16,
+  fontWeight: "600",
+},
+phraseItem: {
+  paddingVertical: 12,
+  paddingHorizontal: 12,
+  borderRadius: 6,
+  borderBottomColor: "#ddd",
+  borderBottomWidth: 1,
+  marginBottom: 6,
+},
+phraseText: {
+  fontSize: 14,
+  color: "#333",
+},
 })

@@ -154,7 +154,16 @@
   },
   "User": {
     "alert": {
-      "title": "Thông báo"
+      "title": "Thông báo",
+      "error": "Lỗi",
+      "Permission": "Cần quyền",
+      "microphone_Permission": "Vui lòng cấp quyền micro để sử dụng nhập giọng nói.",
+      "start_recording_fail": "Bắt đầu ghi âm thất bại",
+      "end_recording_fail": "Kết thúc ghi âm thất bại",
+      "tranalate_fail": "Dịch thất bại",
+      "input_please": "Vui lòng nhập câu cần dịch",
+      "audio_none": "Không có âm thanh để phát",
+      "audio_fail": "Phát âm thanh thất bại"
     },
     "layout": {
       "chatbot": "Chatbot",
@@ -176,6 +185,66 @@
       "chatbot_hi": "Xin chào 👋 Tôi là Medi. Hãy cho tôi biết triệu chứng của bạn, tôi sẽ gợi ý thuốc phù hợp. Bạn có triệu chứng gì?",
       "chatbox_Alert": "Vui lòng nhập tin nhắn.",
       "chatbox_placeholder": "Nhập triệu chứng..."
+    },
+        "translate": {
+      "hospital": {
+        "1": "Tôi muốn đặt lịch khám bệnh.",
+        "2": "Hôm nay có lịch khám không?",
+        "3": "Tôi muốn gặp bác sĩ.",
+        "4": "Xin hãy giải thích vị trí đau.",
+        "5": "Tôi sẽ nói về các triệu chứng gần đây.",
+        "6": "Tôi muốn được kê thuốc.",
+        "7": "Có cần xét nghiệm không?",
+        "8": "Bảo hiểm có chi trả không?",
+        "9": "Chi phí khám là bao nhiêu?",
+        "10": "Tôi cần hồ sơ khám bệnh.",
+        "11": "Tôi có kết quả xét nghiệm từ bệnh viện khác.",
+        "12": "Cần điều trị gì?",
+        "13": "Tôi có cần nhập viện không?",
+        "14": "Có thể cần phẫu thuật không?",
+        "15": "Tôi có cần tiêm không?",
+        "16": "Tôi muốn đo huyết áp.",
+        "17": "Tôi muốn đo nhiệt độ.",
+        "18": "Triệu chứng đang trở nên nghiêm trọng hơn.",
+        "19": "Tôi bị ho kéo dài.",
+        "20": "Tôi bị thương nhẹ, có thể điều trị không?"
+      },
+      "pharmacy": {
+        "1": "Thuốc này uống bao nhiêu lần một ngày?",
+        "2": "Có tác dụng phụ không?",
+        "3": "Thuốc này có nên uống cùng thức ăn không?",
+        "4": "Có thể mua mà không cần đơn không?",
+        "5": "Có thể uống chung với các thuốc khác không?",
+        "6": "Trẻ em có thể dùng được không?",
+        "7": "Phụ nữ mang thai có thể dùng không?",
+        "8": "Khi bảo quản thuốc cần lưu ý gì?",
+        "9": "Cần lưu ý gì sau khi uống thuốc?",
+        "10": "Cần uống thuốc bao lâu?",
+        "11": "Thuốc mất bao lâu để có hiệu quả?",
+        "12": "Nếu uống sai liều thì làm sao?",
+        "13": "Thuốc này có thể gây dị ứng không?",
+        "14": "Không được ngưng thuốc sao?",
+        "15": "So với thuốc cùng thành phần khác thì thế nào?",
+        "16": "Có thể có dạng khác của thuốc không?",
+        "17": "Có thể mua thuốc không kê đơn không?",
+        "18": "Mua thuốc có cần giấy tờ tùy thân không?",
+        "19": "Có thể lái xe sau khi uống thuốc không?",
+        "20": "Sau khi uống thuốc có hạn chế đồ ăn, đồ uống không?"
+      },
+      "language": {
+        "ko": "Tiếng Hàn",
+        "en": "Tiếng Anh",
+        "cn": "Tiếng Trung",
+        "vi": "Tiếng Việt",
+        "th": "Tiếng Thái",
+        "fil": "Tiếng Philippines"
+      },
+      "modal_title": "Câu thường dùng",
+      "modal_hospital": "🏥 Bệnh viện",
+      "input_pharmacy": "💊 Nhà thuốc",
+      "input_placeholder": "Nhập văn bản hoặc nói",
+      "translate_btn": "Dịch",
+      "see_FAQ": "Xem câu thường dùng"
     },
     "index": {},
     "basicInfo": {
