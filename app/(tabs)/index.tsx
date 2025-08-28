@@ -12,6 +12,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import BasicInfoScreen from '../../components/profile/BasicInfo';
 import HealthInfoScreen from '../../components/profile/HealthInfo';
 import CautionInfoScreen from '../../components/profile/CautionInfo';
+import LanguageInfoScreen from '../../components/profile/LanguageInfo';
 import { User } from '../../types/profile';
 import { BASE_URL } from '../../types/ip';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -96,6 +97,15 @@ export default function ProfileScreen() {
       />
     );
   }
+      if (currentView === 'language') {
+    return (
+      <LanguageInfoScreen 
+        user={user} 
+        onBack={handleBackToProfile} 
+        onUpdate={fetchUserProfile} 
+      />
+    );
+  }
 
   // 메인 프로필 화면
   return (
@@ -148,14 +158,14 @@ export default function ProfileScreen() {
         <Text style={styles.sectionTitle}>앱 설정</Text>
         <TouchableOpacity 
           style={styles.settingItem}
-
+          onPress={() => setCurrentView('language')}
         >
           <Text style={styles.settingText}>언어 설정</Text>
           <FontAwesome name="chevron-right" size={14} color="#666" />
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.settingItem}
-
+          
         >
           <Text style={styles.settingText}>알림 설정</Text>
           <FontAwesome name="chevron-right" size={14} color="#666" />

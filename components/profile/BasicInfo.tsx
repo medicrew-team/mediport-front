@@ -9,10 +9,8 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useAuth } from '../../contexts/AuthContext';
-import { languages,InfoScreenProps } from '../../types/profile';
-import { Feather } from '@expo/vector-icons';
+import { InfoScreenProps } from '../../types/profile';
 import { BASE_URL } from '../../types/ip';
-import i18n from "../../config/i18n";
 import { t } from 'i18next';
 
 const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) => {
@@ -22,55 +20,6 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
   const [nickname, setNickname] = useState(user?.nickname || '');
   const [phone, setPhone] = useState(user?.phone || '');
   const [userImg, setUserImg] = useState(user?.user_img || '');
-  const [language, setLanguage] = useState(user?.language || '');
-  const [showDropdown, setShowDropdown] = useState(false);
-
-
-   const handleLanguageChange = async (langCode: string) => {
-    try {
-      console.log('언어 변경 요청:', langCode);
-      
-      // 1. 로컬 상태 업데이트
-      setLanguage(langCode);
-      setShowDropdown(false);
-      
-      // 2. Context의 changeLanguage 호출 (전체 앱이 리렌더링됨)
-      await changeLanguage(langCode);
-      
-      // 3. 서버에 언어 설정 저장 (기존 handleSave와 별도)
-      await saveLanguageToServer(langCode);
-      
-    } catch (error) {
-      console.error('언어 변경 중 오류:', error);
-      Alert.alert('오류', '언어 변경에 실패했습니다.');
-    }
-  };
-
-  // 서버에 언어 설정 저장
-  const saveLanguageToServer = async (langCode: string) => {
-    try {
-      const res = await fetch(`${BASE_URL}/users/profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          nickname,
-          phone,
-          user_img: userImg,
-          language: langCode, // 새로운 언어 코드
-        }),
-      });
-
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      
-      console.log('언어 설정 서버 저장 완료');
-    } catch (error) {
-      console.error('서버 저장 실패:', error);
-      // 서버 저장 실패해도 앱 언어는 이미 변경됨
-    }
-  };
 
   const handleSave = async () => {
     try {
@@ -84,7 +33,6 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
           nickname,
           phone,
           user_img: userImg,
-          language,
         }),
       });
 
@@ -121,7 +69,7 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Text style={styles.backButtonText}>‹ 뒤로</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{t('User.basicInfo.title')}</Text>
+        <Text style={styles.headerTitle}>내 기본 정보</Text>
       </View>
 
       <View style={styles.section}>
@@ -132,46 +80,6 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
             value={nickname}
             onChangeText={setNickname}
           />
-        </View>
-
-        <View style={[styles.dropdownContainer, { zIndex: 1000 }]}>
-          <Text style={styles.inputLabel}>언어</Text>
-          <TouchableOpacity style={styles.dropdownTitle} onPress={() => setShowDropdown(!showDropdown)}>
-            <Text style={styles.dropdownText}>
-              {languages.find(l => l.code === language)?.flag || '🌐'}
-              {languages.find(l => l.code === language)?.name || '언어 선택'}
-            </Text>
-            <Feather
-              name={showDropdown ? 'chevron-up' : 'chevron-down'}
-              size={20}
-              color="#333"
-            />
-          </TouchableOpacity>
-
-          {showDropdown && (
-            <View style={styles.dropdown}>
-              {languages.map(lang => (
-                <TouchableOpacity
-                  key={lang.code}
-                  style={styles.dropdownList}
-                  onPress={() => { 
-                    setLanguage(lang.code);
-                    setShowDropdown(false); 
-                    handleLanguageChange(lang.code)
-                  }}
-                >
-                  <Text style={styles.dropdownText}>{lang.flag} {lang.name}</Text>
-                  {language === lang.code && (
-                    <Feather
-                      name="check"
-                      size={20}
-                      color="#007AFF"
-                    />
-                  )}
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
         </View>
 
         <View style={styles.inputGroup}>
@@ -300,44 +208,6 @@ const styles = StyleSheet.create({
     color: '#333',
     flex: 2,
     textAlign: 'right',
-  },
-  dropdownContainer: {
-    marginBottom: 20,
-  },
-  dropdownTitle: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    fontSize: 16,
-    backgroundColor: '#fff',
-  },
-  dropdown: {
-    position: 'absolute',
-    width: '100%',
-    top: 75,
-    borderColor: '#ddd',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    minHeight: 50,
-    paddingHorizontal: 15,
-    borderWidth: 1,
-  },
-  dropdownList: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    borderColor: '#ddd',
-    borderBottomWidth: 1,
-    maxHeight: 200,
-    paddingVertical: 12,
-  },
-  dropdownText: {
-    fontSize: 16,
-    color: '#333',
   },
 });
 
