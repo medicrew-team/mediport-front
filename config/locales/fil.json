@@ -148,6 +148,9 @@
     "9": "Rayuma"
     },
   "User": {
+    "alert": {
+      "title": "Abiso"
+    },
     "layout": {
       "chatbot": "Chatbot",
       "translate": "Salin",

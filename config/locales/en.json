@@ -153,6 +153,9 @@
     "9": "Arthritis"
     },
   "User": {
+    "alert": {
+      "title": "Alert"
+    },
     "layout": {
       "chatbot": "Chatbot",
       "translate": "Translate",

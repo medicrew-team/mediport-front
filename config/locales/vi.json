@@ -151,8 +151,11 @@
     "7": "Gút",
     "8": "Hen suyễn",
     "9": "Viêm khớp"
-    },
+  },
   "User": {
+    "alert": {
+      "title": "Thông báo"
+    },
     "layout": {
       "chatbot": "Chatbot",
       "translate": "Dịch",
