@@ -8,7 +8,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { t } from 'i18next';
-
+import { useAuth } from '../../contexts/AuthContext';
 
 const CustomTabBar = (props: BottomTabBarProps) => {
   const { state } = props;
@@ -133,8 +133,11 @@ const TabBarAwesomeIcon = ({
 );
 
 export default function TabLayout() {
+    const { refreshKey } = useAuth();
+     console.log('TabLayout 렌더링, refreshKey:', refreshKey);
   return (
     <Tabs
+    key={refreshKey}
       tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: true,

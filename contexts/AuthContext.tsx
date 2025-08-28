@@ -13,6 +13,7 @@ import { auth } from '../config/firebase';
 import { OnboardingData } from '../types/onboarding';
 import { BASE_URL } from '../types/ip';
 import { t } from 'i18next';
+import i18n from '../config/i18n';
 
 interface User {
   user_id: string;
@@ -44,6 +45,11 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   signupWithOnboardingData: (onboardingData: OnboardingData) => Promise<void>;
   logout: () => Promise<void>;
+
+  currentLanguage: string;
+  refreshKey: number;
+  changeLanguage: (langCode: string) => Promise<void>;
+  setToken: (token: string | null) => void; 
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -56,6 +62,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [currentLanguage, setCurrentLanguage] = useState<string>('ko');
+  const [refreshKey, setRefreshKey] = useState<number>(0);
 
   // API 요청 헬퍼 함수 (Firebase ID 토큰 사용)
   const apiRequest = async (endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', body?: any, firebaseToken?: string) => {
@@ -258,7 +267,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // 앱 시작 시 저장된 토큰 확인
   useEffect(() => {
     checkAuthStatus();
+    loadSavedLanguage();
   }, []);
+
+  const loadSavedLanguage = async () => {
+    try {
+      const savedLang = await AsyncStorage.getItem('user_language');
+      if (savedLang) {
+        console.log('저장된 언어 로드:', savedLang);
+        setCurrentLanguage(savedLang);
+        await i18n.changeLanguage(savedLang);
+      }
+    } catch (error) {
+      console.error('저장된 언어 로드 실패:', error);
+    }
+  };
+
+  const changeLanguage = async (langCode: string) => {
+    try {
+      console.log('언어 변경 시작:', langCode);
+      
+      // 1. i18n 언어 변경
+      await i18n.changeLanguage(langCode);
+      
+      // 2. 상태 업데이트
+      setCurrentLanguage(langCode);
+      
+      // 3. AsyncStorage에 저장 (다음 앱 시작 시 사용)
+      await AsyncStorage.setItem('user_language', langCode);
+      
+      // 4. 전체 앱 강제 리렌더링 - 핵심!
+      setRefreshKey(prev => {
+        const newKey = prev + 1;
+        console.log('RefreshKey 업데이트:', prev, '->', newKey);
+        return newKey;
+      });
+      
+      console.log('언어 변경 완료');
+    } catch (error) {
+      console.error('언어 변경 실패:', error);
+    }
+  };
 
   const signupWithOnboardingData = async (onboardingData: OnboardingData) => {
     setIsSignupInProgress(true);
@@ -462,6 +511,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         login,
         signupWithOnboardingData,
         logout,
+        
+        setToken,
+        currentLanguage,
+        refreshKey,
+    changeLanguage,
       }}
     >
       {children}

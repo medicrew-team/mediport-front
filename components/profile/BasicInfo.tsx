@@ -16,16 +16,61 @@ import i18n from "../../config/i18n";
 import { t } from 'i18next';
 
 const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) => {
-  const { token } = useAuth();
+  const { token, changeLanguage, currentLanguage } = useAuth();
 
   // 상태로 관리
   const [nickname, setNickname] = useState(user?.nickname || '');
   const [phone, setPhone] = useState(user?.phone || '');
   const [userImg, setUserImg] = useState(user?.user_img || '');
   const [language, setLanguage] = useState(user?.language || '');
-
-
   const [showDropdown, setShowDropdown] = useState(false);
+
+
+   const handleLanguageChange = async (langCode: string) => {
+    try {
+      console.log('언어 변경 요청:', langCode);
+      
+      // 1. 로컬 상태 업데이트
+      setLanguage(langCode);
+      setShowDropdown(false);
+      
+      // 2. Context의 changeLanguage 호출 (전체 앱이 리렌더링됨)
+      await changeLanguage(langCode);
+      
+      // 3. 서버에 언어 설정 저장 (기존 handleSave와 별도)
+      await saveLanguageToServer(langCode);
+      
+    } catch (error) {
+      console.error('언어 변경 중 오류:', error);
+      Alert.alert('오류', '언어 변경에 실패했습니다.');
+    }
+  };
+
+  // 서버에 언어 설정 저장
+  const saveLanguageToServer = async (langCode: string) => {
+    try {
+      const res = await fetch(`${BASE_URL}/users/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          nickname,
+          phone,
+          user_img: userImg,
+          language: langCode, // 새로운 언어 코드
+        }),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      
+      console.log('언어 설정 서버 저장 완료');
+    } catch (error) {
+      console.error('서버 저장 실패:', error);
+      // 서버 저장 실패해도 앱 언어는 이미 변경됨
+    }
+  };
 
   const handleSave = async () => {
     try {
@@ -112,7 +157,7 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
                   onPress={() => { 
                     setLanguage(lang.code);
                     setShowDropdown(false); 
-                    i18n.changeLanguage(lang.code);
+                    handleLanguageChange(lang.code)
                   }}
                 >
                   <Text style={styles.dropdownText}>{lang.flag} {lang.name}</Text>
