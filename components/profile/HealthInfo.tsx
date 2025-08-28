@@ -272,7 +272,7 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
 
     return (
         <KeyboardAwareScrollView
-            style={{ flex: 1 }}
+            style={{ flex: 1, backgroundColor: '#FFFCF9' }}
             contentContainerStyle={{ paddingBottom: 50 }}
             enableOnAndroid={true}
             keyboardShouldPersistTaps="handled"

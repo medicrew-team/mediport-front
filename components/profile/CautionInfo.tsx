@@ -1,12 +1,13 @@
-import { Feather } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useAuth } from '../../contexts/AuthContext';
@@ -26,10 +27,21 @@ const DISEASES = [
   { disease_id: 9, disease_name: '관절염' },
 ];
 
-const CautionInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) => {
+interface ProhibitMedi {
+  dur_chronic_id: number;
+  dur_prod_name: string;
+  ing_code: string;
+  atc_code: string;
+  atc_ing: string;
+  caution: string;
+  dur_prod_img: string;
+}
+
+const CautionInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack }) => {
   const { token } = useAuth();
   const [selectedDiseases, setSelectedDiseases] = useState<number[]>([]);
-  const [prohibitMedi, setProhibitMedi] = useState<{ medi_name: string; prohibit_reason: string }[]>([]);
+  const [selectedDisease, setSelectedDisease] = useState<number | null>(null); // 추가: 현재 선택된 질환
+  const [prohibitMedi, setProhibitMedi] = useState<ProhibitMedi[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -39,6 +51,7 @@ const CautionInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }
   const fetchProhibitMedi = async (diseaseId: number) => {
     try {
       setLoading(true);
+      setSelectedDisease(diseaseId); // 선택된 질환 업데이트
       const res = await fetch(`${BASE_URL}/users/profile/diseases/${diseaseId}`, {
         method: 'GET',
         headers: {
@@ -47,7 +60,7 @@ const CautionInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      setProhibitMedi(data.prohibited_medications || []);
+      setProhibitMedi(data.prohibit_medi || []);
     } catch (err) {
       console.error(err);
       Alert.alert('오류', '금기 약물 정보를 불러오지 못했습니다.');
@@ -58,7 +71,7 @@ const CautionInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }
 
   return (
     <KeyboardAwareScrollView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: '#FFFCF9' }}
       contentContainerStyle={{ paddingBottom: 50 }}
       enableOnAndroid={true}
       keyboardShouldPersistTaps="handled"
@@ -69,45 +82,73 @@ const CautionInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Text style={styles.backButtonText}>‹ 뒤로</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>병용 금지</Text>
+        <Text style={styles.headerTitle}>병용 금지 약물</Text>
       </View>
 
-      {/* 선택된 질환 컨테이너 */}
+      {/* 선택된 질환 버튼 */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>선택된 기저질환</Text>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        <Text style={styles.sectionTitle}>나의 기저질환</Text>
+        <View style={styles.grid}>
           {selectedDiseases.map(id => {
             const disease = DISEASES.find(d => d.disease_id === id);
             if (!disease) return null;
             return (
               <TouchableOpacity
                 key={id}
-                style={styles.selectedDiseaseButton}
+                style={[
+                  styles.card,
+                  selectedDisease === id && styles.cardSelected, // 수정: selectedDisease 사용
+                ]}
                 onPress={() => fetchProhibitMedi(id)}
               >
-                <Text style={styles.selectedDiseaseText}>{disease.disease_name}</Text>
+                <Text style={[
+                  styles.cardText,
+                  selectedDisease === id && styles.cardTextSelected // 수정: selectedDisease 사용
+                ]}>
+                  {disease.disease_name}
+                </Text>
               </TouchableOpacity>
             );
           })}
         </View>
       </View>
 
-      {/* 금기 약물 정보 표시 */}
-      {prohibitMedi.length > 0 && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>금기 약물 정보</Text>
-          {loading ? (
-            <Text>불러오는 중...</Text>
-          ) : (
-            prohibitMedi.map((m, idx) => (
-              <View key={idx} style={styles.mediRow}>
-                <Text style={styles.mediName}>{m.medi_name}</Text>
-                <Text style={styles.mediReason}>{m.prohibit_reason}</Text>
-              </View>
-            ))
-          )}
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#FF6B35" />
+        </View>
+
+      ) : (
+        <View style={styles.Container}>
         </View>
       )}
+      {/* 금기 약물 카드 리스트 */}
+      <ScrollView>
+        {prohibitMedi.map((m) => (
+          <View key={m.dur_chronic_id} style={styles.medicineCard}>
+            <View style={styles.medicineHeader}>
+              <Text style={styles.medicineName}>{m.dur_prod_name}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={styles.medicineInfo}>
+                <Text style={styles.ingredientsLabel}>
+                  위험성분: <Text style={styles.ingredientsText}>{m.atc_ing}</Text>
+                </Text>
+                <Text style={styles.punishmentLabel}>
+                  주의사항: <Text style={styles.punishmentText}>{m.caution}</Text>
+                </Text>
+              </View>
+              <View style={styles.medicineImageContainer}>
+                <Image
+                  source={{ uri: m.dur_prod_img }}
+                  style={styles.medicineImage}
+                  resizeMode="contain"
+                />
+              </View>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
     </KeyboardAwareScrollView>
   );
 };
@@ -146,37 +187,79 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 15,
+  sectionTitle: { fontSize: 18, fontWeight: '600', color: '#333', marginBottom: 6 },
+
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    margin: 10,
   },
-  selectedDiseaseButton: {
-    backgroundColor: '#FF6600',
+  card: {
+    width: "30%",
+    paddingVertical: 14,
     paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 8,
-    margin: 5,
+    marginVertical: 6,
+    borderRadius: 18,
+    backgroundColor: "#f5f5f5",
+    alignItems: "center",
+    elevation: 2,
   },
-  selectedDiseaseText: {
-    color: '#fff',
-    fontWeight: '600',
+  cardSelected: {
+    backgroundColor: "#ff6600",
   },
-  mediRow: {
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  mediName: {
+  cardText: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
+    color: "#333",
   },
-  mediReason: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 2,
+  cardTextSelected: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+
+  Container: { 
+    marginTop: 8,
+    height: 50,
+    width: 50,
+  },
+  loadingContainer: {
+    marginTop: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+  },
+
+  medicineCard: {
+    marginHorizontal: 20,
+    marginVertical: 8,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingTop: 10,
+    paddingBottom: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  medicineHeader: { flexDirection: 'row' },
+  medicineName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 4,
+    marginRight: 10,
+    flex: 1,
+  },
+  medicineInfo: { flex: 1, paddingRight: 12, gap: 6 },
+  ingredientsLabel: { fontSize: 13, color: '#FF604E', fontWeight: '500' },
+  ingredientsText: { fontWeight: 'normal', color: '#FF604E' },
+  punishmentLabel: { fontSize: 13, color: '#333', fontWeight: '500' },
+  punishmentText: { fontWeight: 'normal', color: '#666' },
+  medicineImageContainer: { justifyContent: 'center', alignItems: 'center' },
+  medicineImage: { width: 100, height: 80, borderRadius: 8 },
+    loadingOverlay: {
   },
 });
 

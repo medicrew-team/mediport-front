@@ -5,11 +5,35 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRoute } from '@react-navigation/native';
 import { Tabs } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
+import { BottomTabBar } from '@react-navigation/bottom-tabs';
+import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+
+
+const CustomTabBar = (props: BottomTabBarProps) => {
+  const { state } = props;
+  const currentRoute = state.routes[state.index];
+  const currentName = currentRoute?.name as string;
+
+  const mappedName = groupMap[currentName] || currentName;
+  const altIndex = state.routes.findIndex(r => r.name === mappedName);
+
+  // 대체 인덱스가 있으면 그걸로 포커스 덮어쓰기
+  const mappedState = altIndex >= 0 ? { ...state, index: altIndex } : state;
+
+  return <BottomTabBar {...props} state={mappedState} />;
+};
+
+const groupMap: Record<string, string> = {
+  prohibited: "alternative",
+  prescription: "alternative",
+  similar: "alternative",
+  pharmacy: "alternative",
+};
 
 const Pagename = () => {
   const route = useRoute();
-  // route.name를 통해 현재 화면 이름을 직접 활용하거나,
-  // route.params?.title 등이 있을 경우 사용
+  const effectiveRoute = groupMap[route.name] || route.name;
+  
   const titles: Record<string, string> = {
     chatbot: '챗봇',
     translate: '번역',
@@ -110,6 +134,7 @@ const TabBarAwesomeIcon = ({
 export default function TabLayout() {
   return (
     <Tabs
+      tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: true,
         headerTitle: '',
