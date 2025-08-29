@@ -1,5 +1,4 @@
-"use client"
-
+import { router } from 'expo-router';
 import { Ionicons,Fontisto } from "@expo/vector-icons"
 import { useState, useRef, useMemo  } from "react"
 import {
@@ -22,6 +21,14 @@ import { t } from 'i18next';
 
 export default function TranslateScreen() {
   const [inputText, setInputText] = useState("")
+
+    const navigateToTranslate = () => {
+      router.push('/translate');
+    };
+  
+    const navigateToMap = () => {
+      router.push('/map');
+    };
 
 const LANGUAGES = useMemo(() => [
   { code: "ko", name: t('User.translate.language.ko'), flag: "🇰🇷" },
@@ -390,6 +397,21 @@ const translateText = async () => {
 
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[styles.navButton, styles.activeButton]}
+          onPress={navigateToTranslate}
+        >
+          <Text style={[styles.buttonText, styles.activeButtonText]}>번역</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.navButton, styles.inactiveButton]}
+          onPress={navigateToMap}
+        >
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>주변 약국 찾기</Text>
+        </TouchableOpacity>
+      </View>
       {/* 원문 카드 */}
       <View style={styles.card}>
         <View style={styles.cardHeader}>
@@ -494,6 +516,40 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFCF9",
     padding: 30,
   },
+    buttonContainer: {
+    flexDirection: 'row',
+    marginTop: 30,
+    marginHorizontal: 20,
+    marginBottom: 10,
+  },
+  navButton: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginHorizontal: 5,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activeButton: {
+    backgroundColor: '#FF6B35',
+  },
+  inactiveButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#FF6B35',
+  },
+  buttonText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  activeButtonText: {
+    color: '#fff',
+  },
+  inactiveButtonText: {
+    color: '#FF6B35',
+  },
+
   languageRow: {
     flexDirection: "row",
     alignItems: "center",

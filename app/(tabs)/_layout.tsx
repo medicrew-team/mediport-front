@@ -29,6 +29,8 @@ const groupMap: Record<string, string> = {
   prescription: "alternative",
   similar: "alternative",
   pharmacy: "alternative",
+
+  map: "translate",
 };
 
 const Pagename = () => {
@@ -45,6 +47,7 @@ const Pagename = () => {
     prescription: t("User.layout.prescription"),
     similar: t("User.layout.similar"),
     pharmacy: t("User.layout.pharmacy"),
+    map: "주변 약국 찾기",
   };
   const currentTitle = titles[route.name] || 'page';
 
@@ -241,8 +244,14 @@ export default function TabLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="map"
+        options={{
+          title: '내 주변 약국',
+          href: null,
+        }}
+      />
     </Tabs>
-
   );
 }
 
