@@ -14,7 +14,7 @@ import { BASE_URL } from '../../types/ip';
 import { t } from 'i18next';
 
 const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) => {
-  const { token, changeLanguage, currentLanguage } = useAuth();
+  const { token } = useAuth();
 
   // 상태로 관리
   const [nickname, setNickname] = useState(user?.nickname || '');
@@ -38,24 +38,24 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      Alert.alert('성공', '프로필이 업데이트되었습니다.');
+      Alert.alert(t('User.alert.success'), t('User.alert.profile_update'));
       if (onUpdate) {
         onUpdate();
       }
     } catch (err) {
       console.error(err);
-      Alert.alert('오류', '프로필 업데이트에 실패했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.profile_update_fail'));
     }
   };
 
   const basicInfoData = [
-    { label: '사용자 ID', value: user?.user_id || '-' },
-    { label: '사용자명', value: user?.username || '-' },
-    { label: '성별', value: user?.gender || '-' },
-    { label: '이메일', value: user?.email || '-' },
-    { label: '생년월일', value: user?.birthday || '-' },
-    { label: '국가', value: user?.country || '-' },
-    { label: '거주지', value: user?.residence || '-' },
+    { label: t('User.basicInfo.data_id'), value: user?.user_id || '-' },
+    { label: t('User.basicInfo.data_name'), value: user?.username || '-' },
+    { label: t('User.basicInfo.data_gender'), value: user?.gender || '-' },
+    { label: t('User.basicInfo.data_email'), value: user?.email || '-' },
+    { label: t('User.basicInfo.data_birthday'), value: user?.birthday || '-' },
+    { label: t('User.basicInfo.data_country'), value: user?.country || '-' },
+    { label: t('User.basicInfo.data_residence'), value: user?.residence || '-' },
   ];
 
   return (
@@ -67,14 +67,14 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
     >
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
-          <Text style={styles.backButtonText}>‹ 뒤로</Text>
+          <Text style={styles.backButtonText}>{t('User.basicInfo.back')}</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>내 기본 정보</Text>
+        <Text style={styles.headerTitle}>{t('User.basicInfo.title')}</Text>
       </View>
 
       <View style={styles.section}>
         <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>닉네임</Text>
+          <Text style={styles.inputLabel}>{t('User.basicInfo.nickname')}</Text>
           <TextInput
             style={styles.textInput}
             value={nickname}
@@ -83,7 +83,7 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>전화번호</Text>
+          <Text style={styles.inputLabel}>{t('User.basicInfo.phone')}</Text>
           <TextInput
             style={styles.textInput}
             value={phone}
@@ -93,7 +93,7 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>프로필 이미지 URL</Text>
+          <Text style={styles.inputLabel}>{t('User.basicInfo.img_url')}</Text>
           <TextInput
             style={styles.textInput}
             value={userImg}
@@ -102,7 +102,7 @@ const BasicInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) 
         </View>
 
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>저장</Text>
+          <Text style={styles.saveButtonText}>{t('User.basicInfo.save')}</Text>
         </TouchableOpacity>
       </View>
 

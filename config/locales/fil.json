@@ -146,7 +146,7 @@
     "7": "Gota",
     "8": "Hika",
     "9": "Rayuma"
-    },
+  },
   "User": {
     "alert": {
       "title": "Abiso",
@@ -158,7 +158,26 @@
       "tranalate_fail": "Nabigong isalin",
       "input_please": "Maglagay ng pangungusap para isalin",
       "audio_none": "Walang audio na mapapatugtog",
-      "audio_fail": "Hindi mapatugtog ang audio"
+      "audio_fail": "Hindi mapatugtog ang audio",
+      "user_fail": "Nabigo kunin ang impormasyon ng gumagamit.",
+      "profile_update": "Na-update ang profile.",
+      "profile_update_fail": "Nabigo ang pag-update ng profile.",
+      "cation_fail": "Nabigong i-load ang impormasyon ng bawal na gamot.",
+      "heath_update": "Na-update ang impormasyon ng kondisyong medikal.",
+      "heath_update_fail": "Nabigo ang pag-update ng impormasyon ng kondisyong medikal.",
+      "heath_delte_fail": "Nabigo ang pagbura ng kasaysayan ng gamot.",
+      "medicate_update": "Na-update ang kasaysayan ng gamot.",
+      "medicate_update_fail": "Nabigo ang pag-update ng kasaysayan ng gamot.",
+      "language_fail": "Nabigo ang pagbabago ng wika."
+    },
+    "modal": {
+      "close": "Kanselahin",
+      "startDate": "Pumili ng petsa ng simula",
+      "endDate": "Pumili ng petsa ng pagtatapos",
+      "confirm": "Kumpirmahin",
+      "year": "Taon",
+      "month": "Buwan",
+      "day": "Araw"
     },
     "layout": {
       "chatbot": "Chatbot",
@@ -181,7 +200,7 @@
       "chatbox_Alert": "Maglagay ng mensahe.",
       "chatbox_placeholder": "Ilagay sintomas..."
     },
-        "translate": {
+    "translate": {
       "hospital": {
         "1": "Gusto kong magpa-appointment sa doktor.",
         "2": "May bakanteng oras ngayon?",
@@ -241,9 +260,61 @@
       "translate_btn": "Isalin",
       "see_FAQ": "Tingnan ang karaniwang gamit"
     },
-    "index": {},
-    "basicInfo":{
-      "title":"필리"
+    "index": {
+      "logout": "Mag-logout",
+      "my_info": "Aking Impormasyon",
+      "basic_info": "Pangunahing Impormasyon",
+      "health_info": "Kalusugan",
+      "caution_info": "Bawal na Gamot",
+      "app_setting": "Mga Setting",
+      "language_setting": "Wika",
+      "privacy": "Pribasidad",
+      "delete_user": "Tanggalin ang Account"
+    },
+    "basicInfo": {
+      "data_id": "User ID",
+      "data_name": "Pangalan",
+      "data_gender": "Kasarian",
+      "data_email": "Email",
+      "data_birthday": "Kaarawan",
+      "data_country": "Bansa",
+      "data_residence": "Tirahan",
+      "back": "‹ Bumalik",
+      "title": "Aking Pangunahing Impormasyon",
+      "nickname": "Palayaw",
+      "phone": "Telepono",
+      "img_url": "Profile URL",
+      "save": "I-save",
+      "data_name_placeholder": "Ilagay pangalan",
+      "medi_dosage_placeholder": "Hal. 2x/araw 100mg",
+      "medi_name_placeholder": "Ilagay gamot"
+    },
+    "cautionInfo": {
+      "back": "‹ Bumalik",
+      "title": "Mga Bawal na Gamot",
+      "my_cation": "Aking Kondisyon",
+      "atc_ing": "Delikadong sangkap: ",
+      "caution": "Paalala: "
+    },
+    "healthInfo": {
+      "back": "‹ Bumalik",
+      "title": "Impormasyon sa Kalusugan",
+      "diseases_info": "Impormasyon sa Kondisyon",
+      "medications_info": "Kasaysayan ng Gamot",
+      "medi_name": "Pangalan ng Gamot",
+      "start_date": "Petsa ng Simula",
+      "end_date": "Petsa ng Pagtatapos",
+      "choose_date": "Pumili ng Petsa",
+      "current_medi": "Iniinom pa",
+      "current_take": "Umiinom",
+      "current_done": "Tapos na",
+      "medi_dosage": "Dosis",
+      "add": "+ Dagdag",
+      "save": "I-save"
+    },
+    "languageInfo": {
+      "back": "‹ Bumalik",
+      "title": "Wika"
     }
   }
 }

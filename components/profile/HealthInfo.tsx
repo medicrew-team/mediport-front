@@ -14,18 +14,19 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../types/ip';
 import { InfoScreenProps, Medication } from '../../types/profile';
+import { t } from 'i18next';
 
 // 질병 목록 상수
- const DISEASES = [
-  { disease_id: 1, disease_name:"고혈압" },
-  { disease_id: 2, disease_name: "당뇨병" },
-  { disease_id: 3, disease_name: "고지혈증" },
-  { disease_id: 4, disease_name: "심부전" },
-  { disease_id: 5, disease_name: "협심증" },
-  { disease_id: 6, disease_name: "뇌졸증" },
-  { disease_id: 7, disease_name: "통풍" },
-  { disease_id: 8, disease_name: "천식" },
-  { disease_id: 9, disease_name: "관절염" },
+const DISEASES = [
+  { disease_id: 1, disease_name: t('DISEASES.1') },
+  { disease_id: 2, disease_name: t('DISEASES.2') },
+  { disease_id: 3, disease_name: t('DISEASES.3') },
+  { disease_id: 4, disease_name: t('DISEASES.4') },
+  { disease_id: 5, disease_name: t('DISEASES.5') },
+  { disease_id: 6, disease_name: t('DISEASES.6') },
+  { disease_id: 7, disease_name: t('DISEASES.7') },
+  { disease_id: 8, disease_name: t('DISEASES.8') },
+  { disease_id: 9, disease_name: t('DISEASES.9') },
 ];
 
 const today = new Date();
@@ -136,11 +137,11 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
                 body: JSON.stringify({ disease_ids: selectedDiseases }),
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            Alert.alert('성공', '기저질환 정보가 업데이트되었습니다.');
+            Alert.alert(t('User.alert.success'), t('User.alert.heath_update'));
             if (onUpdate) onUpdate();
         } catch (err) {
             console.error(err);
-            Alert.alert('오류', '기저질환 업데이트에 실패했습니다.');
+            Alert.alert(t('User.alert.error'), t('User.alert.heath_update_fail'));
         }
     };
 
@@ -174,7 +175,7 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
             setMedications(prev => prev.filter((_, i) => i !== index));
         } catch (err) {
             console.error(err);
-            Alert.alert('오류', '복약 이력 삭제에 실패했습니다.');
+            Alert.alert(t('User.alert.error'), t('User.alert.heath_delte_fail'));
         }
     };
 
@@ -213,7 +214,7 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
     const formatDate = (dateString: string) => {
         if (!dateString) return '';
         const date = new Date(dateString);
-        return `${date.getFullYear()}년 ${(date.getMonth() + 1).toString().padStart(2, '0')}월 ${date.getDate().toString().padStart(2, '0')}일`;
+        return `${date.getFullYear()}/ ${(date.getMonth() + 1).toString().padStart(2, '0')}/ ${date.getDate().toString().padStart(2, '0')}`;
     };
 
     const handleMedicationSave = async () => {
@@ -261,11 +262,11 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
           );
       
           setMedications(newMedications);
-          Alert.alert('성공', '복약 이력이 업데이트되었습니다.');
+          Alert.alert(t('User.alert.success'), t('User.alert.medicate_update'));
           onUpdate?.();
         } catch (err) {
           console.error(err);
-          Alert.alert('오류', '복약 이력 업데이트에 실패했습니다.');
+          Alert.alert(t('User.alert.error'), t('User.alert.medicate_update_fail'));
         }
       };
 
@@ -280,14 +281,14 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
         >
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={onBack}>
-                    <Text style={styles.backButtonText}>‹ 뒤로</Text>
+                    <Text style={styles.backButtonText}>{t('User.healthInfo.back')}</Text>
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>건강 정보</Text>
+                <Text style={styles.headerTitle}>{t('User.healthInfo.title')}</Text>
             </View>
 
             {/* 질병 정보 */}
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>기저질환 정보</Text>
+                <Text style={styles.sectionTitle}>{t('User.healthInfo.diseases_info')}</Text>
                 <View style={{ maxHeight: 300 }}>
                     <ScrollView>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
@@ -306,13 +307,13 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
                     </ScrollView>
                 </View>
                 <TouchableOpacity style={styles.saveButton} onPress={handleDiseaseSave}>
-                    <Text style={styles.saveButtonText}>저장</Text>
+                    <Text style={styles.saveButtonText}>{t('User.healthInfo.save')}</Text>
                 </TouchableOpacity>
             </View>
 
             {/* 복용 이력 */}
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>복용 이력</Text>
+                <Text style={styles.sectionTitle}>{t('User.healthInfo.medications_info')}</Text>
                 {medications.map((m, idx) => (
                     <View key={idx} style={styles.inputContainer}>
                         {/* 삭제 버튼 */}
@@ -322,10 +323,10 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
 
                         {/* 약물명 */}
                         <View style={styles.inputGroup}>
-                            <Text style={styles.inputLabel}>약물명</Text>
+                            <Text style={styles.inputLabel}>{t('User.healthInfo.medi_name')}</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="약물명을 입력해주세요"
+                                placeholder={t('User.healthInfo.medi_name_placeholder')}
                                 placeholderTextColor="#999"
                                 value={m.medi_name}
                                 onChangeText={(t) => handleMedicationChange(idx, 'medi_name', t)}
@@ -336,13 +337,13 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
                         <View style={styles.dateRow}>
                             {['start_date', 'end_date'].map(field => (
                                 <View style={styles.dateInputGroup} key={field}>
-                                    <Text style={styles.inputLabel}>{field === 'start_date' ? '시작일' : '종료일'}</Text>
+                                    <Text style={styles.inputLabel}>{field === 'start_date' ? t('User.healthInfo.start_date') : t('User.healthInfo.end_date')}</Text>
                                     <TouchableOpacity
                                         style={styles.dateInput}
                                         onPress={() => openDateModal(idx, field as 'start_date' | 'end_date')}
                                     >
                                         <Text style={[styles.dateText, !m[field as 'start_date' | 'end_date'] && styles.placeholderText]}>
-                                            {m[field as 'start_date' | 'end_date'] ? formatDate(m[field as 'start_date' | 'end_date'] ?? '') : '날짜 선택'}
+                                            {m[field as 'start_date' | 'end_date'] ? formatDate(m[field as 'start_date' | 'end_date'] ?? '') : t('User.healthInfo.choose_date')}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -351,9 +352,9 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
 
                         {/* 상태 */}
                         <View style={styles.inputGroup}>
-                            <Text style={styles.inputLabel}>현재 복용 여부</Text>
+                            <Text style={styles.inputLabel}>{t('User.healthInfo.current_medi')}</Text>
                             <View style={styles.radioContainer}>
-                                {['복용중', '복용완료'].map(status => (
+                                {[t('User.healthInfo.current_take'), t('User.healthInfo.current_done')].map(status => (
                                     <TouchableOpacity
                                         key={status}
                                         style={[styles.radioButton, m.status === status && styles.radioSelected]}
@@ -369,10 +370,10 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
 
                         {/* 복용량 */}
                         <View style={styles.inputGroup}>
-                            <Text style={styles.inputLabel}>복용량</Text>
+                            <Text style={styles.inputLabel}>{t('User.healthInfo.medi_dosage')}</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="예: 1일 2회 100mg"
+                                placeholder={t('User.healthInfo.medi_dosage_placeholder')}
                                 placeholderTextColor="#999"
                                 value={m.dosage}
                                 onChangeText={(t) => handleMedicationChange(idx, 'dosage', t)}
@@ -383,10 +384,10 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
                 ))}
 
                 <TouchableOpacity style={styles.addButton} onPress={handleAddMedication}>
-                    <Text style={styles.addButtonText}>+ 추가</Text>
+                    <Text style={styles.addButtonText}>{t('User.healthInfo.add')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.saveButton, { marginTop: 10 }]} onPress={handleMedicationSave}>
-                    <Text style={styles.saveButtonText}>저장</Text>
+                    <Text style={styles.saveButtonText}>{t('User.healthInfo.save')}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -396,24 +397,24 @@ const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate })
                     <View style={styles.modalContent}>
                         <View style={styles.modalHeader}>
                             <TouchableOpacity onPress={() => setShowDateModal(false)} style={styles.modalButton}>
-                                <Text style={styles.modalButtonText}>취소</Text>
+                                <Text style={styles.modalButtonText}>{t('User.modal.close')}</Text>
                             </TouchableOpacity>
-                            <Text style={styles.modalTitle}>{dateField === 'start_date' ? '시작일 선택' : '종료일 선택'}</Text>
+                            <Text style={styles.modalTitle}>{dateField === 'start_date' ? t('User.modal.startDate') : t('User.modal.endDate')}</Text>
                             <TouchableOpacity onPress={handleDateConfirm} style={styles.modalButton}>
-                                <Text style={[styles.modalButtonText, styles.confirmText]}>확인</Text>
+                                <Text style={[styles.modalButtonText, styles.confirmText]}>{t('User.modal.confirm')}</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.datePickerContainer}>
                             <View style={styles.datePickerColumn}>
-                                <Text style={styles.columnLabel}>년</Text>
+                                <Text style={styles.columnLabel}>{t('User.modal.year')}</Text>
                                 <ScrollPicker data={years} selectedValue={dateComponents.year} onValueChange={handleYearChange} />
                             </View>
                             <View style={styles.datePickerColumn}>
-                                <Text style={styles.columnLabel}>월</Text>
+                                <Text style={styles.columnLabel}>{t('User.modal.month')}</Text>
                                 <ScrollPicker data={months} selectedValue={dateComponents.month} onValueChange={handleMonthChange} />
                             </View>
                             <View style={styles.datePickerColumn}>
-                                <Text style={styles.columnLabel}>일</Text>
+                                <Text style={styles.columnLabel}>{t('User.modal.day')}</Text>
                                 <ScrollPicker data={days} selectedValue={dateComponents.day} onValueChange={handleDayChange} />
                             </View>
                         </View>

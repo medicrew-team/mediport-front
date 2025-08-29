@@ -11,6 +11,7 @@ import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../types/ip';
 import { languages, InfoScreenProps } from '../../types/profile';
+import { t } from 'i18next';
 
 const LanguageInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) => {
     const { token, changeLanguage } = useAuth();
@@ -24,7 +25,7 @@ const LanguageInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate 
             if (onUpdate) onUpdate();
         } catch (error) {
             console.error('언어 변경 오류:', error);
-            Alert.alert('오류', '언어 변경에 실패했습니다.');
+            Alert.alert(t('User.alert.error'), t('User.alert.language_fail'));
         }
     };
 
@@ -56,9 +57,9 @@ const LanguageInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate 
             {/* 상단 헤더 */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={onBack}>
-                    <Text style={styles.backButtonText}>‹ 뒤로</Text>
+                    <Text style={styles.backButtonText}>{t('User.languageInfo.back')}</Text>
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>언어 설정</Text>
+                <Text style={styles.headerTitle}>{t('User.languageInfo.title')}</Text>
             </View>
 
             {/* 언어 목록 */}

@@ -13,18 +13,19 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../types/ip';
 import { InfoScreenProps } from '../../types/profile';
+import { t } from 'i18next';
 
 // 질병 목록 상수
 const DISEASES = [
-  { disease_id: 1, disease_name: '고혈압' },
-  { disease_id: 2, disease_name: '당뇨병' },
-  { disease_id: 3, disease_name: '고지혈증' },
-  { disease_id: 4, disease_name: '심부전' },
-  { disease_id: 5, disease_name: '협심증' },
-  { disease_id: 6, disease_name: '뇌졸증' },
-  { disease_id: 7, disease_name: '통풍' },
-  { disease_id: 8, disease_name: '천식' },
-  { disease_id: 9, disease_name: '관절염' },
+  { disease_id: 1, disease_name: t('DISEASES.1') },
+  { disease_id: 2, disease_name: t('DISEASES.2') },
+  { disease_id: 3, disease_name: t('DISEASES.3') },
+  { disease_id: 4, disease_name: t('DISEASES.4') },
+  { disease_id: 5, disease_name: t('DISEASES.5') },
+  { disease_id: 6, disease_name: t('DISEASES.6') },
+  { disease_id: 7, disease_name: t('DISEASES.7') },
+  { disease_id: 8, disease_name: t('DISEASES.8') },
+  { disease_id: 9, disease_name: t('DISEASES.9') },
 ];
 
 interface ProhibitMedi {
@@ -63,7 +64,7 @@ const CautionInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack }) => {
       setProhibitMedi(data.prohibit_medi || []);
     } catch (err) {
       console.error(err);
-      Alert.alert('오류', '금기 약물 정보를 불러오지 못했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.cation_fail'));
     } finally {
       setLoading(false);
     }
@@ -80,14 +81,14 @@ const CautionInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack }) => {
       {/* 헤더 */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
-          <Text style={styles.backButtonText}>‹ 뒤로</Text>
+          <Text style={styles.backButtonText}>{t('User.cautionInfo.back')}</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>병용 금지 약물</Text>
+        <Text style={styles.headerTitle}>{t('User.cautionInfo.title')}</Text>
       </View>
 
       {/* 선택된 질환 버튼 */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>나의 기저질환</Text>
+        <Text style={styles.sectionTitle}>{t('User.cautionInfo.my_cation')}</Text>
         <View style={styles.grid}>
           {selectedDiseases.map(id => {
             const disease = DISEASES.find(d => d.disease_id === id);
@@ -97,13 +98,13 @@ const CautionInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack }) => {
                 key={id}
                 style={[
                   styles.card,
-                  selectedDisease === id && styles.cardSelected, // 수정: selectedDisease 사용
+                  selectedDisease === id && styles.cardSelected,
                 ]}
                 onPress={() => fetchProhibitMedi(id)}
               >
                 <Text style={[
                   styles.cardText,
-                  selectedDisease === id && styles.cardTextSelected // 수정: selectedDisease 사용
+                  selectedDisease === id && styles.cardTextSelected 
                 ]}>
                   {disease.disease_name}
                 </Text>
@@ -132,10 +133,10 @@ const CautionInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack }) => {
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.medicineInfo}>
                 <Text style={styles.ingredientsLabel}>
-                  위험성분: <Text style={styles.ingredientsText}>{m.atc_ing}</Text>
+                  {t('User.cautionInfo.atc_ing')}<Text style={styles.ingredientsText}>{m.atc_ing}</Text>
                 </Text>
                 <Text style={styles.punishmentLabel}>
-                  주의사항: <Text style={styles.punishmentText}>{m.caution}</Text>
+                  {t('User.cautionInfo.caution')}<Text style={styles.punishmentText}>{m.caution}</Text>
                 </Text>
               </View>
               <View style={styles.medicineImageContainer}>

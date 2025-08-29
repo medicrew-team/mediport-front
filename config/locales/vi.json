@@ -4,35 +4,30 @@
       "title": "Thông báo",
       "success": "Thành công",
       "error": "Lỗi",
-
       "name?": "Vui lòng nhập tên của bạn",
       "nickname?": "Vui lòng nhập biệt danh",
       "gender?": "Vui lòng chọn giới tính",
       "birthDate?": "Vui lòng chọn ngày sinh",
-
       "email?": "Vui lòng nhập email",
       "emailRegex?": "Vui lòng nhập đúng định dạng email",
       "emailsend?": "Mã xác minh đã được gửi đến ",
       "emailcode?": "Vui lòng nhập mã xác minh",
       "emailverified?": "Xác minh email thành công",
       "emailcodeinvalid?": "Mã xác minh không hợp lệ",
-
       "password?": "Vui lòng nhập mật khẩu",
       "passwordRegex?": "Mật khẩu phải có ít nhất 6 ký tự",
       "passwordMismatch?": "Mật khẩu không khớp",
-
       "nationality?": "Vui lòng chọn quốc tịch",
       "phone?": "Vui lòng nhập số điện thoại",
       "residence?": "Vui lòng nhập nơi cư trú",
-
       "onboardingfail": "Có lỗi xảy ra khi đăng ký. Vui lòng thử lại.",
       "loginfail": "Đăng nhập thất bại.\nVui lòng thử lại."
     },
     "modal": {
       "close": "Hủy",
-      "title":"Chọn ngày sinh",
+      "title": "Chọn ngày sinh",
       "startDate": "Chọn ngày bắt đầu",
-      "endDate":"Chọn ngày kết thúc",
+      "endDate": "Chọn ngày kết thúc",
       "confirm": "Xác nhận",
       "year": "Năm",
       "month": "Tháng",
@@ -121,12 +116,12 @@
       "title": "Thuốc đang dùng",
       "subtitle": "Nếu bạn đang dùng thuốc, vui lòng nhập.\n(Tùy chọn)",
       "mediName": "Tên thuốc",
-      "mediNameplaceholder":"Nhập tên thuốc",
+      "mediNameplaceholder": "Nhập tên thuốc",
       "startDate": "Ngày bắt đầu",
-      "endDate":"Ngày kết thúc",
+      "endDate": "Ngày kết thúc",
       "chooseDate": "Chọn ngày",
       "taken": "Tình trạng dùng",
-      "takenNow":"Đang dùng",
+      "takenNow": "Đang dùng",
       "takenEnd": "Đã ngừng",
       "dosage": "Liều lượng",
       "dosageplaceholder": "Ví dụ: 2 lần/ngày, 100mg",
@@ -141,7 +136,7 @@
       "start": "Bắt đầu"
     }
   },
-  "DISEASES":{
+  "DISEASES": {
     "1": "Tăng huyết áp",
     "2": "Tiểu đường",
     "3": "Mỡ máu cao",
@@ -163,7 +158,26 @@
       "tranalate_fail": "Dịch thất bại",
       "input_please": "Vui lòng nhập câu cần dịch",
       "audio_none": "Không có âm thanh để phát",
-      "audio_fail": "Phát âm thanh thất bại"
+      "audio_fail": "Phát âm thanh thất bại",
+      "user_fail": "Không thể lấy thông tin người dùng.",
+      "profile_update": "Hồ sơ đã được cập nhật.",
+      "profile_update_fail": "Cập nhật hồ sơ thất bại.",
+      "cation_fail": "Không tải được thông tin thuốc chống chỉ định.",
+      "heath_update": "Thông tin bệnh nền đã được cập nhật.",
+      "heath_update_fail": "Cập nhật thông tin bệnh nền thất bại.",
+      "heath_delte_fail": "Xóa lịch sử dùng thuốc thất bại.",
+      "medicate_update": "Lịch sử dùng thuốc đã được cập nhật.",
+      "medicate_update_fail": "Cập nhật lịch sử dùng thuốc thất bại.",
+      "language_fail": "Thay đổi ngôn ngữ thất bại."
+    },
+    "modal": {
+      "close": "Hủy",
+      "startDate": "Chọn ngày bắt đầu",
+      "endDate": "Chọn ngày kết thúc",
+      "confirm": "Xác nhận",
+      "year": "Năm",
+      "month": "Tháng",
+      "day": "Ngày"
     },
     "layout": {
       "chatbot": "Chatbot",
@@ -186,7 +200,7 @@
       "chatbox_Alert": "Vui lòng nhập tin nhắn.",
       "chatbox_placeholder": "Nhập triệu chứng..."
     },
-        "translate": {
+    "translate": {
       "hospital": {
         "1": "Tôi muốn đặt lịch khám bệnh.",
         "2": "Hôm nay có lịch khám không?",
@@ -246,9 +260,61 @@
       "translate_btn": "Dịch",
       "see_FAQ": "Xem câu thường dùng"
     },
-    "index": {},
+    "index": {
+      "logout": "Đăng xuất",
+      "my_info": "Thông tin của tôi",
+      "basic_info": "Thông tin cơ bản",
+      "health_info": "Thông tin sức khỏe",
+      "caution_info": "Thuốc chống chỉ định",
+      "app_setting": "Cài đặt",
+      "language_setting": "Ngôn ngữ",
+      "privacy": "Quyền riêng tư",
+      "delete_user": "Xóa tài khoản"
+    },
     "basicInfo": {
-      "title": "뱃남"
+      "data_id": "ID Người dùng",
+      "data_name": "Tên",
+      "data_gender": "Giới tính",
+      "data_email": "Email",
+      "data_birthday": "Ngày sinh",
+      "data_country": "Quốc gia",
+      "data_residence": "Nơi ở",
+      "back": "‹ Quay lại",
+      "title": "Thông tin cơ bản của tôi",
+      "nickname": "Biệt danh",
+      "phone": "Điện thoại",
+      "img_url": "URL ảnh đại diện",
+      "save": "Lưu",
+      "data_name_placeholder": "Nhập tên",
+      "medi_dosage_placeholder": "VD: 2 lần/ngày 100mg",
+      "medi_name_placeholder": "Nhập tên thuốc"
+    },
+    "cautionInfo": {
+      "back": "‹ Quay lại",
+      "title": "Thuốc chống chỉ định",
+      "my_cation": "Bệnh nền",
+      "atc_ing": "Thành phần nguy cơ: ",
+      "caution": "Lưu ý: "
+    },
+    "healthInfo": {
+      "back": "‹ Quay lại",
+      "title": "Thông tin sức khỏe",
+      "diseases_info": "Thông tin bệnh nền",
+      "medications_info": "Lịch sử dùng thuốc",
+      "medi_name": "Tên thuốc",
+      "start_date": "Ngày bắt đầu",
+      "end_date": "Ngày kết thúc",
+      "choose_date": "Chọn ngày",
+      "current_medi": "Đang dùng",
+      "current_take": "Đang uống",
+      "current_done": "Đã xong",
+      "medi_dosage": "Liều lượng",
+      "add": "+ Thêm",
+      "save": "Lưu"
+    },
+    "languageInfo": {
+      "back": "‹ Quay lại",
+      "title": "Ngôn ngữ"
     }
   }
 }

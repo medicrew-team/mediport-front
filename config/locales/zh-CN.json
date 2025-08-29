@@ -4,27 +4,22 @@
       "title": "提示",
       "success": "成功",
       "error": "错误",
-
       "name?": "请输入姓名",
       "nickname?": "请输入昵称",
       "gender?": "请选择性别",
       "birthDate?": "请选择出生日期",
-
       "email?": "请输入邮箱地址",
       "emailRegex?": "请输入正确的邮箱格式",
       "emailsend?": "验证码已发送至 ",
       "emailcode?": "请输入验证码",
       "emailverified?": "邮箱验证完成",
       "emailcodeinvalid?": "验证码无效",
-
       "password?": "请输入密码",
       "passwordRegex?": "密码至少为6位字符",
       "passwordMismatch?": "两次输入的密码不一致",
-
       "nationality?": "请选择国籍",
       "phone?": "请输入电话号码",
       "residence?": "请输入居住地",
-
       "onboardingfail": "注册过程中发生错误，请重试。",
       "loginfail": "登录失败,\n请重试。"
     },
@@ -163,7 +158,26 @@
       "tranalate_fail": "翻译失败",
       "input_please": "请输入要翻译的句子",
       "audio_none": "没有可播放的音频",
-      "audio_fail": "音频播放失败"
+      "audio_fail": "音频播放失败",
+      "user_fail": "获取用户信息失败。",
+      "profile_update": "个人资料已更新。",
+      "profile_update_fail": "更新个人资料失败。",
+      "cation_fail": "未能加载禁忌药物信息。",
+      "heath_update": "基础疾病信息已更新。",
+      "heath_update_fail": "更新基础疾病信息失败。",
+      "heath_delte_fail": "删除用药记录失败。",
+      "medicate_update": "用药记录已更新。",
+      "medicate_update_fail": "更新用药记录失败。",
+      "language_fail": "语言更改失败。"
+    },
+    "modal": {
+      "close": "取消",
+      "startDate": "选择开始日期",
+      "endDate": "选择结束日期",
+      "confirm": "确认",
+      "year": "年",
+      "month": "月",
+      "day": "日"
     },
     "layout": {
       "chatbot": "聊天",
@@ -186,7 +200,7 @@
       "chatbox_Alert": "请输入消息。",
       "chatbox_placeholder": "输入症状..."
     },
-        "translate": {
+    "translate": {
       "hospital": {
         "1": "我想预约看病。",
         "2": "今天有可预约的时间吗？",
@@ -246,9 +260,61 @@
       "translate_btn": "翻译",
       "see_FAQ": "查看常用语"
     },
-    "index": {},
-    "basicInfo":{
-      "title":"기본 정보"
+    "index": {
+      "logout": "退出登录",
+      "my_info": "我的信息",
+      "basic_info": "基本信息",
+      "health_info": "健康信息",
+      "caution_info": "禁忌药物",
+      "app_setting": "应用设置",
+      "language_setting": "语言设置",
+      "privacy": "隐私",
+      "delete_user": "注销账号"
+    },
+    "basicInfo": {
+      "data_id": "用户ID",
+      "data_name": "姓名",
+      "data_gender": "性别",
+      "data_email": "邮箱",
+      "data_birthday": "生日",
+      "data_country": "国家",
+      "data_residence": "居住地",
+      "back": "‹ 返回",
+      "title": "我的基本信息",
+      "nickname": "昵称",
+      "phone": "电话",
+      "img_url": "头像URL",
+      "save": "保存",
+      "data_name_placeholder": "输入姓名",
+      "medi_dosage_placeholder": "如: 每日2次 100mg",
+      "medi_name_placeholder": "输入药名"
+    },
+    "cautionInfo": {
+      "back": "‹ 返回",
+      "title": "禁忌药物",
+      "my_cation": "我的疾病",
+      "atc_ing": "风险成分: ",
+      "caution": "注意: "
+    },
+    "healthInfo": {
+      "back": "‹ 返回",
+      "title": "健康信息",
+      "diseases_info": "疾病信息",
+      "medications_info": "用药记录",
+      "medi_name": "药品名",
+      "start_date": "开始日期",
+      "end_date": "结束日期",
+      "choose_date": "选择日期",
+      "current_medi": "是否服用中",
+      "current_take": "服用中",
+      "current_done": "已完成",
+      "medi_dosage": "剂量",
+      "add": "+ 添加",
+      "save": "保存"
+    },
+    "languageInfo": {
+      "back": "‹ 返回",
+      "title": "语言设置"
     }
   }
 }

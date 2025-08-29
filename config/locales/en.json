@@ -4,27 +4,22 @@
       "title": "Alert",
       "success": "Success",
       "error": "Error",
-
       "name?": "Please enter your name",
       "nickname?": "Please enter your nickname",
       "gender?": "Please select your gender",
       "birthDate?": "Please select your date of birth",
-
       "email?": "Please enter your email",
       "emailRegex?": "Please enter a valid email address",
       "emailsend?": "Verification code has been sent to ",
       "emailcode?": "Please enter the verification code",
       "emailverified?": "Email verification completed",
       "emailcodeinvalid?": "Invalid verification code",
-
       "password?": "Please enter your password",
       "passwordRegex?": "Password must be at least 6 characters",
       "passwordMismatch?": "Passwords do not match",
-
       "nationality?": "Please select your nationality",
       "phone?": "Please enter your phone number",
       "residence?": "Please enter your residence",
-
       "onboardingfail": "An error occurred during registration.\n Please try again.",
       "loginfail": "Login failed.\nPlease try again."
     },
@@ -151,7 +146,7 @@
     "7": "Gout",
     "8": "Asthma",
     "9": "Arthritis"
-    },
+  },
   "User": {
     "alert": {
       "title": "Alert",
@@ -163,7 +158,26 @@
       "tranalate_fail": "Translation failed",
       "input_please": "Please enter a sentence to translate",
       "audio_none": "No audio available",
-      "audio_fail": "Failed to play audio"
+      "audio_fail": "Failed to play audio",
+      "user_fail": "Failed to retrieve user information.",
+      "profile_update": "Profile has been updated.",
+      "profile_update_fail": "Failed to update profile.",
+      "cation_fail": "Failed to load contraindicated medication information.",
+      "heath_update": "Underlying condition information has been updated.",
+      "heath_update_fail": "Failed to update underlying condition information.",
+      "heath_delte_fail": "Failed to delete medication history.",
+      "medicate_update": "Medication history has been updated.",
+      "medicate_update_fail": "Failed to update medication history.",
+      "language_fail": "Failed to change language."
+    },
+    "modal": {
+      "close": "Cancel",
+      "startDate": "Select start date",
+      "endDate": "Select end date",
+      "confirm": "Confirm",
+      "year": "Year",
+      "month": "Month",
+      "day": "Day"
     },
     "layout": {
       "chatbot": "Chatbot",
@@ -186,7 +200,7 @@
       "chatbox_Alert": "Please enter a message.",
       "chatbox_placeholder": "Type symptoms..."
     },
-        "translate": {
+    "translate": {
       "hospital": {
         "1": "I would like to make a medical appointment.",
         "2": "Is there an appointment available today?",
@@ -247,9 +261,60 @@
       "see_FAQ": "View frequently used sentences"
     },
     "index": {
+      "logout": "Logout",
+      "my_info": "My Info",
+      "basic_info": "Basic Info",
+      "health_info": "Health Info",
+      "caution_info": "Drug Cautions",
+      "app_setting": "App Settings",
+      "language_setting": "Language Settings",
+      "privacy": "Privacy",
+      "delete_user": "Delete Account"
     },
-    "basicInfo":{
-      "title":"영어"
+    "basicInfo": {
+      "data_id": "User ID",
+      "data_name": "Name",
+      "data_gender": "Gender",
+      "data_email": "Email",
+      "data_birthday": "Birthday",
+      "data_country": "Country",
+      "data_residence": "Residence",
+      "back": "‹ Back",
+      "title": "My Basic Info",
+      "nickname": "Nickname",
+      "phone": "Phone",
+      "img_url": "Profile Image URL",
+      "save": "Save",
+      "data_name_placeholder": "Enter name",
+      "medi_dosage_placeholder": "e.g. 2x/day 100mg",
+      "medi_name_placeholder": "Enter medicine"
+    },
+    "cautionInfo": {
+      "back": "‹ Back",
+      "title": "Contraindicated Drugs",
+      "my_cation": "My Conditions",
+      "atc_ing": "Risk Ingredient: ",
+      "caution": "Note: "
+    },
+    "healthInfo": {
+      "back": "‹ Back",
+      "title": "Health Info",
+      "diseases_info": "Conditions",
+      "medications_info": "Medication History",
+      "medi_name": "Medicine Name",
+      "start_date": "Start Date",
+      "end_date": "End Date",
+      "choose_date": "Pick Date",
+      "current_medi": "Currently Taking",
+      "current_take": "Taking",
+      "current_done": "Finished",
+      "medi_dosage": "Dosage",
+      "add": "+ Add",
+      "save": "Save"
+    },
+    "languageInfo": {
+      "back": "‹ Back",
+      "title": "Language Settings"
     }
   }
 }

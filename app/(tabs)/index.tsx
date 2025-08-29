@@ -16,6 +16,7 @@ import LanguageInfoScreen from '../../components/profile/LanguageInfo';
 import { User } from '../../types/profile';
 import { BASE_URL } from '../../types/ip';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { t } from 'i18next';
 
 export default function ProfileScreen() {
   const { token, logout } = useAuth();
@@ -53,7 +54,7 @@ export default function ProfileScreen() {
       });
     } catch (err) {
       console.error(err);
-      Alert.alert('Error', '사용자 정보를 가져오는데 실패했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.user_fail'));
     }
   };
 
@@ -125,49 +126,42 @@ export default function ProfileScreen() {
         <Text style={styles.name}>{user?.nickname}</Text>
         <Text style={styles.email}>{user?.email}</Text>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutButtonText}>로그아웃</Text>
+          <Text style={styles.logoutButtonText}>{t('User.index.logout')}</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>내 정보</Text>
+        <Text style={styles.sectionTitle}>{t('User.index.my_info')}</Text>
         <TouchableOpacity
           style={styles.menuItem}
           onPress={() => setCurrentView('basic')}
         >
-          <Text style={styles.menuText}>기본 정보</Text>
+          <Text style={styles.menuText}>{t('User.index.basic_info')}</Text>
           <FontAwesome name="chevron-right" size={14} color="#666" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuItem}
           onPress={() => setCurrentView('health')}
         >
-          <Text style={styles.menuText}>건강 정보</Text>
+          <Text style={styles.menuText}>{t('User.index.health_info')}</Text>
           <FontAwesome name="chevron-right" size={14} color="#666" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuItem}
           onPress={() => setCurrentView('caution')}
         >
-          <Text style={styles.menuText}>병용 금지</Text>
+          <Text style={styles.menuText}>{t('User.index.caution_info')}</Text>
           <FontAwesome name="chevron-right" size={14} color="#666" />
         </TouchableOpacity>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>앱 설정</Text>
+        <Text style={styles.sectionTitle}>{t('User.index.app_setting')}</Text>
         <TouchableOpacity 
           style={styles.settingItem}
           onPress={() => setCurrentView('language')}
         >
-          <Text style={styles.settingText}>언어 설정</Text>
-          <FontAwesome name="chevron-right" size={14} color="#666" />
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.settingItem}
-          
-        >
-          <Text style={styles.settingText}>알림 설정</Text>
+          <Text style={styles.settingText}>{t('User.index.language_setting')}</Text>
           <FontAwesome name="chevron-right" size={14} color="#666" />
         </TouchableOpacity>
 
@@ -176,10 +170,10 @@ export default function ProfileScreen() {
           style={styles.settingItem}
 
         >
-          <Text style={styles.settingText}>개인정보 보호</Text>
+          <Text style={styles.settingText}>{t('User.index.privacy')}</Text>
           <FontAwesome name="chevron-right" size={14} color="#666" />
         </TouchableOpacity>
-
+        <Text>{t('User.index.delete_user')}</Text>
       </View>
     </ScrollView>
   );
