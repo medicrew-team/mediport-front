@@ -22,6 +22,7 @@ export default function ProfileScreen() {
   const { token, logout } = useAuth();
   const [currentView, setCurrentView] = useState('profile');
   const [user, setUser] = useState<User | null>(null);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
@@ -166,14 +167,25 @@ export default function ProfileScreen() {
         </TouchableOpacity>
 
         {/* 개인정보 보호 */}
-        <TouchableOpacity 
-          style={styles.settingItem}
+<TouchableOpacity 
+  style={styles.settingItem}
+  onPress={() => setPrivacyOpen(!privacyOpen)}
+>
+  <Text style={styles.settingText}>{t('User.index.privacy')}</Text>
+  <FontAwesome 
+    name={privacyOpen ? "chevron-up" : "chevron-down"} 
+    size={14} 
+    color="#666" 
+  />
+</TouchableOpacity>
 
-        >
-          <Text style={styles.settingText}>{t('User.index.privacy')}</Text>
-          <FontAwesome name="chevron-right" size={14} color="#666" />
-        </TouchableOpacity>
-        <Text>{t('User.index.delete_user')}</Text>
+{privacyOpen && (
+  <View style={styles.dropdownContent}>
+    <TouchableOpacity onPress={() => Alert.alert(t('User.alert.user_delete'), t('User.alert.user_delete_reask'))}>
+      <Text style={styles.settingText}>{t('User.index.delete_user')}</Text>
+    </TouchableOpacity>
+  </View>
+)}
       </View>
     </ScrollView>
   );

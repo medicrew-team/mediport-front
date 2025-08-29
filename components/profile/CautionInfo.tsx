@@ -15,19 +15,6 @@ import { BASE_URL } from '../../types/ip';
 import { InfoScreenProps } from '../../types/profile';
 import { t } from 'i18next';
 
-// 질병 목록 상수
-const DISEASES = [
-  { disease_id: 1, disease_name: t('DISEASES.1') },
-  { disease_id: 2, disease_name: t('DISEASES.2') },
-  { disease_id: 3, disease_name: t('DISEASES.3') },
-  { disease_id: 4, disease_name: t('DISEASES.4') },
-  { disease_id: 5, disease_name: t('DISEASES.5') },
-  { disease_id: 6, disease_name: t('DISEASES.6') },
-  { disease_id: 7, disease_name: t('DISEASES.7') },
-  { disease_id: 8, disease_name: t('DISEASES.8') },
-  { disease_id: 9, disease_name: t('DISEASES.9') },
-];
-
 interface ProhibitMedi {
   dur_chronic_id: number;
   dur_prod_name: string;
@@ -44,6 +31,19 @@ const CautionInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack }) => {
   const [selectedDisease, setSelectedDisease] = useState<number | null>(null); // 추가: 현재 선택된 질환
   const [prohibitMedi, setProhibitMedi] = useState<ProhibitMedi[]>([]);
   const [loading, setLoading] = useState(false);
+
+  // 질병 목록 상수
+const DISEASES = [
+  { disease_id: 1, disease_name: t('DISEASES.1') },
+  { disease_id: 2, disease_name: t('DISEASES.2') },
+  { disease_id: 3, disease_name: t('DISEASES.3') },
+  { disease_id: 4, disease_name: t('DISEASES.4') },
+  { disease_id: 5, disease_name: t('DISEASES.5') },
+  { disease_id: 6, disease_name: t('DISEASES.6') },
+  { disease_id: 7, disease_name: t('DISEASES.7') },
+  { disease_id: 8, disease_name: t('DISEASES.8') },
+  { disease_id: 9, disease_name: t('DISEASES.9') },
+];
 
   useEffect(() => {
     if (user?.diseases) setSelectedDiseases(user.diseases.map(d => d.id));

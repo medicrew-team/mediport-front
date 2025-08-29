@@ -150,6 +150,7 @@
   "User": {
     "alert": {
       "title": "Alert",
+      "success":"Success",
       "error": "Error",
       "Permission": "Permission Required",
       "microphone_Permission": "Please allow microphone access for voice input.",
@@ -168,7 +169,9 @@
       "heath_delte_fail": "Failed to delete medication history.",
       "medicate_update": "Medication history has been updated.",
       "medicate_update_fail": "Failed to update medication history.",
-      "language_fail": "Failed to change language."
+      "language_fail": "Failed to change language.",
+      "user_delete": "Delete Account",
+      "user_delete_reask": "Are you sure you want to delete your account?"
     },
     "modal": {
       "close": "Cancel",
@@ -284,10 +287,7 @@
       "nickname": "Nickname",
       "phone": "Phone",
       "img_url": "Profile Image URL",
-      "save": "Save",
-      "data_name_placeholder": "Enter name",
-      "medi_dosage_placeholder": "e.g. 2x/day 100mg",
-      "medi_name_placeholder": "Enter medicine"
+      "save": "Save"
     },
     "cautionInfo": {
       "back": "‹ Back",
@@ -302,6 +302,7 @@
       "diseases_info": "Conditions",
       "medications_info": "Medication History",
       "medi_name": "Medicine Name",
+      "medi_name_placeholder": "Enter medicine",
       "start_date": "Start Date",
       "end_date": "End Date",
       "choose_date": "Pick Date",
@@ -309,6 +310,7 @@
       "current_take": "Taking",
       "current_done": "Finished",
       "medi_dosage": "Dosage",
+      "medi_dosage_placeholder": "e.g. 2x/day 100mg",
       "add": "+ Add",
       "save": "Save"
     },

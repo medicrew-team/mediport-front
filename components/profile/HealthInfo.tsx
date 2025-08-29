@@ -16,19 +16,6 @@ import { BASE_URL } from '../../types/ip';
 import { InfoScreenProps, Medication } from '../../types/profile';
 import { t } from 'i18next';
 
-// 질병 목록 상수
-const DISEASES = [
-  { disease_id: 1, disease_name: t('DISEASES.1') },
-  { disease_id: 2, disease_name: t('DISEASES.2') },
-  { disease_id: 3, disease_name: t('DISEASES.3') },
-  { disease_id: 4, disease_name: t('DISEASES.4') },
-  { disease_id: 5, disease_name: t('DISEASES.5') },
-  { disease_id: 6, disease_name: t('DISEASES.6') },
-  { disease_id: 7, disease_name: t('DISEASES.7') },
-  { disease_id: 8, disease_name: t('DISEASES.8') },
-  { disease_id: 9, disease_name: t('DISEASES.9') },
-];
-
 const today = new Date();
 const formatted = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2,'0')}-${today.getDate().toString().padStart(2,'0')}`;
 
@@ -103,10 +90,23 @@ const parseDate = (dateString: string) => {
 };
 
 const HealthInfoScreen: React.FC<InfoScreenProps> = ({ user, onBack, onUpdate }) => {
+
     const { token } = useAuth();
     const [selectedDiseases, setSelectedDiseases] = useState<number[]>([]);
     const [medications, setMedications] = useState<Medication[]>([]);
 
+        // 질병 목록 상수
+const DISEASES = [
+  { disease_id: 1, disease_name: t('DISEASES.1') },
+  { disease_id: 2, disease_name: t('DISEASES.2') },
+  { disease_id: 3, disease_name: t('DISEASES.3') },
+  { disease_id: 4, disease_name: t('DISEASES.4') },
+  { disease_id: 5, disease_name: t('DISEASES.5') },
+  { disease_id: 6, disease_name: t('DISEASES.6') },
+  { disease_id: 7, disease_name: t('DISEASES.7') },
+  { disease_id: 8, disease_name: t('DISEASES.8') },
+  { disease_id: 9, disease_name: t('DISEASES.9') },
+];
     // 날짜 선택 모달 상태
     const [showDateModal, setShowDateModal] = useState(false);
     const [dateIndex, setDateIndex] = useState<number | null>(null);
@@ -473,7 +473,6 @@ const styles = StyleSheet.create({
     },
     saveButton: {
         alignSelf: 'flex-end',
-        width: 60,
         backgroundColor: '#007AFF',
         paddingHorizontal: 15,
         paddingVertical: 8,
@@ -508,7 +507,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FF6600'
     },
     checkboxLabel: {
-        fontSize: 16,
+        fontSize: 14,
         color: '#333'
     },
     removeButton: {

@@ -150,6 +150,7 @@
   "User": {
     "alert": {
       "title": "แจ้งเตือน",
+      "success":"สำเร็จ",
       "error": "ข้อผิดพลาด",
       "Permission": "ต้องการสิทธิ์",
       "microphone_Permission": "กรุณาอนุญาตไมโครโฟนเพื่อใช้การป้อนด้วยเสียง",
@@ -168,7 +169,9 @@
       "heath_delte_fail": "ไม่สามารถลบประวัติการใช้ยาได้",
       "medicate_update": "อัปเดตประวัติการใช้ยาเรียบร้อยแล้ว",
       "medicate_update_fail": "ไม่สามารถอัปเดตประวัติการใช้ยาได้",
-      "language_fail": "ไม่สามารถเปลี่ยนภาษาได้"
+      "language_fail": "ไม่สามารถเปลี่ยนภาษาได้",
+      "user_delete": "ลบบัญชี",
+      "user_delete_reask": "คุณแน่ใจหรือว่าต้องการลบบัญชีของคุณ?"
     },
     "modal": {
       "close": "ยกเลิก",
@@ -284,10 +287,7 @@
       "nickname": "ชื่อเล่น",
       "phone": "เบอร์โทร",
       "img_url": "URL รูปโปรไฟล์",
-      "save": "บันทึก",
-      "data_name_placeholder": "กรอกชื่อ",
-      "medi_dosage_placeholder": "เช่น 2 ครั้ง/วัน 100mg",
-      "medi_name_placeholder": "กรอกชื่อยา"
+      "save": "บันทึก"
     },
     "cautionInfo": {
       "back": "‹ ย้อนกลับ",
@@ -302,6 +302,7 @@
       "diseases_info": "โรคประจำตัว",
       "medications_info": "ประวัติการใช้ยา",
       "medi_name": "ชื่อยา",
+      "medi_name_placeholder": "กรอกชื่อยา",
       "start_date": "วันเริ่ม",
       "end_date": "วันสิ้นสุด",
       "choose_date": "เลือกวันที่",
@@ -309,6 +310,7 @@
       "current_take": "ใช้อยู่",
       "current_done": "เสร็จสิ้น",
       "medi_dosage": "ขนาดยา",
+      "medi_dosage_placeholder": "เช่น 2 ครั้ง/วัน 100mg",
       "add": "+ เพิ่ม",
       "save": "บันทึก"
     },

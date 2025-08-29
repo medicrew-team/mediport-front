@@ -150,6 +150,7 @@
   "User": {
     "alert": {
       "title": "Abiso",
+      "success":"Tagumpay",
       "error": "Error",
       "Permission": "Kailangang pahintulot",
       "microphone_Permission": "Pahintulutan ang mikropono para sa boses",
@@ -168,7 +169,9 @@
       "heath_delte_fail": "Nabigo ang pagbura ng kasaysayan ng gamot.",
       "medicate_update": "Na-update ang kasaysayan ng gamot.",
       "medicate_update_fail": "Nabigo ang pag-update ng kasaysayan ng gamot.",
-      "language_fail": "Nabigo ang pagbabago ng wika."
+      "language_fail": "Nabigo ang pagbabago ng wika.",
+      "user_delete": "Tanggalin ang Account",
+      "user_delete_reask": "Sigurado ka bang nais mong tanggalin ang iyong account?"
     },
     "modal": {
       "close": "Kanselahin",
@@ -280,14 +283,11 @@
       "data_country": "Bansa",
       "data_residence": "Tirahan",
       "back": "‹ Bumalik",
-      "title": "Aking Pangunahing Impormasyon",
+      "title": "Impormasyon",
       "nickname": "Palayaw",
       "phone": "Telepono",
       "img_url": "Profile URL",
-      "save": "I-save",
-      "data_name_placeholder": "Ilagay pangalan",
-      "medi_dosage_placeholder": "Hal. 2x/araw 100mg",
-      "medi_name_placeholder": "Ilagay gamot"
+      "save": "I-save"
     },
     "cautionInfo": {
       "back": "‹ Bumalik",
@@ -298,17 +298,19 @@
     },
     "healthInfo": {
       "back": "‹ Bumalik",
-      "title": "Impormasyon sa Kalusugan",
+      "title": "Kalusugan",
       "diseases_info": "Impormasyon sa Kondisyon",
       "medications_info": "Kasaysayan ng Gamot",
       "medi_name": "Pangalan ng Gamot",
-      "start_date": "Petsa ng Simula",
-      "end_date": "Petsa ng Pagtatapos",
+      "medi_name_placeholder": "Ilagay gamot",
+      "start_date": "Simula",
+      "end_date": "Wakas",
       "choose_date": "Pumili ng Petsa",
       "current_medi": "Iniinom pa",
       "current_take": "Umiinom",
       "current_done": "Tapos na",
       "medi_dosage": "Dosis",
+      "medi_dosage_placeholder": "Hal. 2x/araw 100mg",
       "add": "+ Dagdag",
       "save": "I-save"
     },

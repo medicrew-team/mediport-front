@@ -150,6 +150,7 @@
   "User": {
     "alert": {
       "title": "Thông báo",
+      "success":"Thành công",
       "error": "Lỗi",
       "Permission": "Cần quyền",
       "microphone_Permission": "Vui lòng cấp quyền micro để sử dụng nhập giọng nói.",
@@ -168,7 +169,9 @@
       "heath_delte_fail": "Xóa lịch sử dùng thuốc thất bại.",
       "medicate_update": "Lịch sử dùng thuốc đã được cập nhật.",
       "medicate_update_fail": "Cập nhật lịch sử dùng thuốc thất bại.",
-      "language_fail": "Thay đổi ngôn ngữ thất bại."
+      "language_fail": "Thay đổi ngôn ngữ thất bại.",
+      "user_delete": "Xóa Tài Khoản",
+      "user_delete_reask": "Bạn có chắc chắn muốn xóa tài khoản của mình không?"
     },
     "modal": {
       "close": "Hủy",
@@ -284,10 +287,7 @@
       "nickname": "Biệt danh",
       "phone": "Điện thoại",
       "img_url": "URL ảnh đại diện",
-      "save": "Lưu",
-      "data_name_placeholder": "Nhập tên",
-      "medi_dosage_placeholder": "VD: 2 lần/ngày 100mg",
-      "medi_name_placeholder": "Nhập tên thuốc"
+      "save": "Lưu"
     },
     "cautionInfo": {
       "back": "‹ Quay lại",
@@ -302,6 +302,7 @@
       "diseases_info": "Thông tin bệnh nền",
       "medications_info": "Lịch sử dùng thuốc",
       "medi_name": "Tên thuốc",
+      "medi_name_placeholder": "Nhập tên thuốc",
       "start_date": "Ngày bắt đầu",
       "end_date": "Ngày kết thúc",
       "choose_date": "Chọn ngày",
@@ -309,6 +310,7 @@
       "current_take": "Đang uống",
       "current_done": "Đã xong",
       "medi_dosage": "Liều lượng",
+      "medi_dosage_placeholder": "VD: 2 lần/ngày 100mg",
       "add": "+ Thêm",
       "save": "Lưu"
     },

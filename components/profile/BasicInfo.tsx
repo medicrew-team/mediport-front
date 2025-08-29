@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     alignSelf: 'flex-end',
-    width: 60,
     backgroundColor: '#007AFF',
     paddingHorizontal: 15,
     paddingVertical: 8,

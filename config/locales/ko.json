@@ -169,7 +169,10 @@
       "heath_delte_fail": "복약 이력 삭제에 실패했습니다.",
       "medicate_update": "복약 이력이 업데이트되었습니다.",
       "medicate_update_fail": "복약 이력 업데이트에 실패했습니다.",
-      "language_fail": "언어 변경에 실패했습니다."
+      "language_fail": "언어 변경에 실패했습니다.",
+      "user_delete": "회원 탈퇴",
+      "user_delete_reask": "정말 삭제하시겠습니까?"
+
     },
     "modal": {
       "close": "취소",

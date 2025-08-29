@@ -150,6 +150,7 @@
   "User": {
     "alert": {
       "title": "提醒",
+      "success":"成功",
       "error": "错误",
       "Permission": "需要权限",
       "microphone_Permission": "请授予麦克风权限以使用语音输入。",
@@ -168,7 +169,9 @@
       "heath_delte_fail": "删除用药记录失败。",
       "medicate_update": "用药记录已更新。",
       "medicate_update_fail": "更新用药记录失败。",
-      "language_fail": "语言更改失败。"
+      "language_fail": "语言更改失败。",
+      "user_delete": "删除账户",
+      "user_delete_reask": "您确定要删除账户吗？"
     },
     "modal": {
       "close": "取消",
@@ -284,10 +287,7 @@
       "nickname": "昵称",
       "phone": "电话",
       "img_url": "头像URL",
-      "save": "保存",
-      "data_name_placeholder": "输入姓名",
-      "medi_dosage_placeholder": "如: 每日2次 100mg",
-      "medi_name_placeholder": "输入药名"
+      "save": "保存"
     },
     "cautionInfo": {
       "back": "‹ 返回",
@@ -302,6 +302,7 @@
       "diseases_info": "疾病信息",
       "medications_info": "用药记录",
       "medi_name": "药品名",
+      "medi_name_placeholder": "输入药名",
       "start_date": "开始日期",
       "end_date": "结束日期",
       "choose_date": "选择日期",
@@ -309,6 +310,7 @@
       "current_take": "服用中",
       "current_done": "已完成",
       "medi_dosage": "剂量",
+      "medi_dosage_placeholder": "如: 每日2次 100mg",
       "add": "+ 添加",
       "save": "保存"
     },
