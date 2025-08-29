@@ -158,12 +158,14 @@
       "error": "오류",
       "Permission": "권한 필요",
       "microphone_Permission": "음성 입력을 사용할 수 있는 마이크 권한을 부여해 주세요.",
-      "start_recording_fail": "녹음 시작을 실패하였습니다",
-      "end_recording_fail": "녹음 종료를 실패하였습니다",
-      "tranalate_fail": "번역을 실패하였습니다",
-      "input_please": "번역할 문장을 입력해주세요",
-      "audio_none": "재생할 오디오가 없습니다",
-      "audio_fail": "오디오 재생을 실패하였습니다"
+      "start_recording_fail": "녹음 시작을 실패하였습니다.",
+      "end_recording_fail": "녹음 종료를 실패하였습니다.",
+      "tranalate_fail": "번역을 실패하였습니다.",
+      "input_please": "번역할 문장을 입력해주세요.",
+      "audio_none": "재생할 오디오가 없습니다.",
+      "audio_fail": "오디오 재생을 실패하였습니다.",
+
+      "user_fail": "사용자 정보를 가져오는데 실패했습니다."
     },
     "layout": {
       "chatbot": "챗봇",
@@ -239,18 +241,24 @@
         "th": "태국어",
         "fil": "필리핀어"
       },
-      "modal_title": "자주 쓰는 문장",
+      "modal_title": "자주 사용하는 대화",
       "modal_hospital": "🏥 병원",
       "input_pharmacy": "💊 약국",
       "input_placeholder": "텍스트 또는 음성 입력",
       "translate_btn": "번역",
-      "see_FAQ": "자주쓰는 문장 보기"
+      "see_FAQ": "자주 사용하는 대화 보기"
     },
     "index":{
 
     },
     "basicInfo":{
-      "title":"기본 정보"
+      "title":"기본 정보",
+      "logout":"로그아웃",
+      "my_info":"내 정보",
+      "basic_info":"기본 정보",
+      "health_info":"건강 정보",
+      "caution_info":"병용 금지",
+      "language_setting":"언어 설정"
     }
   }
 }
