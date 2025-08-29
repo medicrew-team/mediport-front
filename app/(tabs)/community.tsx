@@ -29,15 +29,15 @@ export default function CommunityScreen() {
   const categories = ['제목', '내용', '작성자'];
   
   // 필터 배열 - 백엔드 API와 매칭되도록 설정
-  const filters = [
-    { id: 1, name: "전체", categoryName: null },
-    { id: 2, name: "자유", categoryName: "자유" },
-    { id: 3, name: "질문", categoryName: "질문" },
-    { id: 4, name: "맛집", categoryName: "맛집" },
-    { id: 5, name: "동네사건사고", categoryName: "동네사건사고" },
-    { id: 6, name: "정보 공유", categoryName: "정보 공유" },
-    { id: 7, name: "기타", categoryName: "기타" },
-  ];
+const filters = [
+  { id: 1, name: "전체" },
+  { id: 2, name: "자유" },
+  { id: 3, name: "질문" },
+  { id: 4, name: "맛집" },
+  { id: 5, name: "동네사건사고" },
+  { id: 6, name: "정보 공유" },
+  { id: 7, name: "기타" },
+];
 
   // 통합된 게시글 조회 함수
   const fetchPosts = async () => {

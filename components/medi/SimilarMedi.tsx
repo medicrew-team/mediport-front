@@ -488,10 +488,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     height: height * 0.9
   },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    
+  modalHeader: {    
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#E8E8E8',
@@ -536,7 +533,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
-    alignSelf: 'flex-start',
+    alignSelf: 'flex-end',
   },
   modalBadgeText: {
     fontSize: 12,

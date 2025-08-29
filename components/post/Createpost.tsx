@@ -20,7 +20,6 @@ interface CreatePostProps {
   token: string;
 }
   const categories = [
-  { id: 1, name: "전체" },
   { id: 2, name: "자유" },
   { id: 3, name: "질문" },
   { id: 4, name: "맛집" },
