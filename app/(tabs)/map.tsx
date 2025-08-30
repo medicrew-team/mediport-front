@@ -1,251 +1,236 @@
-import { router } from 'expo-router';
-import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Animated, ActivityIndicator, Alert } from 'react-native';
-import { WebView } from 'react-native-webview';
 import axios from 'axios';
 import * as Location from "expo-location";
+import { router } from 'expo-router';
+import React, { useRef, useState } from 'react';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { WebView } from 'react-native-webview';
+import { GOOGLE_API_KEY, KAKAO_JS_KEY, KAKAO_REST_KEY } from "../../config/api";
 
+// --- Google Translate API ---
 
-interface Pharmacy {
-  dutyName: string;
-  dutyAddr: string;
-  dutyTel1: string;
-  latitude: string;
-  longitude: string;
-  hpid: string;
+export async function translateToEnglish(text: string): Promise<string> {
+  try {
+    const res = await axios.post(
+      `https://translation.googleapis.com/language/translate/v2?key=${GOOGLE_API_KEY}`,
+      {
+        q: text,
+        source: "ko",
+        target: "en",
+        format: "text"
+      }
+    );
+    return res.data.data.translations[0].translatedText;
+  } catch (err) {
+    console.error("Translation error:", err);
+    return text; // 실패하면 원문 그대로 반환
+  }
 }
 
-const API_KEY = '1387921665defec904adf7aac69e8e361fdfa00412911eaeee37754ce18e59de'; // 공공데이터 포털 약국 API key
-const BASE_URL = 'https://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyLcinfoInqire';
+// --- 타입 정의 (카카오 API 기준) ---
+interface Pharmacy {
+  id: string;
+  place_name: string;
+  address_name: string;
+  address_name_en?: string; // 영문 주소 추가
+  phone: string;
+  x: string; // 경도 (longitude)
+  y: string; // 위도 (latitude)
+}
 
-const HTML_TEMPLATE = (lat: number, lng: number) => `
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+// --- 상수 정의 ---
+const HTML_TEMPLATE = `
+  <!DOCTYPE html>
+  <html lang="ko">
+  <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    html, body, #map {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-  </style>
-  <!-- 네이버 지도 SDK -->
-  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=9v436t9npz"></script>
-</head>
-<body>
-  <div id="map"></div>
-  <script>
-    let map;
-    let markers = [];
+    <style>html, body, #map { width: 100%; height: 100%; margin: 0; padding: 0; }</style>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}"></script>
+  </head>
+  <body onload="initMap()">
+    <div id="map"></div>
+    <script>
+      let map; 
+      let markers = [];
+      let currentInfoWindow = null;
 
-    function initMap() {
-      map = new naver.maps.Map("map", {
-        center: new naver.maps.LatLng(37.5665, 126.9780), // 기본 서울 중심
-        zoom: 15
-      });
-    }
+      function initMap() {
+        const container = document.getElementById('map');
+        const options = {
+          center: new kakao.maps.LatLng(37.5665, 126.9780),
+          level: 5
+        };
+        map = new kakao.maps.Map(container, options);
+      }
 
-    function clearMarkers() {
-      markers.forEach(m => m.setMap(null));
-      markers = [];
-    }
+      function clearMarkers() {
+        markers.forEach(marker => marker.setMap(null));
+        if (currentInfoWindow) currentInfoWindow.close();
+        markers = [];
+      }
 
-function addPharmacies(pharmacies) {
-  clearMarkers();
-  pharmacies.forEach(ph => {
-   const lat = parseFloat(ph.latitude);
-   const lng = parseFloat(ph.longitude);
+      // ✅ 약국 마커
+      function addPharmacies(pharmacies) {
+        clearMarkers();
+        const imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png";
+        const imageSize = new kakao.maps.Size(36, 37);
+        
+        pharmacies.forEach((ph, i) => {
+          const lat = parseFloat(ph.y);
+          const lng = parseFloat(ph.x);
+          if (isNaN(lat) || isNaN(lng)) return;
 
-    if (isNaN(lat) || isNaN(lng)) return; // 좌표 없으면 skip
+          const imageOption = {
+            spriteSize: new kakao.maps.Size(36, 691),
+            spriteOrigin: new kakao.maps.Point(0, (i * 46) + 10),
+            offset: new kakao.maps.Point(13, 37)
+          };
+          const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+          const position = new kakao.maps.LatLng(lat, lng);
+          const marker = new kakao.maps.Marker({ position, image: markerImage });
+          
+          marker.setMap(map);
+          markers.push(marker);
 
-    const marker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(lat, lng),
-      map: map,
-      title: ph.dutyName
-    });
+          const infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="padding:5px;font-size:12px;"><b>' + ph.place_name + '</b><br>' + ph.address_name + '</div>',
+            removable: true
+          });
 
-    const info = new naver.maps.InfoWindow({
-      content: \`<div style="padding:5px; font-size:12px;">
-        <b>\${ph.dutyName}</b><br>\${ph.dutyAddr}
-      </div>\`
-    });
+          kakao.maps.event.addListener(marker, 'click', function() {
+            if (currentInfoWindow) currentInfoWindow.close();
+            infowindow.open(map, marker);
+            currentInfoWindow = infowindow;
+            
+            if (window.ReactNativeWebView) {
+              window.ReactNativeWebView.postMessage(JSON.stringify({ type: "MARKER_CLICKED", pharmacy: ph }));
+            }
+          });
+        });
+      }
 
-    naver.maps.Event.addListener(marker, "click", () => {
-      if (info.getMap()) {
-        info.close();
-      } else {
-        info.open(map, marker);
+      // ✅ 내 위치/검색 위치 마커
+      function addCustomMarker(lat, lng, markerType) {
+        const position = new kakao.maps.LatLng(lat, lng);
+        let imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 
-        // 클릭한 약국 정보를 RN으로 전달
-        if (window.ReactNativeWebView) {
-          window.ReactNativeWebView.postMessage(JSON.stringify({
-            type: "MARKER_CLICKED",
-            pharmacy: ph
-          }));
+        if (imageSrc) {
+          const imageSize = new kakao.maps.Size(24, 35);
+          const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          const marker = new kakao.maps.Marker({ position, image: markerImage });
+          marker.setMap(map);
+        } else {
+          const marker = new kakao.maps.Marker({ position });
+          marker.setMap(map);
         }
       }
-    });
 
-    markers.push(marker);
-  });
-}
-
-    function handleMessage(event) {
-      try {
-        const data = JSON.parse(event.data);
-
-        if (data.type === "UPDATE_PHARMACIES") {
-          addPharmacies(data.pharmacies);
+      // ✅ RN ↔ WebView 메시지
+      function handleMessage(event) {
+        try {
+          const { type, payload } = JSON.parse(event.data);
+          if (type === "UPDATE_PHARMACIES") {
+            addPharmacies(payload.pharmacies);
+          }
+          if (type === "MOVE_TO_LOCATION") {
+            const newPos = new kakao.maps.LatLng(payload.lat, payload.lng);
+            map.panTo(newPos);
+          }
+          if (type === "ADD_MARKER") {
+            addCustomMarker(payload.lat, payload.lng, payload.markerType);
+          }
+        } catch (e) {
+          console.error("Message parsing error:", e);
         }
-        else if (data.type === "MOVE_TO_LOCATION") {
-          const latlng = new naver.maps.LatLng(data.lat, data.lng);
-          map.panTo(latlng, {duration: 500});
-        }
-      } catch (e) {
-        console.error("메시지 파싱 오류:", e);
       }
-    }
-    window.ReactNativeWebView = window.ReactNativeWebView || {};
-window.addEventListener("message", handleMessage);
 
-    initMap();
-  </script>
-</body>
-</html>
+      window.addEventListener("message", handleMessage);
+    </script>
+  </body>
+  </html>
 `;
 
+
+// --- React 컴포넌트 ---
 export default function MapViewExample() {
+  // --- WebView에 삽입될 HTML 템플릿 ---
+  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedPharmacy, setSelectedPharmacy] = useState<Pharmacy | null>(null);
   const webViewRef = useRef<WebView>(null);
-  const animatedHeight = useRef(new Animated.Value(0)).current;
 
-  const navigateToTranslate = () => {
-    router.push('/translate');
-  };
+  const postToWebView = (type: string, payload: any) => {
+    webViewRef.current?.postMessage(JSON.stringify({ type, payload }));
+  }
 
-  const navigateToMap = () => {
-    router.push('/map');
-  };
-  const getMyLocation = async () => {
+  // --- 공통 약국 검색 로직 ---
+  const searchPharmaciesAt = async (lng: number, lat: number) => {
+    setLoading(true);
     try {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        return Alert.alert("권한 필요", "위치 접근 권한을 허용해주세요.");
-      }
+      const url = `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=PM9&x=${lng}&y=${lat}&radius=1000`;
+      const res = await axios.get(url, { headers: { 'Authorization': KAKAO_REST_KEY } });
+      
+      // 👉 각 약국 주소를 영어로 번역
+      const pharmacyList: Pharmacy[] = await Promise.all(
+        (res.data.documents || []).map(async (ph: any) => {
+          const englishAddr = await translateToEnglish(ph.address_name);
+          return { ...ph, address_name_en: englishAddr };
+        })
+      );
 
-      const loc = await Location.getCurrentPositionAsync({});
-      const lat = loc.coords.latitude;
-      const lng = loc.coords.longitude;
+      setPharmacies(pharmacyList);
+      postToWebView('UPDATE_PHARMACIES', { pharmacies: pharmacyList });
+      postToWebView('MOVE_TO_LOCATION', { lat, lng });
 
-      console.log("내 위치:", lat, lng);
-
-      // API 호출 (현재 좌표 기준)
-      setLoading(true);
-      const url = `${BASE_URL}?serviceKey=${API_KEY}&WGS84_LAT=${lat}&WGS84_LON=${lng}&radius=2000&pageNo=1&numOfRows=50&_type=json`;
-      const res = await axios.get(url);
-      const items = res.data?.response?.body?.items?.item ?? [];
-      const list = Array.isArray(items) ? items : items ? [items] : [];
-
-      setPharmacies(list);
-
-      // 지도 이동 & 마커 갱신
-      webViewRef.current?.postMessage(JSON.stringify({ type: "UPDATE_PHARMACIES", pharmacies: list }));
-      webViewRef.current?.postMessage(JSON.stringify({ type: "MOVE_TO_LOCATION", lat, lng }));
-
-      Animated.timing(animatedHeight, { toValue: 200, duration: 300, useNativeDriver: false }).start();
     } catch (err) {
       console.error(err);
-      Alert.alert("오류", "현재 위치를 가져올 수 없습니다.");
+      Alert.alert('오류', '주변 약국 정보를 가져오는데 실패했습니다.');
     } finally {
       setLoading(false);
     }
-  };
-
-  // 하드코딩된 서울 주요 역/지역 좌표
-  const locationMap: { [key: string]: { lat: number; lng: number } } = {
-    '강남역': { lat: 37.4979, lng: 127.0276 },
-    '강남': { lat: 37.4979, lng: 127.0276 },
-    '역삼역': { lat: 37.5009, lng: 127.0366 },
-    '선릉역': { lat: 37.5045, lng: 127.0493 },
-    '삼성역': { lat: 37.5089, lng: 127.0631 },
-
-    '홍대': { lat: 37.5563, lng: 126.9234 },
-    '홍대입구': { lat: 37.5563, lng: 126.9234 },
-    '합정역': { lat: 37.5495, lng: 126.9127 },
-    '상수역': { lat: 37.5475, lng: 126.9115 },
-
-    '신촌': { lat: 37.5596, lng: 126.9423 },
-    '이대역': { lat: 37.5562, lng: 126.9430 },
-    '서강대역': { lat: 37.5530, lng: 126.9363 },
-
-    '명동': { lat: 37.5637, lng: 126.9834 },
-    '을지로입구': { lat: 37.5660, lng: 126.9826 },
-    '충무로역': { lat: 37.5610, lng: 126.9920 },
-
-    '이태원': { lat: 37.5349, lng: 126.9947 },
-    '한남동': { lat: 37.5400, lng: 127.0021 },
-
-    '잠실': { lat: 37.5133, lng: 127.1000 },
-    '잠실역': { lat: 37.5135, lng: 127.1003 },
-    '잠실새내': { lat: 37.5111, lng: 127.0958 },
-
-    '건대': { lat: 37.5403, lng: 127.0695 },
-    '건대입구': { lat: 37.5403, lng: 127.0695 },
-    '어린이대공원역': { lat: 37.5407, lng: 127.0716 },
-
-    '서울역': { lat: 37.5547, lng: 126.9707 },
-    '시청역': { lat: 37.5663, lng: 126.9779 },
-    '종로3가': { lat: 37.5703, lng: 126.9910 },
-    '종각': { lat: 37.5703, lng: 126.9830 },
-    '종로': { lat: 37.5703, lng: 126.9830 },
-
-    '강북': { lat: 37.6324, lng: 127.0257 },
-    '북촌': { lat: 37.5826, lng: 126.9836 },
-    '삼청동': { lat: 37.5843, lng: 126.9818 },
-
-    '여의도': { lat: 37.5269, lng: 126.9242 },
-    '마포': { lat: 37.5665, lng: 126.9016 },
-    '상암동': { lat: 37.5762, lng: 126.8851 },
-
-    '동대문': { lat: 37.5700, lng: 127.0097 },
-    '신당역': { lat: 37.5654, lng: 127.0157 },
-    '왕십리': { lat: 37.5610, lng: 127.0376 },
-  };
-
-  const getCoordinates = (query: string) => locationMap[query] || { lat: 37.5665, lng: 126.9780 };
-
-  const searchPharmacies = async () => {
-    if (!searchQuery.trim()) return Alert.alert('알림', '검색할 지역을 입력해주세요.');
-    setLoading(true);
-
+  }
+  // --- 내 위치로 검색 ---
+  const getMyLocation = async () => {
     try {
-      const { lat, lng } = getCoordinates(searchQuery);
-      const url = `${BASE_URL}?serviceKey=${API_KEY}&WGS84_LAT=${lat}&WGS84_LON=${lng}&radius=2000&pageNo=1&numOfRows=50&_type=json`;
-      const res = await axios.get(url);
-      const items = res.data?.response?.body?.items?.item ?? [];
-      const list = Array.isArray(items) ? items : items ? [items] : [];
-
-      console.log("API에서 받은 약국 데이터:", list);
-
-      setPharmacies(list);
-
-      // 지도에 전달
-      webViewRef.current?.postMessage(JSON.stringify({
-        type: 'UPDATE_PHARMACIES',
-        pharmacies: list
-      }));
-      webViewRef.current?.postMessage(JSON.stringify({ type: 'MOVE_TO_LOCATION', lat, lng }));
-
-      Animated.timing(animatedHeight, { toValue: 200, duration: 300, useNativeDriver: false }).start();
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        return Alert.alert("권한 필요", "위치 접근 권한을 허용해주세요.");
+      }
+      const loc = await Location.getCurrentPositionAsync({});
+      const lat = loc.coords.latitude;
+      const lng = loc.coords.longitude;
+      // 내 위치 기준으로 약국 검색
+      searchPharmaciesAt(loc.coords.longitude, loc.coords.latitude);
+      postToWebView("ADD_MARKER", { lat, lng, title: "내 위치", markerType: "me" });
     } catch (err) {
       console.error(err);
-      Alert.alert('오류', '약국 정보를 가져오는데 실패했습니다.');
+      Alert.alert("오류", "현재 위치를 가져올 수 없습니다.");
+    }
+  };
+
+  // --- 키워드로 검색 ---
+  const searchByKeyword = async () => {
+    if (!searchQuery.trim()) return Alert.alert('알림', '검색어를 입력해주세요.');
+    setLoading(true);
+    try {
+      const url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${encodeURIComponent(searchQuery)}`;
+      const res = await axios.get(url, { headers: { 'Authorization': KAKAO_REST_KEY } });
+
+      if (res.data.documents.length === 0) {
+        return Alert.alert('검색 결과 없음', '해당 키워드의 장소를 찾을 수 없습니다.');
+      }
+      const loc = res.data.documents[0];
+      const lat = parseFloat(loc.y);
+      const lng = parseFloat(loc.x);
+      // 키워드로 찾은 장소의 좌표로 약국 재검색
+      searchPharmaciesAt(parseFloat(loc.x), parseFloat(loc.y));
+      postToWebView("ADD_MARKER", { lat, lng, title: searchQuery, markerType: "search" });
+    } catch (err) {
+      console.error(err);
+      Alert.alert('오류', '키워드 검색에 실패했습니다.');
     } finally {
       setLoading(false);
     }
@@ -253,29 +238,22 @@ export default function MapViewExample() {
 
   const handleWebViewMessage = (event: any) => {
     try {
-      const data = JSON.parse(event.nativeEvent.data);
-      if (data.type === 'MARKER_CLICKED') setSelectedPharmacy(data.pharmacy);
+      const { type, pharmacy } = JSON.parse(event.nativeEvent.data);
+      if (type === 'MARKER_CLICKED') setSelectedPharmacy(pharmacy);
     } catch (err) { console.error(err); }
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.navButton, styles.inactiveButton]}
-          onPress={navigateToTranslate}
-        >
+        <TouchableOpacity style={[styles.navButton, styles.inactiveButton]} onPress={() => router.push('/translate')}>
           <Text style={[styles.buttonText, styles.inactiveButtonText]}>번역</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.navButton, styles.activeButton]}
-          onPress={navigateToMap}
-        >
+        <TouchableOpacity style={[styles.navButton, styles.activeButton]} onPress={() => router.push('/map')}>
           <Text style={[styles.buttonText, styles.activeButtonText]}>주변 약국 찾기</Text>
         </TouchableOpacity>
       </View>
-      {/* 검색 */}
+
       <View style={styles.searchContainer}>
         <TouchableOpacity style={styles.locationButton} onPress={getMyLocation}>
           <Text style={{ color: '#fff', fontWeight: '600' }}>내 위치</Text>
@@ -283,126 +261,72 @@ export default function MapViewExample() {
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchInput}
-            placeholder="지역을 입력하세요..."
+            placeholder="장소, 주소 검색..."
             value={searchQuery}
             onChangeText={setSearchQuery}
-            onSubmitEditing={searchPharmacies}
+            onSubmitEditing={searchByKeyword}
           />
-          <TouchableOpacity style={styles.searchButton} onPress={searchPharmacies}>
+          <TouchableOpacity style={styles.searchButton} onPress={searchByKeyword}>
             {loading ? <ActivityIndicator color="#fff" size={14} /> : <Text style={styles.searchButtonText}>검색</Text>}
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* 지도 */}
       <View style={styles.mapContainer}>
         <WebView
           ref={webViewRef}
-          source={{ html: HTML_TEMPLATE(37.5665, 126.9780), baseUrl: 'http://localhost:8081' }}
+          source={{ html: HTML_TEMPLATE, baseUrl: '' }}
+          originWhitelist={['*']}
+          mixedContentMode="always"
           javaScriptEnabled
           onMessage={handleWebViewMessage}
         />
       </View>
 
-      {/* 약국 리스트 */}
       {pharmacies.length > 0 && (
-        <Animated.View style={{ height: 300, overflow: 'hidden', backgroundColor: '#fff', borderColor: '#ddd', borderWidth: 1 }}>
+        <View style={styles.listContainer}>
           <ScrollView>
-            {pharmacies.map((p, idx) => (
-              <TouchableOpacity key={`${p.hpid}-${idx}`} style={[styles.pharmacyItem, selectedPharmacy?.hpid === p.hpid && styles.selectedPharmacyItem]} onPress={() => {
-                setSelectedPharmacy(p);
-                webViewRef.current?.postMessage(JSON.stringify({ type: 'MOVE_TO_LOCATION', lat: parseFloat(p.latitude), lng: parseFloat(p.longitude) }));
+            {pharmacies.map((p) => (
+              <TouchableOpacity 
+                key={p.id}
+                style={[styles.pharmacyItem, selectedPharmacy?.id === p.id && styles.selectedPharmacyItem]} 
+                onPress={() => {
+                  setSelectedPharmacy(p);
+                  postToWebView('MOVE_TO_LOCATION', { lat: parseFloat(p.y), lng: parseFloat(p.x) });
               }}>
-                <Text style={styles.pharmacyName}>{p.dutyName}</Text>
-                <Text style={styles.pharmacyAddress}>{p.dutyAddr}</Text>
-                {p.dutyTel1 && <Text style={styles.pharmacyPhone}>📞 {p.dutyTel1}</Text>}
+                <Text style={styles.pharmacyName}>{p.place_name}</Text>
+                <Text style={styles.pharmacyAddress}>📍 {p.address_name}</Text>
+                {p.address_name_en && (
+      <Text style={styles.pharmacyAddress}>📍 {p.address_name_en}</Text>
+    )}
+                {p.phone && <Text style={styles.pharmacyPhone}>📞 {p.phone}</Text>}
               </TouchableOpacity>
             ))}
           </ScrollView>
-        </Animated.View>
+        </View>
       )}
     </ScrollView>
   );
 }
 
+// --- 스타일시트 ---
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 50,
-    flex: 1,
-    backgroundColor: "#FFFCF9",
-    padding: 30,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginHorizontal: 20,
-    marginBottom: 10,
-  },
-  navButton: {
-    flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    marginHorizontal: 5,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  activeButton: {
-    backgroundColor: '#FF6B35',
-  },
-  inactiveButton: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: '#FF6B35',
-  },
-  buttonText: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  activeButtonText: {
-    color: '#fff',
-  },
-  inactiveButtonText: {
-    color: '#FF6B35',
-  },
-  locationButton: {
-    backgroundColor: '#FFC107',
-    borderRadius: 25,
-    paddingHorizontal: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-    marginVertical:2
-  },
-
-  searchContainer: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  searchWrapper: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: "space-between",
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#fff',
-    borderRadius: 25,
-    padding: 5
-  },
-  searchInput: {
-    flex: 1,
-    paddingHorizontal: 12
-  },
-  searchButton: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    backgroundColor: '#FF6B35',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  container: { paddingTop: 50, flex: 1, backgroundColor: "#FFFCF9", padding: 30 },
+  buttonContainer: { flexDirection: 'row', marginHorizontal: 20, marginBottom: 10 },
+  navButton: { flex: 1, paddingVertical: 10, marginHorizontal: 5, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
+  activeButton: { backgroundColor: '#FF6B35' },
+  inactiveButton: { backgroundColor: 'transparent', borderWidth: 1, borderColor: '#FF6B35' },
+  buttonText: { fontSize: 14, fontWeight: '600' },
+  activeButtonText: { color: '#fff' },
+  inactiveButtonText: { color: '#FF6B35' },
+  searchContainer: { flexDirection: 'row', marginBottom: 10 },
+  locationButton: { backgroundColor: '#FFC107', borderRadius: 25, paddingHorizontal: 15, justifyContent: 'center', alignItems: 'center', marginRight: 10, marginVertical: 2 },
+  searchWrapper: { flex: 1, flexDirection: 'row', justifyContent: "space-between", alignItems: 'center', borderWidth: 1, borderColor: '#ddd', backgroundColor: '#fff', borderRadius: 25, padding: 5 },
+  searchInput: { flex: 1, paddingHorizontal: 12 },
+  searchButton: { paddingHorizontal: 15, paddingVertical: 10, backgroundColor: '#FF6B35', borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
   searchButtonText: { color: '#fff', fontWeight: '600' },
   mapContainer: { height: 250, borderRadius: 10, overflow: 'hidden', marginBottom: 10 },
+  listContainer: { height: 300, overflow: 'hidden', backgroundColor: '#fff', borderColor: '#ddd', borderWidth: 1 },
   pharmacyItem: { padding: 15, borderBottomWidth: 1, borderBottomColor: '#eee' },
   selectedPharmacyItem: { backgroundColor: '#FFF4F0', borderLeftWidth: 4, borderLeftColor: '#FF6B35' },
   pharmacyName: { fontWeight: '600', marginBottom: 3 },
