@@ -518,7 +518,6 @@ const styles = StyleSheet.create({
   },
     buttonContainer: {
     flexDirection: 'row',
-    marginTop: 30,
     marginHorizontal: 20,
     marginBottom: 10,
   },
