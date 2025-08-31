@@ -109,21 +109,24 @@ const HTML_TEMPLATE = `
         });
       }
 
-      // ✅ 내 위치/검색 위치 마커
-      function addCustomMarker(lat, lng, markerType) {
-        const position = new kakao.maps.LatLng(lat, lng);
-        let imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+let customMarker = null;
 
-        if (imageSrc) {
-          const imageSize = new kakao.maps.Size(24, 35);
-          const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-          const marker = new kakao.maps.Marker({ position, image: markerImage });
-          marker.setMap(map);
-        } else {
-          const marker = new kakao.maps.Marker({ position });
-          marker.setMap(map);
-        }
-      }
+function addCustomMarker(lat, lng, markerType) {
+  // 기존 마커 제거
+  if (customMarker) {
+    customMarker.setMap(null);
+    customMarker = null;
+  }
+
+  const position = new kakao.maps.LatLng(lat, lng);
+  const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+  const imageSize = new kakao.maps.Size(24, 35);
+  const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+  // 새 마커 생성 후 전역에 저장
+  customMarker = new kakao.maps.Marker({ position, image: markerImage });
+  customMarker.setMap(map);
+}
 
       // ✅ RN ↔ WebView 메시지
       function handleMessage(event) {
@@ -202,6 +205,8 @@ export default function MapViewExample() {
       const loc = await Location.getCurrentPositionAsync({});
       const lat = loc.coords.latitude;
       const lng = loc.coords.longitude;
+      
+      setSearchQuery('');
       // 내 위치 기준으로 약국 검색
       searchPharmaciesAt(loc.coords.longitude, loc.coords.latitude);
       postToWebView("ADD_MARKER", { lat, lng, title: "내 위치", markerType: "me" });
