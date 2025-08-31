@@ -262,6 +262,7 @@ export default function MapViewExample() {
           <TextInput
             style={styles.searchInput}
             placeholder="장소, 주소 검색..."
+            placeholderTextColor="#999"
             value={searchQuery}
             onChangeText={setSearchQuery}
             onSubmitEditing={searchByKeyword}
@@ -322,7 +323,7 @@ const styles = StyleSheet.create({
   searchContainer: { flexDirection: 'row', marginBottom: 10 },
   locationButton: { backgroundColor: '#FFC107', borderRadius: 25, paddingHorizontal: 15, justifyContent: 'center', alignItems: 'center', marginRight: 10, marginVertical: 2 },
   searchWrapper: { flex: 1, flexDirection: 'row', justifyContent: "space-between", alignItems: 'center', borderWidth: 1, borderColor: '#ddd', backgroundColor: '#fff', borderRadius: 25, padding: 5 },
-  searchInput: { flex: 1, paddingHorizontal: 12, color: '#ddd' },
+  searchInput: { flex: 1, paddingHorizontal: 12, color: '#333' },
   searchButton: { paddingHorizontal: 15, paddingVertical: 10, backgroundColor: '#FF6B35', borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
   searchButtonText: { color: '#fff', fontWeight: '600' },
   mapContainer: { height: 250, borderRadius: 10, overflow: 'hidden', marginBottom: 10 },
