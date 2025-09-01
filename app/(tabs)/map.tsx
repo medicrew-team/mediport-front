@@ -53,6 +53,12 @@ const HTML_TEMPLATE = `
       let map; 
       let markers = [];
       let currentInfoWindow = null;
+      let selectedMarker = null; // ✅ 선택된 마커 저장
+
+      // ✅ 선택된 마커 이미지 (전역)
+      const selectedImageSrc = "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png";
+      const selectedImageSize = new kakao.maps.Size(27, 36);
+      const selectedMarkerImage = new kakao.maps.MarkerImage(selectedImageSrc, selectedImageSize);
 
       function initMap() {
         const container = document.getElementById('map');
@@ -67,27 +73,31 @@ const HTML_TEMPLATE = `
         markers.forEach(marker => marker.setMap(null));
         if (currentInfoWindow) currentInfoWindow.close();
         markers = [];
+        selectedMarker = null;
       }
 
       // ✅ 약국 마커
       function addPharmacies(pharmacies) {
         clearMarkers();
-        const imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png";
-        const imageSize = new kakao.maps.Size(36, 37);
-        
-        pharmacies.forEach((ph, i) => {
+        const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png";
+        const imageSize = new kakao.maps.Size(29, 30);
+        const imageOption = {
+          spriteSize: new kakao.maps.Size(72, 208), 
+          spriteOrigin: new kakao.maps.Point(06, 72),
+          offset: new kakao.maps.Point(11, 28)    
+        };
+
+        pharmacies.forEach((ph) => {
           const lat = parseFloat(ph.y);
           const lng = parseFloat(ph.x);
           if (isNaN(lat) || isNaN(lng)) return;
 
-          const imageOption = {
-            spriteSize: new kakao.maps.Size(36, 691),
-            spriteOrigin: new kakao.maps.Point(0, (i * 46) + 10),
-            offset: new kakao.maps.Point(13, 37)
-          };
           const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
           const position = new kakao.maps.LatLng(lat, lng);
           const marker = new kakao.maps.Marker({ position, image: markerImage });
+          
+          marker.normalImage = markerImage; // 원래 이미지 저장
+          marker.pharmacyId = ph.id; // 약국 ID 저장
           
           marker.setMap(map);
           markers.push(marker);
@@ -102,6 +112,12 @@ const HTML_TEMPLATE = `
             infowindow.open(map, marker);
             currentInfoWindow = infowindow;
             
+            if (selectedMarker) {
+              selectedMarker.setImage(selectedMarker.normalImage);
+            }
+            marker.setImage(selectedMarkerImage);
+            selectedMarker = marker;
+
             if (window.ReactNativeWebView) {
               window.ReactNativeWebView.postMessage(JSON.stringify({ type: "MARKER_CLICKED", pharmacy: ph }));
             }
@@ -141,6 +157,16 @@ function addCustomMarker(lat, lng, markerType) {
           }
           if (type === "ADD_MARKER") {
             addCustomMarker(payload.lat, payload.lng, payload.markerType);
+          }
+          if (type === "SELECT_MARKER") {
+            const markerToSelect = markers.find(m => m.pharmacyId === payload.pharmacyId);
+            if (markerToSelect) {
+              if (selectedMarker) {
+                selectedMarker.setImage(selectedMarker.normalImage);
+              }
+              markerToSelect.setImage(selectedMarkerImage);
+              selectedMarker = markerToSelect;
+            }
           }
         } catch (e) {
           console.error("Message parsing error:", e);
@@ -299,6 +325,7 @@ export default function MapViewExample() {
                 onPress={() => {
                   setSelectedPharmacy(p);
                   postToWebView('MOVE_TO_LOCATION', { lat: parseFloat(p.y), lng: parseFloat(p.x) });
+                  postToWebView('SELECT_MARKER', { pharmacyId: p.id });
               }}>
                 <Text style={styles.pharmacyName}>{p.place_name}</Text>
                 <Text style={styles.pharmacyAddress}>📍 {p.address_name}</Text>
