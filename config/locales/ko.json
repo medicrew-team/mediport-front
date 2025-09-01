@@ -257,6 +257,8 @@
         "th": "태국어",
         "fil": "필리핀어"
       },
+      "btn_translate":"번역",
+      "btn_map":"주변 약국 찾기",
       "modal_title": "자주 사용하는 대화",
       "modal_hospital": "🏥 병원",
       "input_pharmacy": "💊 약국",
