@@ -34,7 +34,7 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
     return (
       <View style={styles.container}>
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>{t('User.alternative.error')}</Text>
+          <Text style={styles.emptyText}>{t('User.similar.error')}</Text>
         </View>
       </View>
     );
@@ -53,7 +53,7 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
   const renderInputSection = () => (
     <View style={styles.inputSection}>
       <View style={styles.inputSectionHeader}>
-        <Text style={styles.inputSectionTitle}>{t('User.alternative.title')}</Text>
+        <Text style={styles.inputSectionTitle}>{t('User.similar.title')}</Text>
       </View>
       {inputImage && (
         <View style={styles.inputImageContainer}>
@@ -90,24 +90,24 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
         {/* 기본 정보 */}
         <View style={styles.basicInfoContainer}>
           <Text style={styles.drugNameSmall} numberOfLines={1}>
-            {drug.prod_name || t('User.alternative.name_none')}
+            {drug.prod_name || t('User.similar.name_none')}
           </Text>
 
           <View style={styles.infoRowSmall}>
-            <Text style={styles.labelSmall}>{t('User.alternative.bit')}</Text>
-            <Text style={styles.valueSmall}>{drug.bit || t('User.alternative.bit_none')}</Text>
+            <Text style={styles.labelSmall}>{t('User.similar.bit')}</Text>
+            <Text style={styles.valueSmall}>{drug.bit || t('User.similar.bit_none')}</Text>
           </View>
-            <Text style={styles.labelSmall}>{t('User.alternative.icd')}</Text>
+            <Text style={styles.labelSmall}>{t('User.similar.icd')}</Text>
             <Text style={styles.summaryText} numberOfLines={2}>
-            {drug.icd_sum || t('User.alternative.icd_none')}
+            {drug.icd_sum || t('User.similar.icd_none')}
           </Text>
 
           <View style={styles.badgeContainer}>
             <View style={styles.purchaseBadge}>
-              <Text style={styles.badgeText}>{drug.purchase_loc || t('User.alternative.purchase_none')}</Text>
+              <Text style={styles.badgeText}>{drug.purchase_loc || t('User.similar.purchase_none')}</Text>
             </View>
             <View style={styles.formBadge}>
-              <Text style={styles.badgeText}>{drug.medi_form || t('User.alternative.medi_none')}</Text>
+              <Text style={styles.badgeText}>{drug.medi_form || t('User.similar.medi_none')}</Text>
             </View>
           </View>
         </View>
@@ -144,12 +144,12 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
             <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
               <View style={styles.infoContainer}>
                 <Ionicons name="warning" style={{marginRight:1}} size={18} color="#B91C1C" />
-                <Text style={styles.infoText}>{t('User.alternative.warn')}</Text>
+                <Text style={styles.infoText}>{t('User.similar.warn')}</Text>
               </View>
               <View style={styles.modalHeaderContent}>
                 <View style={styles.sectionHeader}>
                   <Feather name="image" style={{marginRight:6}} size={26} color="#8D4DE5" />
-                  <Text style={styles.sectionTitle}>{t('User.alternative.img')}</Text>
+                  <Text style={styles.sectionTitle}>{t('User.similar.img')}</Text>
                 </View>
                 <View style={styles.modalImageContainer}>
                   {selectedDrug.prod_img ? (
@@ -165,19 +165,19 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
                   <Entypo name="info-with-circle" style={{marginRight:8}} size={24} color="#0066ff" />
-                  <Text style={styles.sectionTitle}>{t('User.alternative.info1')}</Text>
+                  <Text style={styles.sectionTitle}>{t('User.similar.info1')}</Text>
                 </View>
                 <View style={styles.infoCard}>
-                  <Text style={styles.infoCardLabel}>{t('User.alternative.icd_sum')}</Text>
+                  <Text style={styles.infoCardLabel}>{t('User.similar.icd_sum')}</Text>
                   <Text style={styles.modalSummary}>{selectedDrug.icd_sum}</Text>
                 </View>
                 <View style={styles.infoGrid}>
                   <View style={styles.infoCard}>
-                    <Text style={styles.infoCardLabel}>{t('User.alternative.purchase_loc')}</Text>
+                    <Text style={styles.infoCardLabel}>{t('User.similar.purchase_loc')}</Text>
                     <Text style={styles.infoCardValue}>{selectedDrug.purchase_loc || "-"}</Text>
                   </View>
                   <View style={styles.infoCard}>
-                    <Text style={styles.infoCardLabel}>{t('User.alternative.medi_form')}</Text>
+                    <Text style={styles.infoCardLabel}>{t('User.similar.medi_form')}</Text>
                     <Text style={styles.infoCardValue}>{selectedDrug.medi_form || "-"}</Text>
                   </View>
                 </View>
@@ -187,10 +187,10 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
                   <MaterialCommunityIcons name="hospital-box-outline" style={{marginRight:6}} size={24} color="#10B981" />
-                  <Text style={styles.sectionTitle}>{t('User.alternative.info2')}</Text>
+                  <Text style={styles.sectionTitle}>{t('User.similar.info2')}</Text>
                 </View>
                 <View style={[styles.detailCard, styles.dosageCard]}>
-                  <Text style={styles.detailCardLabel}>{t('User.alternative.dosage')}</Text>
+                  <Text style={styles.detailCardLabel}>{t('User.similar.dosage')}</Text>
                   <Text style={styles.detailCardValue}>{selectedDrug.dosage || "-"}</Text>
                 </View>
               </View>
@@ -199,26 +199,26 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
                   <Ionicons name="warning" style={{marginRight:6}} size={24} color="#D80027" />
-                  <Text style={styles.sectionTitle}>{t('User.alternative.info3')}</Text>
+                  <Text style={styles.sectionTitle}>{t('User.similar.info3')}</Text>
                 </View>
 
                 <View style={[styles.detailCard, styles.warningCard]}>
-                  <Text style={styles.detailCardLabel}>{t('User.alternative.contraindicated')}</Text>
+                  <Text style={styles.detailCardLabel}>{t('User.similar.contraindicated')}</Text>
                   <Text style={styles.detailCardValue}>{selectedDrug.contraindicated || "NA"}</Text>
                 </View>
 
                 <View style={[styles.detailCard, styles.cautionCard]}>
-                  <Text style={styles.detailCardLabel}>{t('User.alternative.daily_interaction')}</Text>
+                  <Text style={styles.detailCardLabel}>{t('User.similar.daily_interaction')}</Text>
                   <Text style={styles.detailCardValue}>{selectedDrug.daily_interaction || "NA"}</Text>
                 </View>
 
                 <View style={[styles.detailCard, styles.interactionCard]}>
-                  <Text style={styles.detailCardLabel}>{t('User.alternative.drug_interaction')}</Text>
+                  <Text style={styles.detailCardLabel}>{t('User.similar.drug_interaction')}</Text>
                   <Text style={styles.detailCardValue}>{selectedDrug.drug_interaction || "NA"}</Text>
                 </View>
 
                 <View style={[styles.detailCard, styles.adverseCard]}>
-                  <Text style={styles.detailCardLabel}>{t('User.alternative.adverse_reaction')}</Text>
+                  <Text style={styles.detailCardLabel}>{t('User.similar.adverse_reaction')}</Text>
                   <Text style={styles.detailCardValue}>{selectedDrug.adverse_reaction || "NA"}</Text>
                 </View>
               </View>
@@ -227,7 +227,7 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
                   <AntDesign name="medicinebox" size={28} style={{marginRight:8}} color="black" />
-                  <Text style={styles.sectionTitle}>{t('User.alternative.storage_method')}</Text>
+                  <Text style={styles.sectionTitle}>{t('User.similar.storage_method')}</Text>
                 </View>
                 <View style={[styles.detailCard, styles.storageCard]}>
                   <Text style={styles.detailCardValue}>{selectedDrug.storage_method || "NA"}</Text>
@@ -238,7 +238,7 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
             {/* 모달 푸터 */}
             <View style={styles.modalFooter}>
               <TouchableOpacity onPress={closeModal} style={styles.closeModalButton}>
-                <Text style={styles.closeModalButtonText}>{t('User.alternative.close')}</Text>
+                <Text style={styles.closeModalButtonText}>{t('User.similar.close')}</Text>
               </TouchableOpacity>
             </View>
           </SafeAreaView>
@@ -255,8 +255,8 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
 
         {/* 결과 헤더 */}
         <View style={styles.resultsHeader}>
-          <Text style={styles.resultsTitle}>{t('User.alternative.resultsTitle')}</Text>
-          <Text style={styles.resultsSubtitle}>{results.length}{t('User.alternative.resultsSubtitle')}</Text>
+          <Text style={styles.resultsTitle}>{t('User.similar.resultsTitle')}</Text>
+          <Text style={styles.resultsSubtitle}>{results.length}{t('User.similar.resultsSubtitle')}</Text>
         </View>
 
         {/* 약품 기본 카드 리스트 */}

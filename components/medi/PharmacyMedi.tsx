@@ -114,8 +114,8 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                         <Text style={styles.labelSmall}>{t('User.pharmacy.ocr')}</Text>
                         <Text style={styles.summaryText} numberOfLines={2}>
                             {`${drug.ocrInfo[t('User.pharmacy.ocr1')] || "-"}${t('User.pharmacy.ocr2')}`}
-                            {`${drug.ocrInfo.횟수 || "-"}${t('User.pharmacy.ocr3')}`}
-                            {`${drug.ocrInfo.일수 || "-"}${t('User.pharmacy.ocr4')}`}
+                            {`${drug.ocrInfo[t('User.pharmacy.ocr11')] || "-"}${t('User.pharmacy.ocr3')}`}
+                            {`${drug.ocrInfo[t('User.pharmacy.ocr111')] || "-"}${t('User.pharmacy.ocr4')}`}
                         </Text>
                     </View>
                     <View style={styles.badgeContainer}>
@@ -207,8 +207,8 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                                         <Text style={styles.detailCardLabel}>{t('User.pharmacy.ocr_result')}</Text>
                                         <Text style={styles.detailCardValue}>
                                             {`${selectedDrug.ocrInfo[t('User.pharmacy.ocr1')] || "-"}${t('User.pharmacy.ocr2')}`}
-                                            {`${selectedDrug.ocrInfo.횟수 || "-"}${t('User.pharmacy.ocr3')}`}
-                                            {`${selectedDrug.ocrInfo.일수 || "-"}${t('User.pharmacy.ocr4')}`}
+                                            {`${selectedDrug.ocrInfo[t('User.pharmacy.ocr11')] || "-"}${t('User.pharmacy.ocr3')}`}
+                                            {`${selectedDrug.ocrInfo[t('User.pharmacy.ocr111')] || "-"}${t('User.pharmacy.ocr4')}`}
                                         </Text>
                                     </View>
                                 </View>

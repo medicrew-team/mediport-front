@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
     borderColor: '#FF6B35',
   },
   buttonText: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
   },
   activeButtonText: {

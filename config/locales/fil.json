@@ -276,7 +276,7 @@
         "fil": "Filipino"
       },
       "btn_translate": "Isalin",
-      "btn_map": "Hanapin ang mga kalapit na botika",
+      "btn_map": "Botika",
       "modal_title": "Karaniwang Pangungusap",
       "modal_hospital": "🏥 Ospital",
       "input_pharmacy": "💊 Parmasya",
@@ -286,15 +286,15 @@
     },
     "map": {
       "btn_translate": "Isalin",
-      "btn_map": "Hanapin ang mga kalapit na botika",
+      "btn_map": "Botika",
       "my_location": "Aking Lokasyon",
-      "text_placeholder": "Maghanap ng lugar, address...",
-      "search": "Maghanap"
+      "text_placeholder": "Hanap...",
+      "search": "Hanap"
     },
     "alternative": {
-      "btn_alternative": "Maghanap ng Katulad na Gamot",
-      "btn_prohibited": "Ipinagbabawal na Gamot",
-      "btn_prescription": "I-scan ang Reseta",
+      "btn_alternative": "Katulad",
+      "btn_prohibited": "Bawal",
+      "btn_prescription": "Scan Reseta",
       "title": "Ilagay ang Impormasyon ng Katulad na Gamot",
       "subtitle": "Pumili ng isa sa mga paraan sa ibaba",
       "option1": "Kunan ng larawan gamit ang camera",
@@ -341,9 +341,9 @@
       "resultsSubtitle": "Na katulad na gamot nahanap ang"
     },
     "prescription": {
-      "btn_alternative": "Maghanap ng Katulad na Gamot",
-      "btn_prohibited": "Ipinagbabawal na Gamot",
-      "btn_prescription": "I-scan ang Reseta",
+      "btn_alternative": "Katulad",
+      "btn_prohibited": "Bawal",
+      "btn_prescription": "Scan Reseta",
       "tip": "Tip sa pagkuha: Ituwid ang supot ng gamot\nat kumuha ng larawan sa maliwanag na lugar para mas eksakto.",
       "title": "Ilagay ang Impormasyon ng Reseta",
       "subtitle": "Pumili ng isa sa mga paraan sa ibaba",
@@ -360,7 +360,9 @@
       "bit": "Kategorya: ",
       "bit_none": "Walang impormasyon ng kategorya",
       "ocr": "Gabay sa Pag-inom: ",
-      "ocr1": "Dami",
+      "ocr1": "Dosis",
+      "ocr11": "numero",
+      "ocr111": "Bilang ng mga araw",
       "ocr2": "tableta",
       "ocr3": "beses",
       "ocr4": "araw",
