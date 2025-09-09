@@ -47,7 +47,7 @@ const Pagename = () => {
     prescription: t("User.layout.prescription"),
     similar: t("User.layout.similar"),
     pharmacy: t("User.layout.pharmacy"),
-    map: "주변 약국 찾기",
+    map: t("User.layout.map"),
   };
   const currentTitle = titles[route.name] || 'page';
 

@@ -279,28 +279,28 @@ export default function MapViewExample() {
     <ScrollView style={styles.container}>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.navButton, styles.inactiveButton]} onPress={() => router.push('/translate')}>
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>{t('User.translate.btn_translate')}</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>{t('User.map.btn_translate')}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.navButton, styles.activeButton]} onPress={() => router.push('/map')}>
-          <Text style={[styles.buttonText, styles.activeButtonText]}>{t('User.translate.btn_map')}</Text>
+          <Text style={[styles.buttonText, styles.activeButtonText]}>{t('User.map.btn_map')}</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.searchContainer}>
         <TouchableOpacity style={styles.locationButton} onPress={getMyLocation}>
-          <Text style={{ color: '#fff', fontWeight: '600' }}>{t('User.translate.my_location')}</Text>
+          <Text style={{ color: '#fff', fontWeight: '600' }}>{t('User.map.my_location')}</Text>
         </TouchableOpacity>
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchInput}
-            placeholder={t('User.translate.text_placeholder')}
+            placeholder={t('User.map.text_placeholder')}
             placeholderTextColor="#999"
             value={searchQuery}
             onChangeText={setSearchQuery}
             onSubmitEditing={searchByKeyword}
           />
           <TouchableOpacity style={styles.searchButton} onPress={searchByKeyword}>
-            {loading ? <ActivityIndicator color="#fff" size={14} /> : <Text style={styles.searchButtonText}>{t('User.translate.search')}</Text>}
+            {loading ? <ActivityIndicator color="#fff" size={14} /> : <Text style={styles.searchButtonText}>{t('User.map.search')}</Text>}
           </TouchableOpacity>
         </View>
       </View>

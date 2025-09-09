@@ -210,6 +210,7 @@
       "prescription": "Scan Rx",
       "similar": "Alt. Result",
       "pharmacy": "Rx Result",
+      "map":"Pharmacy",
       "Tabs_chatbot": "Chatbot",
       "Tabs_translate": "Translate",
       "Tabs_alternative": "Drugs",
@@ -285,7 +286,7 @@
     },
     "map": {
       "btn_translate": "Translate",
-      "btn_map": "Find nearby pharmacies",
+      "btn_map": "near pharmacies",
       "my_location": "My Location",
       "text_placeholder": "Search place, address...",
       "search": "Search"
