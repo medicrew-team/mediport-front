@@ -5,6 +5,7 @@ import React, { useRef, useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { GOOGLE_API_KEY, KAKAO_JS_KEY, KAKAO_REST_KEY } from "../../config/api";
+import { t } from 'i18next';
 
 // --- Google Translate API ---
 
@@ -216,7 +217,7 @@ export default function MapViewExample() {
 
     } catch (err) {
       console.error(err);
-      Alert.alert('오류', '주변 약국 정보를 가져오는데 실패했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.pharmacy_fail'));
     } finally {
       setLoading(false);
     }
@@ -226,7 +227,7 @@ export default function MapViewExample() {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        return Alert.alert("권한 필요", "위치 접근 권한을 허용해주세요.");
+        return Alert.alert(t('User.alert.Permission'), t('User.alert.permission_fail'));
       }
       const loc = await Location.getCurrentPositionAsync({});
       const lat = loc.coords.latitude;
@@ -238,20 +239,20 @@ export default function MapViewExample() {
       postToWebView("ADD_MARKER", { lat, lng, title: "내 위치", markerType: "me" });
     } catch (err) {
       console.error(err);
-      Alert.alert("오류", "현재 위치를 가져올 수 없습니다.");
+      Alert.alert(t('User.alert.error'), t('User.alert.map_fail'));
     }
   };
 
   // --- 키워드로 검색 ---
   const searchByKeyword = async () => {
-    if (!searchQuery.trim()) return Alert.alert('알림', '검색어를 입력해주세요.');
+    if (!searchQuery.trim()) return Alert.alert(t('User.alert.title'), t('User.alert.result_none'));
     setLoading(true);
     try {
       const url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${encodeURIComponent(searchQuery)}`;
       const res = await axios.get(url, { headers: { 'Authorization': KAKAO_REST_KEY } });
 
       if (res.data.documents.length === 0) {
-        return Alert.alert('검색 결과 없음', '해당 키워드의 장소를 찾을 수 없습니다.');
+        return Alert.alert(t('User.alert.na'), t('User.alert.result_nothing'));
       }
       const loc = res.data.documents[0];
       const lat = parseFloat(loc.y);
@@ -261,7 +262,7 @@ export default function MapViewExample() {
       postToWebView("ADD_MARKER", { lat, lng, title: searchQuery, markerType: "search" });
     } catch (err) {
       console.error(err);
-      Alert.alert('오류', '키워드 검색에 실패했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.result_error'));
     } finally {
       setLoading(false);
     }
@@ -278,28 +279,28 @@ export default function MapViewExample() {
     <ScrollView style={styles.container}>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.navButton, styles.inactiveButton]} onPress={() => router.push('/translate')}>
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>번역</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>{t('User.translate.btn_translate')}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.navButton, styles.activeButton]} onPress={() => router.push('/map')}>
-          <Text style={[styles.buttonText, styles.activeButtonText]}>주변 약국 찾기</Text>
+          <Text style={[styles.buttonText, styles.activeButtonText]}>{t('User.translate.btn_map')}</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.searchContainer}>
         <TouchableOpacity style={styles.locationButton} onPress={getMyLocation}>
-          <Text style={{ color: '#fff', fontWeight: '600' }}>내 위치</Text>
+          <Text style={{ color: '#fff', fontWeight: '600' }}>{t('User.translate.my_location')}</Text>
         </TouchableOpacity>
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchInput}
-            placeholder="장소, 주소 검색..."
+            placeholder={t('User.translate.text_placeholder')}
             placeholderTextColor="#999"
             value={searchQuery}
             onChangeText={setSearchQuery}
             onSubmitEditing={searchByKeyword}
           />
           <TouchableOpacity style={styles.searchButton} onPress={searchByKeyword}>
-            {loading ? <ActivityIndicator color="#fff" size={14} /> : <Text style={styles.searchButtonText}>검색</Text>}
+            {loading ? <ActivityIndicator color="#fff" size={14} /> : <Text style={styles.searchButtonText}>{t('User.translate.search')}</Text>}
           </TouchableOpacity>
         </View>
       </View>

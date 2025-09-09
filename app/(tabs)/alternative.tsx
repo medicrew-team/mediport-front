@@ -16,6 +16,7 @@ import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../types/ip';
+import { t } from 'i18next';
 
 export default function AlternativeScreen() {
   const { token } = useAuth();
@@ -41,7 +42,7 @@ export default function AlternativeScreen() {
       // 카메라 권한 요청
       const { status } = await ImagePicker.requestCameraPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert('권한 필요', '카메라 사용을 위해 권한이 필요합니다.');
+        Alert.alert(t('User.alert.Permission'), t('User.alert.camera_permission'));
         return;
       }
 
@@ -57,7 +58,7 @@ export default function AlternativeScreen() {
       }
     } catch (error) {
       console.error('Camera error:', error);
-      Alert.alert('오류', '카메라 실행 중 오류가 발생했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.camera_error'));
     }
   };
 
@@ -67,7 +68,7 @@ export default function AlternativeScreen() {
       // 갤러리 권한 요청
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert('권한 필요', '갤러리 사용을 위해 권한이 필요합니다.');
+        Alert.alert(t('User.alert.Permission'), t('User.alert.gallery_permission'));
         return;
       }
 
@@ -83,7 +84,7 @@ export default function AlternativeScreen() {
       }
     } catch (error) {
       console.error('Gallery error:', error);
-      Alert.alert('오류', '갤러리 실행 중 오류가 발생했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.gallery_error'));
     }
   };
 
@@ -111,7 +112,7 @@ export default function AlternativeScreen() {
       const data = await response.json();
 
       if (response.ok) {
-        Alert.alert('성공', '성공적으로 분석되었습니다.', [
+        Alert.alert(t('User.alert.success'), t('User.alert.find_success'), [
           {
             text: '확인', onPress: () => {
               console.log('유사약 분석결과', data);
@@ -126,11 +127,11 @@ export default function AlternativeScreen() {
           }
         ]);
       } else {
-        throw new Error(data.message || '분석에 실패했습니다.');
+        throw new Error(data.message || t('User.alert.find_fail'));
       }
     } catch (error) {
       console.error('Upload error:', error);
-      Alert.alert('오류', '분석 중 오류가 발생했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.find_error'));
     } finally {
       setIsLoading(false);
     }
@@ -139,7 +140,7 @@ export default function AlternativeScreen() {
   // 텍스트로 약품 검색
   const handleTextSearch = async () => {
     if (!medicineText.trim()) {
-      Alert.alert('알림', '약품명을 입력해주세요.');
+      Alert.alert(t('User.alert.title'), t('User.alert.text_input'));
       return;
     }
 
@@ -164,7 +165,7 @@ export default function AlternativeScreen() {
         setShowTextModal(false);
         setMedicineText('');
         
-        Alert.alert('성공', '약품 정보가 성공적으로 조회되었습니다.', [
+        Alert.alert(t('User.alert.success'), t('User.alert.find_success'), [
           {
             text: '확인', onPress: () => {
               console.log('Medicine search result:', data);
@@ -179,11 +180,11 @@ export default function AlternativeScreen() {
           }
         ]);
       } else {
-        throw new Error(data.message || '검색에 실패했습니다.');
+        throw new Error(data.message || t('User.alert.find_fail'));
       }
     } catch (error) {
       console.error('Text search error:', error);
-      Alert.alert('오류', '약품 검색 중 오류가 발생했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.find_error'));
     } finally {
       setIsLoading(false);
     }
@@ -196,20 +197,20 @@ export default function AlternativeScreen() {
           style={[styles.navButton, styles.activeButton]}
           onPress={navigateToAlternative}
         >
-          <Text style={[styles.buttonText, styles.activeButtonText]}>유사약품 조회</Text>
+          <Text style={[styles.buttonText, styles.activeButtonText]}>{t('User.alternative.btn_alternative')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.navButton, styles.inactiveButton]}
           onPress={navigateToProhibited}
         >
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>반입금지 약품</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>{t('User.alternative.btn_prohibited')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.navButton, styles.inactiveButton]}
           onPress={navigateToPrescription}
         >
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>처방약 스캔</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>{t('User.alternative.btn_prescription')}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.iconContainer}>
@@ -219,8 +220,8 @@ export default function AlternativeScreen() {
         />
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>유사 약품 정보 입력</Text>
-        <Text style={styles.sectionSubtitle}>아래 방법 중 하나를 선택해주세요</Text>
+        <Text style={styles.sectionTitle}>{t('User.alternative.title')}</Text>
+        <Text style={styles.sectionSubtitle}>{t('User.alternative.subtitle')}</Text>
 
         {/* 옵션 버튼들 */}
         <TouchableOpacity
@@ -234,8 +235,8 @@ export default function AlternativeScreen() {
             </View>
           </View>
           <View style={styles.optionTextContainer}>
-            <Text style={styles.optionTitle}>카메라로 촬영</Text>
-            <Text style={styles.optionSubtitle}>약품 이미지를 카메라로 촬영</Text>
+            <Text style={styles.optionTitle}>{t('User.alternative.option1')}</Text>
+            <Text style={styles.optionSubtitle}>{t('User.alternative.sub1')}</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color="#C0C0C0" />
         </TouchableOpacity>
@@ -251,8 +252,8 @@ export default function AlternativeScreen() {
             </View>
           </View>
           <View style={styles.optionTextContainer}>
-            <Text style={styles.optionTitle}>갤러리에서 선택</Text>
-            <Text style={styles.optionSubtitle}>약품 이미지를 갤러리에서 선택</Text>
+            <Text style={styles.optionTitle}>{t('User.alternative.option2')}</Text>
+            <Text style={styles.optionSubtitle}>{t('User.alternative.sub2')}</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color="#C0C0C0" />
         </TouchableOpacity>
@@ -268,8 +269,8 @@ export default function AlternativeScreen() {
             </View>
           </View>
           <View style={styles.optionTextContainer}>
-            <Text style={styles.optionTitle}>텍스트로 입력</Text>
-            <Text style={styles.optionSubtitle}>약품 정보를 텍스트로 입력</Text>
+            <Text style={styles.optionTitle}>{t('User.alternative.option3')}</Text>
+            <Text style={styles.optionSubtitle}>{t('User.alternative.sub3')}</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color="#C0C0C0" />
         </TouchableOpacity>
@@ -279,11 +280,11 @@ export default function AlternativeScreen() {
       <View style={styles.infoContainer}>
         <View style={styles.infoHeader}>
           <FontAwesome name="info-circle" size={20} color="#2196F3" />
-          <Text style={styles.infoTitle}>매핑 서비스 안내</Text>
+          <Text style={styles.infoTitle}>{t('User.alternative.service_title')}</Text>
         </View>
         <View style={styles.infoContent}>
-          <Text style={styles.infoText}>• 해외 약물과 성분이 유사한 국내 약물을 찾아드립니다</Text>
-          <Text style={styles.infoText}>• 단, 복용 전엔 꼭 의사나 약사와 상담해주세요!</Text>
+          <Text style={styles.infoText}>{t('User.alternative.service_text1')}</Text>
+          <Text style={styles.infoText}>{t('User.alternative.service_text2')}</Text>
         </View>
       </View>
 
@@ -292,7 +293,7 @@ export default function AlternativeScreen() {
         <View style={styles.loadingOverlay}>
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#FF6B35" />
-            <Text style={styles.loadingText}>처리 중...</Text>
+            <Text style={styles.loadingText}>{t('User.alternative.loading')}</Text>
           </View>
         </View>
       )}
@@ -307,7 +308,7 @@ export default function AlternativeScreen() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>약품 정보 직접 입력</Text>
+              <Text style={styles.modalTitle}>{t('User.alternative.input_title')}</Text>
               <TouchableOpacity
                 onPress={() => setShowTextModal(false)}
                 style={styles.closeButton}
@@ -318,7 +319,7 @@ export default function AlternativeScreen() {
 
             <TextInput
               style={styles.textInput}
-              placeholder="복용 중인 약품명을 입력하세요"
+              placeholder={t('User.alternative.input_placeholder')}
               placeholderTextColor="#999"
               value={medicineText}
               onChangeText={setMedicineText}
@@ -332,7 +333,7 @@ export default function AlternativeScreen() {
                 style={[styles.modalButton, styles.cancelButton]}
                 onPress={() => setShowTextModal(false)}
               >
-                <Text style={styles.cancelButtonText}>취소</Text>
+                <Text style={styles.cancelButtonText}>{t('User.alternative.cancel')}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -340,7 +341,7 @@ export default function AlternativeScreen() {
                 onPress={handleTextSearch}
                 disabled={isLoading}
               >
-                <Text style={styles.confirmButtonText}>검색</Text>
+                <Text style={styles.confirmButtonText}>{t('User.alternative.confirm')}</Text>
               </TouchableOpacity>
             </View>
           </View>

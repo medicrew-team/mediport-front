@@ -1,4 +1,3 @@
-import { FontAwesome } from '@expo/vector-icons';
 import React, { useState } from "react";
 import {
   Dimensions,
@@ -17,6 +16,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { t } from 'i18next';
 
 const { width, height } = Dimensions.get('window');
 
@@ -34,7 +34,7 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
     return (
       <View style={styles.container}>
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>분석된 유사 약 정보가 없습니다.</Text>
+          <Text style={styles.emptyText}>{t('User.alternative.error')}</Text>
         </View>
       </View>
     );
@@ -53,7 +53,7 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
   const renderInputSection = () => (
     <View style={styles.inputSection}>
       <View style={styles.inputSectionHeader}>
-        <Text style={styles.inputSectionTitle}>매핑 이미지 or 텍스트</Text>
+        <Text style={styles.inputSectionTitle}>{t('User.alternative.title')}</Text>
       </View>
       {inputImage && (
         <View style={styles.inputImageContainer}>
@@ -90,24 +90,24 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
         {/* 기본 정보 */}
         <View style={styles.basicInfoContainer}>
           <Text style={styles.drugNameSmall} numberOfLines={1}>
-            {drug.prod_name || "제품명 없음"}
+            {drug.prod_name || t('User.alternative.name_none')}
           </Text>
 
           <View style={styles.infoRowSmall}>
-            <Text style={styles.labelSmall}>약효분류: </Text>
-            <Text style={styles.valueSmall}>{drug.bit || "정보없음"}</Text>
+            <Text style={styles.labelSmall}>{t('User.alternative.bit')}</Text>
+            <Text style={styles.valueSmall}>{drug.bit || t('User.alternative.bit_none')}</Text>
           </View>
-            <Text style={styles.labelSmall}>주요 효능: </Text>
+            <Text style={styles.labelSmall}>{t('User.alternative.icd')}</Text>
             <Text style={styles.summaryText} numberOfLines={2}>
-            {drug.icd_sum || "주요 효능 정보없음"}
+            {drug.icd_sum || t('User.alternative.icd_none')}
           </Text>
 
           <View style={styles.badgeContainer}>
             <View style={styles.purchaseBadge}>
-              <Text style={styles.badgeText}>{drug.purchase_loc || "구매처"}</Text>
+              <Text style={styles.badgeText}>{drug.purchase_loc || t('User.alternative.purchase_none')}</Text>
             </View>
             <View style={styles.formBadge}>
-              <Text style={styles.badgeText}>{drug.medi_form || "제형"}</Text>
+              <Text style={styles.badgeText}>{drug.medi_form || t('User.alternative.medi_none')}</Text>
             </View>
           </View>
         </View>
@@ -144,12 +144,12 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
             <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
               <View style={styles.infoContainer}>
                 <Ionicons name="warning" style={{marginRight:1}} size={18} color="#B91C1C" />
-                <Text style={styles.infoText}>실제 복용 전 약사에게 확인 바랍니다.</Text>
+                <Text style={styles.infoText}>{t('User.alternative.warn')}</Text>
               </View>
               <View style={styles.modalHeaderContent}>
                 <View style={styles.sectionHeader}>
                   <Feather name="image" style={{marginRight:6}} size={26} color="#8D4DE5" />
-                  <Text style={styles.sectionTitle}>제품 이미지</Text>
+                  <Text style={styles.sectionTitle}>{t('User.alternative.img')}</Text>
                 </View>
                 <View style={styles.modalImageContainer}>
                   {selectedDrug.prod_img ? (
@@ -165,20 +165,20 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
                   <Entypo name="info-with-circle" style={{marginRight:8}} size={24} color="#0066ff" />
-                  <Text style={styles.sectionTitle}>기본 정보</Text>
+                  <Text style={styles.sectionTitle}>{t('User.alternative.info1')}</Text>
                 </View>
                 <View style={styles.infoCard}>
-                  <Text style={styles.infoCardLabel}>주요 효능</Text>
+                  <Text style={styles.infoCardLabel}>{t('User.alternative.icd_sum')}</Text>
                   <Text style={styles.modalSummary}>{selectedDrug.icd_sum}</Text>
                 </View>
                 <View style={styles.infoGrid}>
                   <View style={styles.infoCard}>
-                    <Text style={styles.infoCardLabel}>구매처</Text>
-                    <Text style={styles.infoCardValue}>{selectedDrug.purchase_loc || "정보없음"}</Text>
+                    <Text style={styles.infoCardLabel}>{t('User.alternative.purchase_loc')}</Text>
+                    <Text style={styles.infoCardValue}>{selectedDrug.purchase_loc || "-"}</Text>
                   </View>
                   <View style={styles.infoCard}>
-                    <Text style={styles.infoCardLabel}>제형</Text>
-                    <Text style={styles.infoCardValue}>{selectedDrug.medi_form || "정보없음"}</Text>
+                    <Text style={styles.infoCardLabel}>{t('User.alternative.medi_form')}</Text>
+                    <Text style={styles.infoCardValue}>{selectedDrug.medi_form || "-"}</Text>
                   </View>
                 </View>
               </View>
@@ -187,11 +187,11 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
                   <MaterialCommunityIcons name="hospital-box-outline" style={{marginRight:6}} size={24} color="#10B981" />
-                  <Text style={styles.sectionTitle}>복용 정보</Text>
+                  <Text style={styles.sectionTitle}>{t('User.alternative.info2')}</Text>
                 </View>
                 <View style={[styles.detailCard, styles.dosageCard]}>
-                  <Text style={styles.detailCardLabel}>권장 복용법</Text>
-                  <Text style={styles.detailCardValue}>{selectedDrug.dosage || "정보없음"}</Text>
+                  <Text style={styles.detailCardLabel}>{t('User.alternative.dosage')}</Text>
+                  <Text style={styles.detailCardValue}>{selectedDrug.dosage || "-"}</Text>
                 </View>
               </View>
 
@@ -199,27 +199,27 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
                   <Ionicons name="warning" style={{marginRight:6}} size={24} color="#D80027" />
-                  <Text style={styles.sectionTitle}>주의사항</Text>
+                  <Text style={styles.sectionTitle}>{t('User.alternative.info3')}</Text>
                 </View>
 
                 <View style={[styles.detailCard, styles.warningCard]}>
-                  <Text style={styles.detailCardLabel}>투여 금지 대상</Text>
-                  <Text style={styles.detailCardValue}>{selectedDrug.contraindicated || "(특이 보고 없음)"}</Text>
+                  <Text style={styles.detailCardLabel}>{t('User.alternative.contraindicated')}</Text>
+                  <Text style={styles.detailCardValue}>{selectedDrug.contraindicated || "NA"}</Text>
                 </View>
 
                 <View style={[styles.detailCard, styles.cautionCard]}>
-                  <Text style={styles.detailCardLabel}>주의할 음식</Text>
-                  <Text style={styles.detailCardValue}>{selectedDrug.daily_interaction || "(특이 보고 없음)"}</Text>
+                  <Text style={styles.detailCardLabel}>{t('User.alternative.daily_interaction')}</Text>
+                  <Text style={styles.detailCardValue}>{selectedDrug.daily_interaction || "NA"}</Text>
                 </View>
 
                 <View style={[styles.detailCard, styles.interactionCard]}>
-                  <Text style={styles.detailCardLabel}>약물 상호작용</Text>
-                  <Text style={styles.detailCardValue}>{selectedDrug.drug_interaction || "(특이 보고 없음)"}</Text>
+                  <Text style={styles.detailCardLabel}>{t('User.alternative.drug_interaction')}</Text>
+                  <Text style={styles.detailCardValue}>{selectedDrug.drug_interaction || "NA"}</Text>
                 </View>
 
                 <View style={[styles.detailCard, styles.adverseCard]}>
-                  <Text style={styles.detailCardLabel}>부작용</Text>
-                  <Text style={styles.detailCardValue}>{selectedDrug.adverse_reaction || "(특이 보고 없음)"}</Text>
+                  <Text style={styles.detailCardLabel}>{t('User.alternative.adverse_reaction')}</Text>
+                  <Text style={styles.detailCardValue}>{selectedDrug.adverse_reaction || "NA"}</Text>
                 </View>
               </View>
 
@@ -227,10 +227,10 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
                   <AntDesign name="medicinebox" size={28} style={{marginRight:8}} color="black" />
-                  <Text style={styles.sectionTitle}>보관 방법</Text>
+                  <Text style={styles.sectionTitle}>{t('User.alternative.storage_method')}</Text>
                 </View>
                 <View style={[styles.detailCard, styles.storageCard]}>
-                  <Text style={styles.detailCardValue}>{selectedDrug.storage_method || "(별도 정보 없음)"}</Text>
+                  <Text style={styles.detailCardValue}>{selectedDrug.storage_method || "NA"}</Text>
                 </View>
               </View>
             </ScrollView>
@@ -238,7 +238,7 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
             {/* 모달 푸터 */}
             <View style={styles.modalFooter}>
               <TouchableOpacity onPress={closeModal} style={styles.closeModalButton}>
-                <Text style={styles.closeModalButtonText}>닫기</Text>
+                <Text style={styles.closeModalButtonText}>{t('User.alternative.close')}</Text>
               </TouchableOpacity>
             </View>
           </SafeAreaView>
@@ -255,8 +255,8 @@ const Similar: React.FC<SimilarProps> = ({ results, inputImage, inputText }) => 
 
         {/* 결과 헤더 */}
         <View style={styles.resultsHeader}>
-          <Text style={styles.resultsTitle}>유사 의약품 분석 결과</Text>
-          <Text style={styles.resultsSubtitle}>{results.length}개의 유사 약품을 찾았습니다</Text>
+          <Text style={styles.resultsTitle}>{t('User.alternative.resultsTitle')}</Text>
+          <Text style={styles.resultsSubtitle}>{results.length}{t('User.alternative.resultsSubtitle')}</Text>
         </View>
 
         {/* 약품 기본 카드 리스트 */}

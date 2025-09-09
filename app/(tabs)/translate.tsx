@@ -402,14 +402,14 @@ const translateText = async () => {
           style={[styles.navButton, styles.activeButton]}
           onPress={navigateToTranslate}
         >
-          <Text style={[styles.buttonText, styles.activeButtonText]}>번역</Text>
+          <Text style={[styles.buttonText, styles.activeButtonText]}>{t('User.translate.btn_translate')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.navButton, styles.inactiveButton]}
           onPress={navigateToMap}
         >
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>주변 약국 찾기</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>{t('User.translate.btn_map')}</Text>
         </TouchableOpacity>
       </View>
       {/* 원문 카드 */}
