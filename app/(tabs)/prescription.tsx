@@ -16,6 +16,7 @@ import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../types/ip';
+import { t } from 'i18next';
 
 export default function PrescriptionScreen() {
   const { token } = useAuth();
@@ -38,7 +39,7 @@ export default function PrescriptionScreen() {
       // 카메라 권한 요청
       const { status } = await ImagePicker.requestCameraPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert('권한 필요', '카메라 사용을 위해 권한이 필요합니다.');
+        Alert.alert(t('User.alert.Permission'), t('User.alert.camera_permission'));
         return;
       }
 
@@ -54,7 +55,7 @@ export default function PrescriptionScreen() {
       }
     } catch (error) {
       console.error('Camera error:', error);
-      Alert.alert('오류', '카메라 실행 중 오류가 발생했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.camera_error'));
     }
   };
 
@@ -64,7 +65,7 @@ export default function PrescriptionScreen() {
       // 갤러리 권한 요청
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert('권한 필요', '갤러리 사용을 위해 권한이 필요합니다.');
+        Alert.alert(t('User.alert.Permission'), t('User.alert.gallery_permission'));
         return;
       }
 
@@ -80,7 +81,7 @@ export default function PrescriptionScreen() {
       }
     } catch (error) {
       console.error('Gallery error:', error);
-      Alert.alert('오류', '갤러리 실행 중 오류가 발생했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.gallery_error'));
     }
   };
 
@@ -108,7 +109,7 @@ export default function PrescriptionScreen() {
       const data = await response.json();
 
       if (response.ok) {
-        Alert.alert('성공', '성공적으로 분석되었습니다.', [
+        Alert.alert(t('User.alert.success'), t('User.alert.find_success'), [
           {
             text: '확인',
             onPress: () => {
@@ -124,11 +125,11 @@ export default function PrescriptionScreen() {
           }
         ]);
       } else {
-        throw new Error(data.message || '분석에 실패했습니다.');
+        throw new Error(data.message || t('User.alert.find_fail'));
       }
     } catch (error) {
       console.error('Upload error:', error);
-      Alert.alert('오류', '분석 중 오류가 발생했습니다.');
+      Alert.alert(t('User.alert.error'), t('User.alert.find_error'));
     } finally {
       setIsLoading(false);
     }
@@ -142,26 +143,26 @@ export default function PrescriptionScreen() {
           style={[styles.navButton, styles.inactiveButton]}
           onPress={navigateToAlternative}
         >
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>유사약품 조회</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>{t('User.prescription.btn_alternative')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.navButton, styles.inactiveButton]}
           onPress={navigateToProhibited}
         >
-          <Text style={[styles.buttonText, styles.inactiveButtonText]}>반입금지 약품</Text>
+          <Text style={[styles.buttonText, styles.inactiveButtonText]}>{t('User.prescription.btn_prohibited')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.navButton, styles.activeButton]}
           onPress={navigateToPrescription}
         >
-          <Text style={[styles.buttonText, styles.activeButtonText]}>처방약 스캔</Text>
+          <Text style={[styles.buttonText, styles.activeButtonText]}>{t('User.prescription.btn_prescription')}</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}><FontAwesome name="lightbulb-o" size={18} color="#A97C5E" />촬영 팁: 약 봉투를 평평하게 펼치고,  {'\n'}조명이 밝은 곳에서 촬영하면 더 정확합니다</Text>
+        <Text style={styles.infoText}><FontAwesome name="lightbulb-o" size={18} color="#A97C5E" />{t('User.prescription.tip')}</Text>
       </View>
       <View style={styles.iconContainer}>
         <Image
@@ -170,8 +171,8 @@ export default function PrescriptionScreen() {
         />
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>처방약 정보 입력</Text>
-        <Text style={styles.sectionSubtitle}>아래 방법 중 하나를 선택해주세요</Text>
+        <Text style={styles.sectionTitle}>{t('User.prescription.title')}</Text>
+        <Text style={styles.sectionSubtitle}>{t('User.prescription.subtitle')}</Text>
 
         {/* 옵션 버튼들 */}
         <TouchableOpacity
@@ -185,8 +186,8 @@ export default function PrescriptionScreen() {
             </View>
           </View>
           <View style={styles.optionTextContainer}>
-            <Text style={styles.optionTitle}>카메라로 촬영</Text>
-            <Text style={styles.optionSubtitle}>약품 이미지를 카메라로 촬영</Text>
+            <Text style={styles.optionTitle}>{t('User.prescription.option1')}</Text>
+            <Text style={styles.optionSubtitle}>{t('User.prescription.sub1')}</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color="#C0C0C0" />
         </TouchableOpacity>
@@ -202,8 +203,8 @@ export default function PrescriptionScreen() {
             </View>
           </View>
           <View style={styles.optionTextContainer}>
-            <Text style={styles.optionTitle}>갤러리에서 선택</Text>
-            <Text style={styles.optionSubtitle}>약품 이미지를 갤러리에서 선택</Text>
+            <Text style={styles.optionTitle}>{t('User.prescription.option2')}</Text>
+            <Text style={styles.optionSubtitle}>{t('User.prescription.sub2')}</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color="#C0C0C0" />
         </TouchableOpacity>
@@ -214,7 +215,7 @@ export default function PrescriptionScreen() {
         <View style={styles.loadingOverlay}>
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#FF6B35" />
-            <Text style={styles.loadingText}>처리 중...</Text>
+            <Text style={styles.loadingText}>{t('User.prescription.loading')}</Text>
           </View>
         </View>
       )}

@@ -15,6 +15,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { t } from 'i18next';
 
 const { width, height } = Dimensions.get('window');
 
@@ -51,7 +52,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
         return (
             <View style={styles.container}>
                 <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>처방약 정보가 없습니다.</Text>
+                    <Text style={styles.emptyText}>{t('User.pharmacy.error')}</Text>
                 </View>
             </View>
         );
@@ -70,7 +71,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
     const renderInputSection = () => (
         <View style={styles.inputSection}>
             <View style={styles.inputSectionHeader}>
-                <Text style={styles.inputSectionTitle}>처방약 이미지</Text>
+                <Text style={styles.inputSectionTitle}>{t('User.pharmacy.title')}</Text>
             </View>
             {inputImage && (
                 <View style={styles.inputImageContainer}>
@@ -102,27 +103,27 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                 {/* 기본 정보 */}
                 <View style={styles.basicInfoContainer}>
                     <Text style={styles.drugNameSmall} numberOfLines={1}>
-                        {drug.name || "제품명 없음"}
+                        {drug.name || t('User.pharmacy.name_none')}
                     </Text>
 
                     <View style={styles.infoRowSmall}>
-                        <Text style={styles.labelSmall}>약효분류: </Text>
-                        <Text style={styles.valueSmall}>{drug.dbInfo?.bit || "정보없음"}</Text>
+                        <Text style={styles.labelSmall}>{t('User.pharmacy.bit')}</Text>
+                        <Text style={styles.valueSmall}>{drug.dbInfo?.bit || t('User.pharmacy.bit_none')}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', marginVertical: 4 }}>
-                        <Text style={styles.labelSmall}>복약안내: </Text>
+                        <Text style={styles.labelSmall}>{t('User.pharmacy.ocr')}</Text>
                         <Text style={styles.summaryText} numberOfLines={2}>
-                            {`${drug.ocrInfo["투약량"] || "-"}정씩 `}
-                            {`${drug.ocrInfo.횟수 || "-"}회 `}
-                            {`${drug.ocrInfo.일수 || "-"}일분 `}
+                            {`${drug.ocrInfo[t('User.pharmacy.ocr1')] || "-"}${t('User.pharmacy.ocr2')}`}
+                            {`${drug.ocrInfo.횟수 || "-"}${t('User.pharmacy.ocr3')}`}
+                            {`${drug.ocrInfo.일수 || "-"}${t('User.pharmacy.ocr4')}`}
                         </Text>
                     </View>
                     <View style={styles.badgeContainer}>
                         <View style={styles.locationBadge}>
-                            <Text style={styles.badgeText}>{drug.dbInfo?.location || "구분"}</Text>
+                            <Text style={styles.badgeText}>{drug.dbInfo?.location || t('User.pharmacy.purchase_none')}</Text>
                         </View>
                         <View style={styles.formBadge}>
-                            <Text style={styles.badgeText}>{drug.dbInfo?.form || "제형"}</Text>
+                            <Text style={styles.badgeText}>{drug.dbInfo?.form || t('User.pharmacy.medi_none')}</Text>
                         </View>
                     </View>
                 </View>
@@ -160,7 +161,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                             <View style={styles.modalHeaderContent}>
                                 <View style={styles.sectionHeader}>
                                     <Feather name="image" style={{ marginRight: 6 }} size={26} color="#8D4DE5" />
-                                    <Text style={styles.sectionTitle}>제품 이미지</Text>
+                                    <Text style={styles.sectionTitle}>{t('User.pharmacy.img')}</Text>
                                 </View>
                                 <View style={styles.modalImageContainer}>
                                     {selectedDrug.dbInfo?.image ? (
@@ -177,20 +178,20 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                             <View style={styles.section}>
                                 <View style={styles.sectionHeader}>
                                     <Entypo name="info-with-circle" style={{ marginRight: 8 }} size={24} color="#0066ff" />
-                                    <Text style={styles.sectionTitle}>기본 정보</Text>
+                                    <Text style={styles.sectionTitle}>{t('User.pharmacy.info1')}</Text>
                                 </View>
                                 <View style={styles.infoCard}>
-                                    <Text style={styles.infoCardLabel}>주요 효능</Text>
+                                    <Text style={styles.infoCardLabel}>{t('User.pharmacy.icd_sum')}</Text>
                                     <Text style={styles.modalSummary}>{selectedDrug.dbInfo?.icd_sum}</Text>
                                 </View>
                                 <View style={styles.infoGrid}>
                                     <View style={styles.infoCard}>
-                                        <Text style={styles.infoCardLabel}>구분</Text>
-                                        <Text style={styles.infoCardValue}>{selectedDrug.dbInfo?.location || "정보없음"}</Text>
+                                        <Text style={styles.infoCardLabel}>{t('User.pharmacy.purchase_loc')}</Text>
+                                        <Text style={styles.infoCardValue}>{selectedDrug.dbInfo?.location || "-"}</Text>
                                     </View>
                                     <View style={styles.infoCard}>
-                                        <Text style={styles.infoCardLabel}>제형</Text>
-                                        <Text style={styles.infoCardValue}>{selectedDrug.dbInfo?.form || "정보없음"}</Text>
+                                        <Text style={styles.infoCardLabel}>{t('User.pharmacy.medi_form')}</Text>
+                                        <Text style={styles.infoCardValue}>{selectedDrug.dbInfo?.form || "-"}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -200,14 +201,14 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                                 <View style={styles.section}>
                                     <View style={styles.sectionHeader}>
                                         <MaterialCommunityIcons name="text-recognition" style={{ marginRight: 6 }} size={24} color="#8B5CF6" />
-                                        <Text style={styles.sectionTitle}>처방약 정보</Text>
+                                        <Text style={styles.sectionTitle}>{t('User.pharmacy.info2')}</Text>
                                     </View>
                                     <View style={[styles.detailCard, styles.ocrCard]}>
-                                        <Text style={styles.detailCardLabel}>OCR 인식 결과</Text>
+                                        <Text style={styles.detailCardLabel}>{t('User.pharmacy.ocr_result')}</Text>
                                         <Text style={styles.detailCardValue}>
-                                            {`${selectedDrug.ocrInfo["투약량"] || "-"}정씩 `}
-                                            {`${selectedDrug.ocrInfo.횟수 || "-"}회 `}
-                                            {`${selectedDrug.ocrInfo.일수 || "-"}일분 `}
+                                            {`${selectedDrug.ocrInfo[t('User.pharmacy.ocr1')] || "-"}${t('User.pharmacy.ocr2')}`}
+                                            {`${selectedDrug.ocrInfo.횟수 || "-"}${t('User.pharmacy.ocr3')}`}
+                                            {`${selectedDrug.ocrInfo.일수 || "-"}${t('User.pharmacy.ocr4')}`}
                                         </Text>
                                     </View>
                                 </View>
@@ -217,11 +218,11 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                             <View style={styles.section}>
                                 <View style={styles.sectionHeader}>
                                     <MaterialCommunityIcons name="hospital-box-outline" style={{ marginRight: 6 }} size={24} color="#10B981" />
-                                    <Text style={styles.sectionTitle}>복용 정보</Text>
+                                    <Text style={styles.sectionTitle}>{t('User.pharmacy.info3')}</Text>
                                 </View>
                                 <View style={[styles.detailCard, styles.dosageCard]}>
-                                    <Text style={styles.detailCardLabel}>권장 복용법</Text>
-                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.dosage || "정보없음"}</Text>
+                                    <Text style={styles.detailCardLabel}>{t('User.pharmacy.dosage')}</Text>
+                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.dosage || "-"}</Text>
                                 </View>
                             </View>
 
@@ -229,27 +230,27 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                             <View style={styles.section}>
                                 <View style={styles.sectionHeader}>
                                     <Ionicons name="warning" style={{ marginRight: 6 }} size={24} color="#D80027" />
-                                    <Text style={styles.sectionTitle}>주의사항</Text>
+                                    <Text style={styles.sectionTitle}>{t('User.pharmacy.info4')}</Text>
                                 </View>
 
                                 <View style={[styles.detailCard, styles.warningCard]}>
-                                    <Text style={styles.detailCardLabel}>투여 금지 대상</Text>
-                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.contraindicated || "(특이 보고 없음)"}</Text>
+                                    <Text style={styles.detailCardLabel}>{t('User.pharmacy.contraindicated')}</Text>
+                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.contraindicated || "NA"}</Text>
                                 </View>
 
                                 <View style={[styles.detailCard, styles.cautionCard]}>
-                                    <Text style={styles.detailCardLabel}>주의할 음식</Text>
-                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.daily_interaction || "(특이 보고 없음)"}</Text>
+                                    <Text style={styles.detailCardLabel}>{t('User.pharmacy.daily_interaction')}</Text>
+                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.daily_interaction || "NA"}</Text>
                                 </View>
 
                                 <View style={[styles.detailCard, styles.interactionCard]}>
-                                    <Text style={styles.detailCardLabel}>약물 상호작용</Text>
-                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.drug_interaction || "(특이 보고 없음)"}</Text>
+                                    <Text style={styles.detailCardLabel}>{t('User.pharmacy.drug_interaction')}</Text>
+                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.drug_interaction || "NA"}</Text>
                                 </View>
 
                                 <View style={[styles.detailCard, styles.adverseCard]}>
-                                    <Text style={styles.detailCardLabel}>부작용</Text>
-                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.adverse_reaction || "(특이 보고 없음)"}</Text>
+                                    <Text style={styles.detailCardLabel}>{t('User.pharmacy.adverse_reaction')}</Text>
+                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.adverse_reaction || "NA"}</Text>
                                 </View>
                             </View>
 
@@ -257,10 +258,10 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                             <View style={styles.section}>
                                 <View style={styles.sectionHeader}>
                                     <AntDesign name="medicinebox" size={28} style={{ marginRight: 8 }} color="black" />
-                                    <Text style={styles.sectionTitle}>보관 방법</Text>
+                                    <Text style={styles.sectionTitle}>{t('User.pharmacy.storage_method')}</Text>
                                 </View>
                                 <View style={[styles.detailCard, styles.storageCard]}>
-                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.storage_method || "(별도 정보 없음)"}</Text>
+                                    <Text style={styles.detailCardValue}>{selectedDrug.dbInfo?.storage_method || "NA"}</Text>
                                 </View>
                             </View>
                         </ScrollView>
@@ -268,7 +269,7 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
                         {/* 모달 푸터 */}
                         <View style={styles.modalFooter}>
                             <TouchableOpacity onPress={closeModal} style={styles.closeModalButton}>
-                                <Text style={styles.closeModalButtonText}>닫기</Text>
+                                <Text style={styles.closeModalButtonText}>{t('User.pharmacy.close')}</Text>
                             </TouchableOpacity>
                         </View>
                     </SafeAreaView>
@@ -285,8 +286,8 @@ const Pharmacy: React.FC<PharmacyProps> = ({ results, inputImage }) => {
 
                 {/* 결과 헤더 */}
                 <View style={styles.resultsHeader}>
-                    <Text style={styles.resultsTitle}>처방약 분석 결과</Text>
-                    <Text style={styles.resultsSubtitle}>{results.length}개의 약품을 찾았습니다</Text>
+                    <Text style={styles.resultsTitle}>{t('User.pharmacy.resultsTitle')}</Text>
+                    <Text style={styles.resultsSubtitle}>{results.length}{t('User.pharmacy.resultsSubtitle')}</Text>
                 </View>
 
                 {/* 약품 기본 카드 리스트 */}
